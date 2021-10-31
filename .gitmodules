@@ -1,0 +1,6 @@
+[submodule "external/protocol"]
+    path = external/protocol
+    url = https://github.com/Blizzard/s2client-proto.git
+[submodule "external/protobuf"]
+    path = contrib/protobuf
+    url = https://github.com/google/protobuf
