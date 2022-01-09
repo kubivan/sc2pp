@@ -4,3 +4,6 @@
 [submodule "external/protobuf"]
 	path = external/protobuf
 	url = https://github.com/google/protobuf
+[submodule "external/rxcpp"]
+	path = external/rxcpp
+	url = https://github.com/ReactiveX/RxCpp.git
