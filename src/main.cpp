@@ -45,7 +45,7 @@ public:
     rxcpp::subjects::behavior<int> m_game_step = rxcpp::subjects::behavior<int>(0);
 
     SC2Client(net::io_context& ioc)
-        : m_session(std::make_shared<Sc2Session>(ioc))
+        : m_session(std::make_shared<SC2Session>(ioc))
     {
 
 
@@ -55,8 +55,8 @@ public:
     {
         for (int retry = 1; retry < 10; ++retry)
         {
-            auto client_started_future = m_session->run("127.0.0.1", "8167");
-            if (client_started_future.get())
+            auto ec = m_session->connect("127.0.0.1", "8167");
+            if (!ec)
             {
                 break;
             }
@@ -67,7 +67,7 @@ public:
     auto createGame()
     {
         std::cout << "creating game" << std::endl;
-        auto request = std::make_shared<proto::Request>();
+        auto request = std::make_unique<proto::Request>();
         auto request_create_game = request->mutable_create_game();
         //setup map
         auto map = request_create_game->mutable_local_map();
@@ -87,29 +87,27 @@ public:
         //realtime
         request_create_game->set_realtime(false);
 
-        return m_session->send(request, [](auto response)
-            {
-                if (!response->has_create_game())
-                {
-                    std::cout << "Recieved invalid response" << std::endl;
-                    return false;
-                }
-                std::cout << "Resp " << response->create_game().DebugString() << std::endl;
-                //assert(response.has_create_game());
-                auto create_game = response->create_game();
-                if (create_game.has_error())
-                {
-                    std::cout << "Create game error : "
-                        << ResponseCreateGame_Error_Name(create_game.error()) << std::endl;
-                    return false;
-                }
-                return true;
-            });
+        auto response = m_session->send(std::move(request));
+        if (!response && !response->has_create_game())
+        {
+            std::cout << "Recieved invalid response" << std::endl;
+            return false;
+        }
+        std::cout << "Resp " << response->create_game().DebugString() << std::endl;
+        //assert(response.has_create_game());
+        auto create_game = response->create_game();
+        if (create_game.has_error())
+        {
+            std::cout << "Create game error : "
+                << ResponseCreateGame_Error_Name(create_game.error()) << std::endl;
+            return false;
+        }
+        return true;
     }
 
     auto joinGame()
     {
-        auto request = std::make_shared<sc2::proto::Request>();
+        auto request = std::make_unique<sc2::proto::Request>();
         auto request_join_game = request->mutable_join_game();
         request_join_game->set_race(sc2::proto::Race::Protoss);
         
@@ -118,64 +116,43 @@ public:
         options->set_score(true);
         //TODO options->mutable_feature_layer()
 
-        return m_session->send(request, [](auto response) 
-            {
-                if (!response->has_create_game())
-                {
-                    return false;
-                }
-                auto response_create_game = response->create_game();
-                if (response_create_game.has_error())
-                {
-                    return false;
-                }
-                return true;
-            });
-
+        auto response = m_session->send(std::move(request));
+        if (!response)
+        {
+            return false;
+        }
+        if (!response->has_create_game())
+        {
+            return false;
+        }
+        auto response_create_game = response->create_game();
+        if (response_create_game.has_error())
+        {
+            return false;
+        }
+        return true;
     }
 
     auto step()
     {
         static const int step_duration = 1;
-        auto request = std::make_shared<sc2::proto::Request>();
+        auto request = std::make_unique<sc2::proto::Request>();
         auto request_step = request->mutable_step();
         request_step->set_count(step_duration);
 
-        m_session->send(std::move(request), [this](const auto response) {
-            return true; 
-            }).wait();
+        m_session->send(std::move(request));
 
-        int loop;
-        {
-            auto request = std::make_shared<sc2::proto::Request>();
-            request->mutable_observation();
-            m_session->send(std::move(request), [&](auto response_observation) {
-                //m_observation = std::move(response_observation->observation());
-                loop = response_observation->observation().observation().game_loop();
-                return true;
-                }).wait();
-        }
-        return loop;
+        auto request_observation = std::make_unique<sc2::proto::Request>();
+        request_observation->mutable_observation();
+        return m_session->send(std::move(request_observation));
     }
 
-    //auto updateObservation()
-    //{
-    //    auto request = std::make_shared<sc2::proto::Request>();
-    //    request->mutable_observation();
-    //    return m_session->send(std::move(request), [this](auto response_observation) {
-    //        //m_observation = std::move(response_observation->observation());
-    //        return true;
-    //        });
-    //}
-
-    void ping()
+    bool ping()
     {
-        auto request = std::make_shared<proto::Request>();
+        auto request = std::make_unique<proto::Request>();
         request->mutable_ping();
-        m_session->send(std::move(request), [](auto response) 
-            {
-                return response->has_ping();
-            }).wait();
+        auto response = m_session->send(std::move(request));
+        return response->has_ping();
     }
 
     auto createObserverable()
@@ -183,54 +160,39 @@ public:
         return m_game_step.get_observable().observe_on(rxcpp::synchronize_new_thread()).map([this](const int step) {
             std::cout << std::this_thread::get_id() << "step: "<< step << std::endl;
                 return this->step();
-                //this->updateObservation().wait();
-                //return this->m_observation.observation().game_loop();
             });
     }
 
 private:
     net::io_context m_ioc;
-    std::shared_ptr<Sc2Session> m_session;
+    std::shared_ptr<SC2Session> m_session;
     //rxcpp::ob
 public:
-    //sc2::proto::ResponseObservation m_observation;
-    int loop;
+    sc2::proto::ResponseObservation m_observation;
 };
 }
 
-struct Observation
-{
-
-};
-
-struct SC2Context
-{
-    Observation obs;
-    //Actions act;
-
-};
-
-struct Agent
-{
-    //input
-    rxcpp::observable<sc2::proto::ResponseObservation> obs;
-
-    rxcpp::observable<sc2::proto::Unit> unitsCreated;
-    rxcpp::observable<sc2::proto::Unit> unitsDestroyed;
-
-
-    void step()
-    {
-        //step_impl();
-
-    }
-
-private:
-    virtual void step_impl(SC2Context& sc2) = 0 {};
-
-    //output
-    //rxcpp::observable<sc2::proto::RequestAction*> obs;
-};
+//struct Agent
+//{
+//    //input
+//    rxcpp::observable<sc2::proto::ResponseObservation> obs;
+//
+//    rxcpp::observable<sc2::proto::Unit> unitsCreated;
+//    rxcpp::observable<sc2::proto::Unit> unitsDestroyed;
+//
+//
+//    void step()
+//    {
+//        //step_impl();
+//
+//    }
+//
+//private:
+//    virtual void step_impl(SC2Context& sc2) = 0 {};
+//
+//    //output
+//    //rxcpp::observable<sc2::proto::RequestAction*> obs;
+//};
 
 
 #if 0
@@ -257,14 +219,8 @@ int main(int argc, char** argv)
 #else
 int main(int argc, char** argv)
 {
-    auto process_path = "C:\\Program Files (x86)\\StarCraft II\\Versions\\Base84643\\SC2_x64.exe";
+    auto process_path = "C:\\Program Files (x86)\\StarCraft II\\Versions\\Base87702\\SC2_x64.exe";
 
-    /// <summary>
-    /// Start process
-    /// </summary>
-    /// <param name="argc"></param>
-    /// <param name="argv"></param>
-    /// <returns></returns>
     namespace bp = boost::process; //we will assume this for all further examples
     auto sc2_proc = bp::child(process_path
                     , bp::args = { "-listen","127.0.0.1"
@@ -292,7 +248,7 @@ int main(int argc, char** argv)
     client.ping();
 
     std::cout << "client started" << std::endl;
-    auto created = client.createGame().get();
+    auto created = client.createGame();
     std::cout << "game created: " << created << std::endl;
     if (!created)
     {
@@ -301,13 +257,13 @@ int main(int argc, char** argv)
     }
 
     std::cout << "joining" << std::endl;
-    client.joinGame().wait();
+    client.joinGame();
 
     client.createObserverable()
         //.observe_on(rxcpp::synchronize_new_thread())
         //.as_blocking()
         .subscribe(
-        [](const auto& some) {std::cout << "observe: " << some << std::endl; },
+        [](const auto& some) {std::cout << "observe: " << some->observation().observation().game_loop() << std::endl; },
         []() {std::cout << "onComplete" << std::endl; }
     );
     //auto game_loop = response_observation.map([](const sc2::proto::ResponseObservation& resp) {return resp.observation().game_loop(); });
