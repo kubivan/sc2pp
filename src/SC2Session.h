@@ -1,3 +1,5 @@
+#pragma once
+
 #include <future>
 #include <string>
 
@@ -5,7 +7,6 @@
 #include <boost/beast/websocket.hpp>
 #include <boost/asio/connect.hpp>
 #include <boost/asio/ip/tcp.hpp>
-
 
 #include <s2clientprotocol/sc2api.pb.h>
 
