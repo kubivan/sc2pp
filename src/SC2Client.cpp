@@ -1,18 +1,20 @@
 #include "SC2Client.h"
-
-#include <rxcpp/rx.hpp>
+#include "Converters.h"
 
 #include <boost/process/args.hpp>
+
 
 using namespace sc2;
 
 SC2Client::~SC2Client()
 {
-    m_game_proc.wait();
+    m_ioc.stop();
+    m_game_proc.terminate();
 }
 
 SC2Client::SC2Client(net::io_context& ioc)
     : m_session(std::make_shared<SC2Session>(ioc))
+    , m_ioc(ioc)
 {
 }
 
@@ -89,7 +91,12 @@ bool SC2Client::createGame()
     return true;
 }
 
-bool SC2Client::joinGame(std::unique_ptr<TestAgent> agent)
+std::unique_ptr<SC2Context> sc2::SC2Client::createContext()
+{
+    return std::unique_ptr<SC2Context>();
+}
+
+bool SC2Client::joinGame(std::unique_ptr<Agent> agent)
 {
     auto request = std::make_unique<sc2::proto::Request>();
     auto request_join_game = request->mutable_join_game();
@@ -115,9 +122,7 @@ bool SC2Client::joinGame(std::unique_ptr<TestAgent> agent)
         return false;
     }
     m_agent = std::move(agent);
-
-    std::cout << "this->m_game_step.get_subscriber().on_next(m_steps++)" << std::endl;
-    this->m_game_step.get_subscriber().on_next(m_steps++);
+    m_agent_id = response_join_game.player_id();
 
     return true;
 }
@@ -133,7 +138,6 @@ proto::ResponseObservation SC2Client::step()
     auto step_response = m_session->send(std::move(request));
     if (!step_response || !step_response->has_step())
     {
-        std::cout << "step filed!: " + (step_response ? step_response->DebugString() : "") << std::endl;
         throw std::runtime_error("step filed!: " + (step_response ? step_response->DebugString(): ""));
     }
 
@@ -148,6 +152,40 @@ proto::ResponseObservation SC2Client::step()
     return response->observation();
 }
 
+std::optional<proto::PlayerResult> SC2Client::update()
+{
+    const auto response_observation = this->step();
+    const auto [unit_commands, errors] = convert_observation(response_observation);
+    for (auto& u : unit_commands)
+    {
+        std::cout << "ucomm: " << u.ability_id << std::endl;
+    }
+
+    for (auto& e : errors)
+    {
+        std::cout << "ERROR: " << e.res_str << std::endl;
+    }
+
+
+    auto actions = m_agent->step();
+    m_session->send(std::move(actions));
+
+    if (!response_observation.player_result_size())
+    {
+        return {};
+    }
+    for(int i = 0; i < response_observation.player_result_size(); ++i)
+    {
+        const auto& res = response_observation.player_result(i);
+        if (res.player_id() == m_agent_id)
+        {
+            return res;
+        }
+    }
+    assert(false);
+    return {};
+}
+
 bool SC2Client::ping()
 {
     auto request = std::make_unique<proto::Request>();
@@ -156,59 +194,7 @@ bool SC2Client::ping()
     return response->has_ping();
 }
 
-std::unique_ptr<proto::Request> TestAgent::step()
-{
-    std::cout << std::this_thread::get_id() << " : TestAgent::step()" << std::endl;
-    //std::unique_lock lk(m);
-    //cv.wait(lk, [this]{return m_actions->has();});
-    m_actions->chat("HEY! creating a probe on");
-
-    auto res = m_actions->reset();
-    // Manual unlocking is done before notifying, to avoid waking up
-    // the waiting thread only to block again (see notify_one for details)
-    //lk.unlock();
-    return res;
-}
-
-SC2Context::SC2Context()
-    : worker(rxcpp::synchronize_event_loop())
-    , obs(size_t(1), worker)
-    , units(obs.get_observable().observe_on(worker).map([this](const auto& obs) {
-            sc2::Units units;
-            for (int i = 0; i < obs.observation().raw_data().units_size(); ++i)
-            {
-                const auto& unit = obs.observation().raw_data().units(i);
-                if (unit.alliance() == proto::Alliance::Self)
-                    units.push_back(unit);
-            }
-            std::cout << "Units.size() " << units.size() << std::endl;
-            return units;
-            }))
-{
-    std::cout << "SC2Context()" << std::endl;
-}
-
-void sc2::SC2Context::init(const rxcpp::observable<int>& input, SC2Client* client)
-{
-    obs_subsctiption = input
-        .observe_on(this->worker)
-        .tap([](int step) {std::cout << "obs.step=" << step << std::endl; })
-        .filter([](int step) {return step >= 0; })
-        .subscribe([thiz = this->shared_from_this(), client](int step)
-            {
-                std::cout << std::this_thread::get_id() << " obs step: " << step << std::endl;
-                auto step_observation = client->step();
-                thiz->obs.get_subscriber().on_next(std::move(step_observation));
-            });
-}
 SC2Context::~SC2Context()
 {
 
-}
-
-std::shared_ptr<SC2Context> SC2Client::createContext()
-{
-    auto res = std::make_shared<SC2Context>();
-    res->init(m_game_step.get_observable(), this);
-    return res;
 }

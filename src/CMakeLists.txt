@@ -13,6 +13,7 @@ endif()
 set(SC2PP_SOURCES 
     Actions.cpp
     Actions.h
+    Converters.h
     SC2Client.cpp
     SC2Client.h
     SC2IDs.h

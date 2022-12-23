@@ -4,28 +4,30 @@
 #include <boost/process/args.hpp>
 #include <iostream>
 
-#if 0
-int main(int argc, char** argv)
+
+struct DummyAgent : sc2::Agent
 {
-    //---------------- Generate a range of values //---------------- Apply Square function
-    auto values = rxcpp::observable<>::range(1,4).
-        map([](int v){ return v*v;}); //------------- Emit the current thread details
-    std::cout << "Main Thread id => "
-        << std::this_thread::get_id() << std::endl;
+    DummyAgent(std::unique_ptr<sc2::SC2Context> context)
+    {
+    }
 
-    //---------- observe_on another thread....
-    //---------- make it blocking to
-    values.observe_on(rxcpp::synchronize_new_thread()).as_blocking().
-        subscribe([](int v) {
-        std::cout << "Observable Thread id => "
-            << std::this_thread::get_id() << " " << v << std::endl; }, []() { std::cout <<
-            "OnCompleted" << std::endl; }); //------------------ Print the main thread details
-    std::cout << "Main Thread id => "
-        << std::this_thread::get_id() << std::endl;
+    std::unique_ptr<sc2::proto::Request> step()
+    {
+        std::cout << std::this_thread::get_id() << " : TestAgent::step()" << std::endl;
+        m_actions.chat("HEY! creating a probe on");
 
+        auto res = m_actions.reset();
+        return res;
+    }
 
-}
-#else
+    sc2::proto::Race race()
+    {
+        return sc2::proto::Protoss;
+    }
+
+    sc2::Actions m_actions;
+};
+
 int main(int argc, char** argv)
 try{
 
@@ -49,35 +51,30 @@ try{
 
     std::cout << "joining" << std::endl;
 
-    if (!client.joinGame(std::make_unique<sc2::TestAgent>(client.createContext())))
+    if (!client.joinGame(std::make_unique<DummyAgent>(client.createContext())))
     {
         std::cout << "join failed" << std::endl;
         return -1;
     }
-    //context.obs.subscribe(
-    //    [](const auto& response_observation) {
-    //        std::cout << "observe: " << response_observation.observation().game_loop() << std::endl; 
 
-    //    },
-    //    []() {std::cout << "onComplete" << std::endl; }
-    //);
-    //auto game_loop = response_observation.map([](const sc2::proto::ResponseObservation& resp) {return resp.observation().game_loop(); });
-    //auto game_loop_10 = game_loop | rxcpp::operators::filter([](const auto& loop) { return loop % 10 == 0; });
-    //game_loop_10.subscribe([](const auto& loop) { std::cout << "loop: " << loop << std::endl; });
-
-    client.startGame();
-    while (true)
+    std::optional<sc2::proto::PlayerResult> res;
+    while (!res)
     {
+        res = client.update();
         std::this_thread::sleep_for(std::chrono::milliseconds(10));
     }
+    std::cout << "Result " << res->result() << std::endl;
 
 err:
     std::cout << "stopping ioc" << std::endl;
-    ioc.stop();
+    //ioc.stop();
     return 0;
 }
 catch (std::exception& e)
 {
     std::cout << "EXCEPTION: " << e.what() << std::endl;
 }
-#endif
+catch (...)
+{
+    std::cout << "EXCEPTION: unknown" << std::endl;
+}

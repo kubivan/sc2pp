@@ -1,5 +1,6 @@
 #pragma once
-#include <s2clientprotocol/sc2api.pb.h>
+
+#include "Converters.h"
 
 #include "SC2IDs.h"
 
@@ -11,12 +12,6 @@ namespace sc2 {
 namespace proto = SC2APIProtocol;
 using Tag = int;
 using Units = std::vector<proto::Unit>;
-
-struct Point2D 
-{
-    float x;
-    float y;
-};
 
 class Actions
 {

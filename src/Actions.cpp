@@ -20,7 +20,7 @@ proto::RequestAction* Actions::requestAction() {
 
 Actions& Actions::toggleAutocast(Tag unit_tag, AbilityID ability) 
 {
-    toggleAutocast({ unit_tag }, ability);
+    toggleAutocast(std::vector<Tag>{ unit_tag }, ability);
     return *this;
 }
 

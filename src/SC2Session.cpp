@@ -114,5 +114,8 @@ SC2Session::connect(std::string host, std::string port)
 void
 sc2::SC2Session::close()
 {
-    m_ws.close(websocket::close_code::normal);
+    if (m_ws.is_open())
+    {
+        m_ws.close(websocket::close_code::normal);
+    }
 }
