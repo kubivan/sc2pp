@@ -27,6 +27,6 @@ add_executable(sc2pp ${SC2PP_SOURCES} ${PROTO_SRCS} ${PROTO_HDRS})
 target_include_directories(sc2pp PRIVATE ${Boost_INCLUDE_DIRS})
 target_compile_features(sc2pp PRIVATE cxx_std_20)
 #include_directories( ${Boost_INCLUDE_DIRS} )
-target_link_libraries(sc2pp PUBLIC sc2proto rxcpp PRIVATE Boost::filesystem)
+target_link_libraries(sc2pp PUBLIC sc2proto PRIVATE Boost::filesystem)
 set_property(TARGET sc2pp PROPERTY
   MSVC_RUNTIME_LIBRARY "MultiThreaded$<$<CONFIG:Debug>:Debug>")

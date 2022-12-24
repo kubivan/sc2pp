@@ -155,7 +155,7 @@ proto::ResponseObservation SC2Client::step()
 std::optional<proto::PlayerResult> SC2Client::update()
 {
     const auto response_observation = this->step();
-    const auto [unit_commands, errors] = convert_observation(response_observation);
+    const auto [units, unit_commands, errors] = convert_observation(response_observation);
     for (auto& u : unit_commands)
     {
         std::cout << "ucomm: " << u.ability_id << std::endl;
@@ -165,7 +165,6 @@ std::optional<proto::PlayerResult> SC2Client::update()
     {
         std::cout << "ERROR: " << e.res_str << std::endl;
     }
-
 
     auto actions = m_agent->step();
     m_session->send(std::move(actions));
