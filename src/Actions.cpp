@@ -1,4 +1,4 @@
-#include "Actions.h"
+#include <sc2pp/Actions.h>
 
 using namespace sc2;
 
@@ -48,17 +48,17 @@ Actions& Actions::chat(const std::string& message, proto::ActionChat::Channel ch
     return *this;
 }
 
-Actions& Actions::command(const proto::Unit& unit, AbilityID ability, bool queued)
+Actions& Actions::command(const Unit& unit, AbilityID ability, bool queued)
 {
     return command(Units{ unit }, ability, queued);
 }
 
-Actions& Actions::command(const proto::Unit& unit, AbilityID ability, const Point2D& point, bool queued)
+Actions& Actions::command(const Unit& unit, AbilityID ability, const Point2D& point, bool queued)
 {
     return command(Units{ unit }, ability, point, queued);
 }
 
-Actions& Actions::command(const proto::Unit& unit, AbilityID ability, const proto::Unit& target, bool queued)
+Actions& Actions::command(const Unit& unit, AbilityID ability, const Unit& target, bool queued)
 {
     return command(Units{ unit }, ability, target, queued);
 }
@@ -75,7 +75,7 @@ Actions& Actions::command(const Units& units, AbilityID ability, bool queued)
 
     for (const auto& unit : units) 
     {
-        unit_command->add_unit_tags(unit.tag());
+        unit_command->add_unit_tags(unit.tag);
     }
     return *this;
 }
@@ -95,24 +95,24 @@ Actions& Actions::command(const Units& units, AbilityID ability, bool queued)
 
     for (const auto& unit : units)
     {
-        unit_command->add_unit_tags(unit.tag());
+        unit_command->add_unit_tags(unit.tag);
     }
     return *this;
 }
 
-Actions& Actions::command(const Units& units, AbilityID ability, const proto::Unit& target, bool queued) {
+Actions& Actions::command(const Units& units, AbilityID ability, const Unit& target, bool queued) {
     auto request_action = requestAction();
     auto action = request_action->add_actions();
     auto action_raw = action->mutable_action_raw();
     auto unit_command = action_raw->mutable_unit_command();
 
     unit_command->set_ability_id(static_cast<int>(ability));
-    unit_command->set_target_unit_tag(target.tag());
+    unit_command->set_target_unit_tag(target.tag);
     unit_command->set_queue_command(queued);
 
     for (const auto& unit : units) 
     {
-        unit_command->add_unit_tags(unit.tag());
+        unit_command->add_unit_tags(unit.tag);
     }
 
     return *this;

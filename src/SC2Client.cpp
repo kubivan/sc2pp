@@ -2,7 +2,7 @@
 #include "Converters.h"
 
 #include <boost/process/args.hpp>
-
+#include <boost/pfr.hpp>
 
 using namespace sc2;
 
@@ -91,11 +91,6 @@ bool SC2Client::createGame()
     return true;
 }
 
-std::unique_ptr<SC2Context> sc2::SC2Client::createContext()
-{
-    return std::unique_ptr<SC2Context>();
-}
-
 bool SC2Client::joinGame(std::unique_ptr<Agent> agent)
 {
     auto request = std::make_unique<sc2::proto::Request>();
@@ -127,9 +122,9 @@ bool SC2Client::joinGame(std::unique_ptr<Agent> agent)
     return true;
 }
 
-proto::ResponseObservation SC2Client::step()
+std::pair<int, proto::ResponseObservation> SC2Client::step()
 {
-    std::cout << "SC2Client::step()" << std::endl;
+    //std::cout << "SC2Client::step()" << std::endl;
     static const int step_duration = 1;
     auto request = std::make_unique<proto::Request>();
     auto request_step = request->mutable_step();
@@ -140,6 +135,7 @@ proto::ResponseObservation SC2Client::step()
     {
         throw std::runtime_error("step filed!: " + (step_response ? step_response->DebugString(): ""));
     }
+    auto simulation_loop = step_response->step().simulation_loop();
 
     auto request_observation = std::make_unique<proto::Request>();
     request_observation->mutable_observation();
@@ -149,22 +145,37 @@ proto::ResponseObservation SC2Client::step()
         std::cout << response->DebugString() << std::endl;
         throw std::runtime_error("no obs in response: " + (response? response->DebugString(): ""));
     }
-    return response->observation();
+    return { simulation_loop, response->observation() };
 }
 
 std::optional<proto::PlayerResult> SC2Client::update()
 {
-    const auto response_observation = this->step();
-    const auto [units, unit_commands, errors] = convert_observation(response_observation);
-    for (auto& u : unit_commands)
-    {
-        std::cout << "ucomm: " << u.ability_id << std::endl;
-    }
+    const auto [simulation_loop, response_observation] = this->step();
 
-    for (auto& e : errors)
-    {
-        std::cout << "ERROR: " << e.res_str << std::endl;
-    }
+    m_agent->sc2().update(response_observation);
+
+    //for (auto& u : units)
+    //{
+    //    std::cout << "unit: " << boost::pfr::io(u) << std::endl;
+    //}
+    //std::cout << "============================================" << std::endl;
+    //const auto [created, damaged, self] = m_unit_pool.update(units);
+    //if(created.size() + damaged.size() > 0)
+    //    std::cout << "SC2Client::update: " << simulation_loop << std::endl;
+    //for(auto& c: created)
+    //{
+    //    std::cout << "unit created: " << c.tag << " " << c.shield << " " << c.health << std::endl;
+    //}
+
+    //for(auto& d: damaged)
+    //{
+    //    std::cout << "unit damaged: " << d.tag << " " << d.shield << " " << d.health << std::endl;
+    //}
+
+    //for (auto& e : errors)
+    //{
+    //    std::cout << "ERROR: " << e.res_str << std::endl;
+    //}
 
     auto actions = m_agent->step();
     m_session->send(std::move(actions));
@@ -181,6 +192,9 @@ std::optional<proto::PlayerResult> SC2Client::update()
             return res;
         }
     }
+
+    m_prev_loop = simulation_loop;
+
     assert(false);
     return {};
 }
@@ -193,7 +207,3 @@ bool SC2Client::ping()
     return response->has_ping();
 }
 
-SC2Context::~SC2Context()
-{
-
-}

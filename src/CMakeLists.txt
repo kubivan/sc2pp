@@ -12,19 +12,25 @@ endif()
 
 set(SC2PP_SOURCES 
     Actions.cpp
-    Actions.h
+    Converters.cpp
     Converters.h
     SC2Client.cpp
-    SC2Client.h
     SC2IDs.h
     SC2Session.cpp
     SC2Session.h
+    TestAgent.h
+    TestAgent.cpp
+    UnitPool.h
+    ../include/sc2pp/Actions.h
+    ../include/sc2pp/Agent.h
+    ../include/sc2pp/SC2Client.h
+    ../include/sc2pp/SC2Context.h
     main.cpp
 )
 
 add_executable(sc2pp ${SC2PP_SOURCES} ${PROTO_SRCS} ${PROTO_HDRS})
 
-target_include_directories(sc2pp PRIVATE ${Boost_INCLUDE_DIRS})
+target_include_directories(sc2pp PRIVATE ${Boost_INCLUDE_DIRS} PUBLIC "../include")
 target_compile_features(sc2pp PRIVATE cxx_std_20)
 #include_directories( ${Boost_INCLUDE_DIRS} )
 target_link_libraries(sc2pp PUBLIC sc2proto PRIVATE Boost::filesystem)

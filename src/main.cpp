@@ -1,32 +1,11 @@
-#include "SC2Client.h"
+#include <sc2pp/SC2Client.h>
+
+#include "TestAgent.h"
 
 #include <boost/process.hpp>
 #include <boost/process/args.hpp>
 #include <iostream>
 
-
-struct DummyAgent : sc2::Agent
-{
-    DummyAgent(std::unique_ptr<sc2::SC2Context> context)
-    {
-    }
-
-    std::unique_ptr<sc2::proto::Request> step()
-    {
-        std::cout << std::this_thread::get_id() << " : TestAgent::step()" << std::endl;
-        m_actions.chat("HEY! creating a probe on");
-
-        auto res = m_actions.reset();
-        return res;
-    }
-
-    sc2::proto::Race race()
-    {
-        return sc2::proto::Protoss;
-    }
-
-    sc2::Actions m_actions;
-};
 
 int main(int argc, char** argv)
 try{
@@ -51,7 +30,7 @@ try{
 
     std::cout << "joining" << std::endl;
 
-    if (!client.joinGame(std::make_unique<DummyAgent>(client.createContext())))
+    if (!client.joinGame(std::make_unique<TestAgent>()))
     {
         std::cout << "join failed" << std::endl;
         return -1;
