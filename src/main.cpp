@@ -6,6 +6,7 @@
 #include <boost/process/args.hpp>
 #include <iostream>
 
+namespace net = boost::asio;
 
 int main(int argc, char** argv)
 try{
@@ -30,7 +31,7 @@ try{
 
     std::cout << "joining" << std::endl;
 
-    if (!client.joinGame(std::make_unique<TestAgent>()))
+    if (!client.joinGame<TestAgent>())
     {
         std::cout << "join failed" << std::endl;
         return -1;

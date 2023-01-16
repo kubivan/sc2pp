@@ -1,11 +1,13 @@
 #pragma once
 
+#include <sc2pp/Common.h>
+#include <sc2pp/utils/Grid.h>
+
 #include <vector>
 #include <ranges>
 #include <variant>
 #include <optional>
 
-#include <s2clientprotocol/sc2api.pb.h>
 #include <s2clientprotocol/error.pb.h>
 #include <google/protobuf/descriptor.h>
 
@@ -25,12 +27,6 @@ auto to_vector(Range r)
 {
     return std::vector<T>{std::ranges::begin(r), std::ranges::end(r)};
 }
-
-struct Point2D
-{
-    float x;
-    float y;
-};
 
 Point2D from_proto(const proto::Point2D& input);
 
@@ -65,102 +61,13 @@ struct ActionError
 
 ActionError from_proto(const proto::ActionError& x);
 
-using Alliance = proto::Alliance;
-using DisplayType = proto::DisplayType;
-using CloakState = proto::CloakState;
-
-struct Point3D
-{
-    float x, y, z;
-};
-
 Point3D from_proto(const proto::Point& x);
-
-struct UnitOrder {
-    uint32_t ability_id;
-    std::variant<Point3D, uint64_t> target;
-    //oneof target{
-    //  Point target_world_space_pos = 2;
-    //  uint64 target_unit_tag = 3;
-    //}
-    /*optional*/float progress;              // Progress of train abilities. Range: [0.0, 1.0]
-};
 
 auto from_proto(const proto::UnitOrder& x);
 
-struct PassengerUnit {
-    uint64_t tag;
-    float health;
-    float health_max;
-    float shield;
-    float shield_max;
-    float energy;
-    float energy_max;
-    uint32_t unit_type;
-};
-
 auto from_proto(const proto::PassengerUnit& x);
 
-struct RallyTarget {
-    Point3D point;  // Will always be filled.
-    std::optional<int64_t> tag;   // Only if it's targeting a unit.
-};
-
 auto from_proto(const proto::RallyTarget& x);
-
-struct Unit
-{
-    DisplayType display_type;
-    Alliance alliance;
-
-    uint64_t tag;                  // Unique identifier for a unit
-    uint32_t unit_type;
-    int32_t owner;
-
-    Point3D pos;
-    float facing;
-    float radius;
-    float build_progress;        // Range: [0.0, 1.0]
-    CloakState cloak;
-    std::vector<uint32_t> buff_ids;
-
-    float detect_range;
-    float radar_range;
-
-    bool is_selected;
-    bool is_on_screen;          // Visible and within the camera frustrum.
-    bool is_blip;               // Detected by sensor tower
-    bool is_powered;
-    bool is_active;             // Building is training/researching (ie animated).
-    int32_t attack_upgrade_level;
-    int32_t armor_upgrade_level;
-    int32_t shield_upgrade_level;
-
-    float health;
-    float health_max;
-    float shield;
-    float shield_max;
-    float energy;
-    float energy_max;
-    int32_t mineral_contents;
-    int32_t vespene_contents;
-    bool is_flying;
-    bool is_burrowed;
-    bool is_hallucination;      // Unit is your own or detected as a hallucination.
-
-    std::vector<UnitOrder> orders;
-    uint64_t add_on_tag;
-    std::vector<PassengerUnit> passengers;
-    int32_t cargo_space_taken;
-    int32_t cargo_space_max;
-    int32_t assigned_harvesters;
-    int32_t ideal_harvesters;
-    float weapon_cooldown;
-    uint64_t engaged_target_tag;
-    int32_t buff_duration_remain;  // How long a buff or unit is still around (eg mule, broodling, chronoboost).
-    int32_t buff_duration_max;     // How long the buff or unit is still around (eg mule, broodling, chronoboost).
-    std::vector<RallyTarget> rally_targets;
-};
 
 Unit from_proto(const proto::Unit& x);
 
@@ -169,5 +76,66 @@ std::tuple<
     , std::vector<UnitCommand>
     , std::vector<ActionError>
 > convert_observation(const proto::ResponseObservation& response_observation);
+
+enum Difficulty
+{
+    VeryEasy = 1,
+    Easy = 2,
+    Medium = 3,
+    MediumHard = 4,
+    Hard = 5,
+    HardVeryHard = 6,
+    VeryHard = 7,
+    CheatVision = 8,
+    CheatMoney = 9,
+    CheatInsane = 10
+};
+
+enum PlayerType
+{
+    Participant = 1,
+    Computer = 2,
+    Observer = 3
+};
+
+struct PlayerInfo
+{
+    uint32_t player_id;
+    PlayerType player_type;
+    Race race_requested;
+    Race race_actual;
+    Difficulty difficulty;
+};
+
+/*
+* message StartRaw {
+  optional Size2DI map_size = 1;            // Width and height of the map.
+  optional ImageData pathing_grid = 2;      // 1 bit bitmap of the pathing grid.
+  optional ImageData terrain_height = 3;    // 1 byte bitmap of the terrain height.
+  optional ImageData placement_grid = 4;    // 1 bit bitmap of the building placement grid.
+  optional RectangleI playable_area = 5;    // The playable cells.
+  repeated Point2D start_locations = 6;     // Possible start locations for players.
+}
+*/
+
+struct GameInfo
+{
+    std::string map_name;
+    //Filename of map. Includes the ".SC2Map" file extension.
+    std::string local_map_path;
+    Point2DI map_size;
+    //Grid showing which cells are pathable by units.
+    utils::Grid<bool> pathing_grid;
+    //Height map of terrain.
+    utils::Grid<std::uint8_t> terrain_height;
+    //Grid showing which cells can accept placement of structures.
+    utils::Grid<std::uint8_t> placement_grid;
+
+    std::vector<Point2D> start_locations;
+
+    //std::vector<PlayerInfo> player_info;
+};
+
+GameInfo from_proto(const proto::ResponseGameInfo& x);
 
 }

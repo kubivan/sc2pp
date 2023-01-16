@@ -7,7 +7,7 @@
 
 struct TestAgent : sc2::Agent
 {
-    TestAgent();
+    TestAgent(sc2::SC2Context sc2);
 
     void update() override;
 

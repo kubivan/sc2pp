@@ -1,10 +1,30 @@
-#include "SC2Client.h"
+#include <sc2pp/Agent.h>
+#include <sc2pp/SC2Client.h>
+
+#include "Sc2Session.h"
+
 #include "Converters.h"
 
 #include <boost/process/args.hpp>
 #include <boost/pfr.hpp>
 
 using namespace sc2;
+
+GameInfo sc2::get_game_info(const std::shared_ptr<SC2Session>& session) 
+{
+    auto request = std::make_unique<proto::Request>();
+    auto request_create_game = request->mutable_create_game();
+    request->mutable_game_info();
+
+
+    auto game_info = session->send(std::move(request));
+    if (!game_info)
+    {
+        throw std::runtime_error("get_game_info failed");
+    }
+
+    return from_proto(game_info->game_info());
+}
 
 SC2Client::~SC2Client()
 {
@@ -152,8 +172,6 @@ std::optional<proto::PlayerResult> SC2Client::update()
 {
     const auto [simulation_loop, response_observation] = this->step();
 
-    m_agent->sc2().update(response_observation);
-
     //for (auto& u : units)
     //{
     //    std::cout << "unit: " << boost::pfr::io(u) << std::endl;
@@ -177,7 +195,7 @@ std::optional<proto::PlayerResult> SC2Client::update()
     //    std::cout << "ERROR: " << e.res_str << std::endl;
     //}
 
-    auto actions = m_agent->step();
+    auto actions = m_agent->step(response_observation);
     m_session->send(std::move(actions));
 
     if (!response_observation.player_result_size())

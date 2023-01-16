@@ -46,7 +46,7 @@ auto from_proto(const proto::UnitOrder& x)
 {
     assert(x.ability_id());
     return UnitOrder{
-        .ability_id = x.ability_id(),
+        .ability_id = AbilityID(x.ability_id()),
         .target = x.has_target_world_space_pos() ?
         std::variant<Point3D, uint64_t>{from_proto(x.target_world_space_pos())}
     : std::variant<Point3D, uint64_t>{ x.target_unit_tag() }
@@ -83,7 +83,7 @@ Unit from_proto(const proto::Unit& x)
         .display_type = x.display_type(),
         .alliance = x.alliance(),
         .tag = x.tag(),                  // Unique identifier for a unit
-        .unit_type = x.unit_type(),
+        .unit_type = UNIT_TYPEID(x.unit_type()),
         .owner = x.owner(),
         .pos = from_proto(x.pos()),
         .facing = x.facing(),
@@ -158,6 +158,20 @@ convert_observation(const proto::ResponseObservation& response_observation)
         , to_vector<UnitCommand>(actions_raw)
         , to_vector<ActionError>(errors)
     );
+}
+
+GameInfo from_proto(const proto::ResponseGameInfo& x)
+{
+    return GameInfo{
+    .map_name = x.map_name(),
+    .local_map_path = x.local_map_path(),
+    .map_size = { x.start_raw().map_size().x(), x.start_raw().map_size().y() },
+
+    .pathing_grid = x.start_raw().pathing_grid(),
+    .terrain_height = x.start_raw().terrain_height(),
+    .placement_grid = x.start_raw().placement_grid(),
+    .start_locations = to_vector<Point2D>(x.start_raw().start_locations() | std::views::transform(BOOST_HOF_LIFT(from_proto)))
+    };
 }
 
 }

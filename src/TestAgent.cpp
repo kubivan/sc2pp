@@ -1,6 +1,9 @@
 #include "TestAgent.h"
 
-TestAgent::TestAgent()
+using namespace sc2;
+
+TestAgent::TestAgent(sc2::SC2Context sc2)
+    : Agent(std::move(sc2))
 {
 }
 
@@ -9,23 +12,23 @@ void TestAgent::update()
     using namespace std::ranges;
     using namespace std::views;
 
-    auto nexuses = obs().self_units() | filter([](auto u) { return u.unit_type == 59; });
+    auto nexuses = m_sc2.obs().self_units() | filter([](auto u) { return u.unit_type == UNIT_TYPEID::PROTOSS_NEXUS; });
 
-    if (!obs().created_units().empty())
+    if (!m_sc2.obs().created_units().empty())
     {
         std::string s;
-        for (auto& x : obs().created_units())
+        for (auto& x : m_sc2.obs().created_units())
         {
             s += "Unit: " + std::to_string(x.tag) + ": " + std::to_string(x.build_progress) + "\n";
         }
 
         std::cout << s << std::endl;
-        act().chat(s);
+        m_sc2.act().chat(s);
     }
 
     for (auto& n : nexuses)
     {
-        act().command(n, sc2::AbilityID::TRAIN_PROBE);
+        m_sc2.act().command(n, sc2::AbilityID::TRAIN_PROBE);
         //sc2().act().chat("HEY! creating a probe on");
     }
 
