@@ -8,10 +8,6 @@
 
 namespace sc2 {
 
-namespace proto = SC2APIProtocol;
-using Tag = decltype(Unit::tag);
-using Units = std::vector<Unit>;
-
 class Actions
 {
 public:

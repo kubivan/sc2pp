@@ -119,4 +119,7 @@ struct Unit
     std::vector<RallyTarget> rally_targets;
 };
 
+using Tag = decltype(Unit::tag);
+using Units = std::vector<Unit>;
+
 }
