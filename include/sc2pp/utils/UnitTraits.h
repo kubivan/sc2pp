@@ -7,7 +7,7 @@
 
 namespace sc2
 {
-class ObservationInterface;
+class Observation;
 }
 
 namespace sc2::utils
@@ -43,7 +43,7 @@ constexpr bool is_building_type(UNIT_TYPEID type)
 
 struct BuildingTraits
 {
-    sc2::Race race;
+    Race race;
     int mineral_cost = 0; //mineral cost of the item
     int gas_cost = 0; //gas cost of the item
     int supply_cost = 0; //supply cost of the item
@@ -57,7 +57,7 @@ struct BuildingTraits
 
 using TechTree = std::unordered_map<sc2::UNIT_TYPEID, BuildingTraits>;
 
-//TechTree make_tech_tree(const Observation& obs);
+TechTree make_tech_tree(const Observation& obs);
 
 /*constexpr*/ AbilityID command(UNIT_TYPEID unit);
 /*constexpr*/ AbilityID command(UPGRADE_ID unit);

@@ -13,12 +13,12 @@ void TestAgent::update()
     using namespace std::ranges;
     using namespace std::views;
 
-    auto nexuses = m_sc2.obs().self_units() | filter([](auto u) { return u.unit_type == UNIT_TYPEID::PROTOSS_NEXUS; });
+    auto nexuses = m_sc2.obs().unitsSelf() | filter([](auto u) { return u.unit_type == UNIT_TYPEID::PROTOSS_NEXUS; });
 
-    if (!m_sc2.obs().created_units().empty())
+    if (!m_sc2.obs().unitsCreated().empty())
     {
         std::string s;
-        for (auto& x : m_sc2.obs().created_units())
+        for (auto& x : m_sc2.obs().unitsCreated())
         {
             s += "Unit: " + std::to_string(x.tag) + ": " + std::to_string(x.build_progress) + "\n";
         }

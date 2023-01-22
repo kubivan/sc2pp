@@ -12,8 +12,8 @@ using namespace sc2;
 using namespace sc2::utils;
 
 Map::Map(const Observation& obs)
-    : m_pathing_grid(obs.game_info().pathing_grid)
-    , m_placement_grid(obs.game_info().placement_grid)
+    : m_pathing_grid(obs.gameInfo().pathing_grid)
+    , m_placement_grid(obs.gameInfo().placement_grid)
     , m_topology(m_pathing_grid.width(), m_pathing_grid.height())
 {
     dump_grid(m_pathing_grid, "pathing.txt");

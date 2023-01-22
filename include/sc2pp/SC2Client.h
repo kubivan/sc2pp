@@ -17,8 +17,6 @@ namespace sc2
 {
 class SC2Session;
 
-GameInfo get_game_info(const std::shared_ptr<SC2Session>& session);
-
 ////! Setup for a player in a game.
 //struct PlayerSetup {
 //    //! Player can be a Participant (usually an agent), Computer (in-built AI) or Observer.
@@ -55,7 +53,7 @@ public:
         const auto id = joinGame(Race::Protoss);
         if (id == -1)
             return false;
-        m_agent = std::make_unique<T>(id, SC2Context(get_game_info(m_session)));
+        m_agent = std::make_unique<T>(id, createContext());
 
         return m_agent.get();
     }
@@ -65,6 +63,8 @@ public:
     bool ping();
 
 private:
+    auto createContext() -> SC2Context;
+
     uint32_t joinGame(Race race);
 
     std::pair<int, proto::ResponseObservation> step();
@@ -77,5 +77,3 @@ private:
 };
 
 }
-
-

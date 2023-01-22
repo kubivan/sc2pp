@@ -10,12 +10,11 @@
 
 using namespace sc2;
 
-GameInfo sc2::get_game_info(const std::shared_ptr<SC2Session>& session) 
+auto get_game_info(const std::shared_ptr<SC2Session>& session) -> GameInfo
 {
     auto request = std::make_unique<proto::Request>();
     auto request_create_game = request->mutable_create_game();
     request->mutable_game_info();
-
 
     auto game_info = session->send(std::move(request));
     if (!game_info)
@@ -24,6 +23,41 @@ GameInfo sc2::get_game_info(const std::shared_ptr<SC2Session>& session)
     }
 
     return from_proto(game_info->game_info());
+}
+
+auto get_unit_type_data(const std::shared_ptr<SC2Session>& session) -> std::vector<UnitTypeData>
+{
+    auto request = std::make_unique<proto::Request>();
+    auto request_data = request->mutable_data();
+    request_data->set_unit_type_id(true);
+
+    auto response = session->send(std::move(request));
+    if (!response)
+    {
+        throw std::runtime_error("get_unit_type_data failed");
+    }
+
+    auto response_data = response->data();
+
+    return to_vector<proto::UnitTypeData>(response_data.units());
+}
+
+//TODO: merge functions
+auto get_ability_data(const std::shared_ptr<SC2Session>& session) -> std::vector<AbilityData>
+{
+    auto request = std::make_unique<proto::Request>();
+    auto request_data = request->mutable_data();
+    request_data->set_ability_id(true);
+
+    auto response = session->send(std::move(request));
+    if (!response)
+    {
+        throw std::runtime_error("get_unit_type_data failed");
+    }
+
+    auto response_data = response->data();
+
+    return to_vector<proto::AbilityData>(response_data.abilities());
 }
 
 SC2Client::~SC2Client()
@@ -137,6 +171,11 @@ uint32_t SC2Client::joinGame(Race race)
         return -1;
     }
     return response_join_game.player_id();
+}
+
+auto sc2::SC2Client::createContext()->SC2Context 
+{
+    return SC2Context(Observation(get_game_info(m_session), get_unit_type_data(m_session), get_ability_data(m_session)));
 }
 
 std::pair<int, proto::ResponseObservation> SC2Client::step()

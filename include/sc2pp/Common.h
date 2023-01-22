@@ -12,8 +12,23 @@ namespace sc2 {
 
 namespace proto = SC2APIProtocol;
 
+struct Point3D
+{
+    float x, y, z;
+};
+
 struct Point2D
 {
+    constexpr Point2D(const Point3D& p)
+        : x(p.x)
+        , y(p.y)
+    {}
+
+    constexpr Point2D(float x = 0, float y = 0)
+        : x(x)
+        , y(y)
+    {}
+
     float x;
     float y;
 };
@@ -33,11 +48,6 @@ using Alliance = proto::Alliance;
 using DisplayType = proto::DisplayType;
 using CloakState = proto::CloakState;
 using Race = proto::Race;
-
-struct Point3D
-{
-    float x, y, z;
-};
 
 struct RallyTarget {
     Point3D point;  // Will always be filled.
@@ -121,5 +131,8 @@ struct Unit
 
 using Tag = decltype(Unit::tag);
 using Units = std::vector<Unit>;
+
+using UnitTypeData = proto::UnitTypeData;
+using AbilityData = proto::AbilityData;
 
 }

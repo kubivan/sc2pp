@@ -19,6 +19,8 @@ set(SC2PP_SOURCES
     ../include/sc2pp/Observation.h
     ../include/sc2pp/SC2Client.h
     ../include/sc2pp/SC2Context.h
+    ../include/sc2pp/SC2IDs.h
+    ../include/sc2pp/Planner.h
     Actions.cpp
     Agent.cpp
     Converters.cpp
@@ -32,8 +34,11 @@ set(SC2PP_SOURCES
     TestAgent.h
     UnitPool.h
     main.cpp
+    Planner.cpp
 
     utils/GridView.cpp
+    utils/UnitTraits.cpp
+    utils/UnitQuery.cpp
 
     ../include/sc2pp/utils/Footprints.h
     ../include/sc2pp/utils/Grid.h

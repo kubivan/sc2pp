@@ -2,8 +2,8 @@
 
 using namespace sc2;
 
-SC2Context::SC2Context(GameInfo game_info)
-    : m_obs(std::move(game_info))
+SC2Context::SC2Context(Observation obs)
+    : m_obs(std::move(obs))
     , m_map(m_obs)
 {
 }

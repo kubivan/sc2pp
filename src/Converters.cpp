@@ -5,7 +5,7 @@ namespace sc2
 
 Point2D from_proto(const proto::Point2D& input)
 {
-    return { input.x(), input.y() };
+    return Point2D{ input.x(), input.y() };
 }
 
 UnitCommand from_proto(const proto::ActionRawUnitCommand& unit_command)

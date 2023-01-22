@@ -11,7 +11,7 @@ namespace sc2
 class SC2Context
 {
 public:
-    explicit SC2Context(GameInfo game_info);
+    explicit SC2Context(Observation obs);
 
     void update(const proto::ResponseObservation& response_obs);
 

@@ -1,322 +1,322 @@
 #include "UnitTraits.h"
 
-#include <sc2api/sc2_interfaces.h>
+#include "Observation.h"
 
 namespace sc2::utils
 {
 
-TechTree make_tech_tree(const sc2::ObservationInterface& obs)
+TechTree make_tech_tree(const Observation& obs)
 {
     TechTree res;
-    //res[sc2::UNIT_TYPEID::PROTOSS_PYLONOVERCHARGED] = { sc2::Race::Protoss, 0, 0, 0, 0, sc2::ABILITY_ID::EFFECT_PHOTONOVERCHARGE, 0, { sc2::UNIT_TYPEID::PROTOSS_MOTHERSHIPCORE, sc2::UNIT_TYPEID::PROTOSS_PYLON }, {}, {} };
-    res[sc2::UNIT_TYPEID::PROTOSS_PYLON] = { sc2::Race::Protoss, 0, 0, 0, 0, sc2::ABILITY_ID::BUILD_PYLON, 0, {}, {} };
-    res[sc2::UNIT_TYPEID::PROTOSS_NEXUS] = { sc2::Race::Protoss, 0, 0, 0, 0, sc2::ABILITY_ID::BUILD_NEXUS, 0, {}, {} };
-    res[sc2::UNIT_TYPEID::PROTOSS_ASSIMILATOR] = { sc2::Race::Protoss, 0, 0, 0, 0, sc2::ABILITY_ID::BUILD_ASSIMILATOR, 0, {} };
-    res[sc2::UNIT_TYPEID::PROTOSS_CYBERNETICSCORE] = { sc2::Race::Protoss, 0, 0, 0, 0, sc2::ABILITY_ID::BUILD_CYBERNETICSCORE, 0, { sc2::UNIT_TYPEID::PROTOSS_GATEWAY, sc2::UNIT_TYPEID::PROTOSS_WARPGATE }, {} };
-    res[sc2::UNIT_TYPEID::PROTOSS_DARKSHRINE] = { sc2::Race::Protoss, 0, 0, 0, 0, sc2::ABILITY_ID::BUILD_DARKSHRINE, 0, { sc2::UNIT_TYPEID::PROTOSS_TWILIGHTCOUNCIL }, {} };
-    res[sc2::UNIT_TYPEID::PROTOSS_FLEETBEACON] = { sc2::Race::Protoss, 0, 0, 0, 0, sc2::ABILITY_ID::BUILD_FLEETBEACON, 0, { sc2::UNIT_TYPEID::PROTOSS_STARGATE }, {} };
-    res[sc2::UNIT_TYPEID::PROTOSS_FORGE] = { sc2::Race::Protoss, 0, 0, 0, 0, sc2::ABILITY_ID::BUILD_FORGE, 0, { sc2::UNIT_TYPEID::PROTOSS_NEXUS }, {} };
-    res[sc2::UNIT_TYPEID::PROTOSS_GATEWAY] = { sc2::Race::Protoss, 0, 0, 0, 0, sc2::ABILITY_ID::BUILD_GATEWAY, 0, { sc2::UNIT_TYPEID::PROTOSS_NEXUS }, {} };
-    res[sc2::UNIT_TYPEID::PROTOSS_STARGATE] = { sc2::Race::Protoss, 0, 0, 0, 0, sc2::ABILITY_ID::BUILD_STARGATE, 0, { sc2::UNIT_TYPEID::PROTOSS_CYBERNETICSCORE }, {} };
-    res[sc2::UNIT_TYPEID::PROTOSS_PHOTONCANNON] = { sc2::Race::Protoss, 0, 0, 0, 0, sc2::ABILITY_ID::BUILD_PHOTONCANNON, 0, { sc2::UNIT_TYPEID::PROTOSS_FORGE }, {} };
-    res[sc2::UNIT_TYPEID::PROTOSS_ROBOTICSBAY] = { sc2::Race::Protoss, 0, 0, 0, 0, sc2::ABILITY_ID::BUILD_ROBOTICSBAY, 0, { sc2::UNIT_TYPEID::PROTOSS_ROBOTICSFACILITY }, {} };
-    res[sc2::UNIT_TYPEID::PROTOSS_ROBOTICSFACILITY] = { sc2::Race::Protoss, 0, 0, 0, 0, sc2::ABILITY_ID::BUILD_ROBOTICSFACILITY, 0, { sc2::UNIT_TYPEID::PROTOSS_CYBERNETICSCORE }, {} };
-    res[sc2::UNIT_TYPEID::PROTOSS_TEMPLARARCHIVE] = { sc2::Race::Protoss, 0, 0, 0, 0, sc2::ABILITY_ID::BUILD_TEMPLARARCHIVE, 0, { sc2::UNIT_TYPEID::PROTOSS_TWILIGHTCOUNCIL }, {} };
-    res[sc2::UNIT_TYPEID::PROTOSS_TWILIGHTCOUNCIL] = { sc2::Race::Protoss, 0, 0, 0, 0, sc2::ABILITY_ID::BUILD_TWILIGHTCOUNCIL, 0, { sc2::UNIT_TYPEID::PROTOSS_CYBERNETICSCORE }, {} };
-    res[sc2::UNIT_TYPEID::PROTOSS_WARPGATE] = { sc2::Race::Protoss, 0, 0, 0, 0, sc2::ABILITY_ID::MORPH_WARPGATE, 0, { sc2::UNIT_TYPEID::PROTOSS_GATEWAY }, { sc2::UPGRADE_ID::WARPGATERESEARCH } };
+    //res[UNIT_TYPEID::PROTOSS_PYLONOVERCHARGED] = { Race::Protoss, 0, 0, 0, 0, AbilityID::EFFECT_PHOTONOVERCHARGE, 0, { UNIT_TYPEID::PROTOSS_MOTHERSHIPCORE, UNIT_TYPEID::PROTOSS_PYLON }, {}, {} };
+    res[UNIT_TYPEID::PROTOSS_PYLON] = { Race::Protoss, 0, 0, 0, 0, AbilityID::BUILD_PYLON, AbilityID::INVALID, {}, {} };
+    res[UNIT_TYPEID::PROTOSS_NEXUS] = { Race::Protoss, 0, 0, 0, 0, AbilityID::BUILD_NEXUS, AbilityID::INVALID, {}, {} };
+    res[UNIT_TYPEID::PROTOSS_ASSIMILATOR] = { Race::Protoss, 0, 0, 0, 0, AbilityID::BUILD_ASSIMILATOR, AbilityID::INVALID, {} };
+    res[UNIT_TYPEID::PROTOSS_CYBERNETICSCORE] = { Race::Protoss, 0, 0, 0, 0, AbilityID::BUILD_CYBERNETICSCORE, AbilityID::INVALID, { UNIT_TYPEID::PROTOSS_GATEWAY, UNIT_TYPEID::PROTOSS_WARPGATE }, {} };
+    res[UNIT_TYPEID::PROTOSS_DARKSHRINE] = { Race::Protoss, 0, 0, 0, 0, AbilityID::BUILD_DARKSHRINE, AbilityID::INVALID, { UNIT_TYPEID::PROTOSS_TWILIGHTCOUNCIL }, {} };
+    res[UNIT_TYPEID::PROTOSS_FLEETBEACON] = { Race::Protoss, 0, 0, 0, 0, AbilityID::BUILD_FLEETBEACON, AbilityID::INVALID, { UNIT_TYPEID::PROTOSS_STARGATE }, {} };
+    res[UNIT_TYPEID::PROTOSS_FORGE] = { Race::Protoss, 0, 0, 0, 0, AbilityID::BUILD_FORGE, AbilityID::INVALID, { UNIT_TYPEID::PROTOSS_NEXUS }, {} };
+    res[UNIT_TYPEID::PROTOSS_GATEWAY] = { Race::Protoss, 0, 0, 0, 0, AbilityID::BUILD_GATEWAY, AbilityID::INVALID, { UNIT_TYPEID::PROTOSS_NEXUS }, {} };
+    res[UNIT_TYPEID::PROTOSS_STARGATE] = { Race::Protoss, 0, 0, 0, 0, AbilityID::BUILD_STARGATE, AbilityID::INVALID, { UNIT_TYPEID::PROTOSS_CYBERNETICSCORE }, {} };
+    res[UNIT_TYPEID::PROTOSS_PHOTONCANNON] = { Race::Protoss, 0, 0, 0, 0, AbilityID::BUILD_PHOTONCANNON, AbilityID::INVALID, { UNIT_TYPEID::PROTOSS_FORGE }, {} };
+    res[UNIT_TYPEID::PROTOSS_ROBOTICSBAY] = { Race::Protoss, 0, 0, 0, 0, AbilityID::BUILD_ROBOTICSBAY, AbilityID::INVALID, { UNIT_TYPEID::PROTOSS_ROBOTICSFACILITY }, {} };
+    res[UNIT_TYPEID::PROTOSS_ROBOTICSFACILITY] = { Race::Protoss, 0, 0, 0, 0, AbilityID::BUILD_ROBOTICSFACILITY, AbilityID::INVALID, { UNIT_TYPEID::PROTOSS_CYBERNETICSCORE }, {} };
+    res[UNIT_TYPEID::PROTOSS_TEMPLARARCHIVE] = { Race::Protoss, 0, 0, 0, 0, AbilityID::BUILD_TEMPLARARCHIVE, AbilityID::INVALID, { UNIT_TYPEID::PROTOSS_TWILIGHTCOUNCIL }, {} };
+    res[UNIT_TYPEID::PROTOSS_TWILIGHTCOUNCIL] = { Race::Protoss, 0, 0, 0, 0, AbilityID::BUILD_TWILIGHTCOUNCIL, AbilityID::INVALID, { UNIT_TYPEID::PROTOSS_CYBERNETICSCORE }, {} };
+    res[UNIT_TYPEID::PROTOSS_WARPGATE] = { Race::Protoss, 0, 0, 0, 0, AbilityID::MORPH_WARPGATE, AbilityID::INVALID, { UNIT_TYPEID::PROTOSS_GATEWAY }, { UPGRADE_ID::WARPGATERESEARCH } };
 
-    res[sc2::UNIT_TYPEID::PROTOSS_PROBE] = { sc2::Race::Protoss, 0, 0, 1, 0, sc2::ABILITY_ID::TRAIN_PROBE, 0, { sc2::UNIT_TYPEID::PROTOSS_NEXUS }, {} };
-    res[sc2::UNIT_TYPEID::PROTOSS_STALKER] = { sc2::Race::Protoss, 0, 0, 1, 0, sc2::ABILITY_ID::TRAIN_STALKER, 0, { sc2::UNIT_TYPEID::PROTOSS_NEXUS }, {} };
+    res[UNIT_TYPEID::PROTOSS_PROBE] = { Race::Protoss, 0, 0, 1, 0, AbilityID::TRAIN_PROBE, AbilityID::INVALID, { UNIT_TYPEID::PROTOSS_NEXUS }, {} };
+    res[UNIT_TYPEID::PROTOSS_STALKER] = { Race::Protoss, 0, 0, 1, 0, AbilityID::TRAIN_STALKER, AbilityID::INVALID, { UNIT_TYPEID::PROTOSS_NEXUS }, {} };
 
     for (auto& [id, traits] : res)
     {
-        auto& unit_type_data = obs.GetUnitTypeData();
+        auto& unit_type_data = obs.unitsTypeData();
         auto data = std::find_if(unit_type_data.begin()
             , unit_type_data.end()
-            , [id](const auto& u) { return u.unit_type_id == id; });
+            , [id](const auto& u) { return u.unit_id() == (uint32_t)id; });
 
-        traits.mineral_cost = data->mineral_cost;
-        traits.gas_cost = data->vespene_cost;
-        auto abilities = obs.GetAbilityData();
+        traits.mineral_cost = data->mineral_cost();
+        traits.gas_cost = data->vespene_cost();
+        auto abilities = obs.abilityData();
         auto ability = std::find_if(abilities.begin()
             , abilities.end()
-            , [&traits](const auto& a) { return a.ability_id == traits.build_ability; });
+            , [&traits](const auto& a) { return a.ability_id() == (uint32_t)traits.build_ability; });
 
-        traits.tile_width = ability->footprint_radius * 2;
+        traits.tile_width = ability->footprint_radius() * 2;
     }
 
     return res;
 }
 
 
-ABILITY_ID command(UNIT_TYPEID unit)
+AbilityID command(UNIT_TYPEID unit)
 {
     switch (unit)
     {
     case UNIT_TYPEID::PROTOSS_ADEPT:
-        return ABILITY_ID::TRAIN_ADEPT;
+        return AbilityID::TRAIN_ADEPT;
     case UNIT_TYPEID::PROTOSS_ARCHON:
-        return ABILITY_ID::MORPH_ARCHON;
+        return AbilityID::MORPH_ARCHON;
     case UNIT_TYPEID::PROTOSS_ASSIMILATORRICH:
     case UNIT_TYPEID::PROTOSS_ASSIMILATOR:
-        return ABILITY_ID::BUILD_ASSIMILATOR;
+        return AbilityID::BUILD_ASSIMILATOR;
     case UNIT_TYPEID::PROTOSS_CARRIER:
-        return ABILITY_ID::TRAIN_CARRIER;
+        return AbilityID::TRAIN_CARRIER;
     case UNIT_TYPEID::PROTOSS_COLOSSUS:
-        return ABILITY_ID::TRAIN_COLOSSUS;
+        return AbilityID::TRAIN_COLOSSUS;
     case UNIT_TYPEID::PROTOSS_CYBERNETICSCORE:
-        return ABILITY_ID::BUILD_CYBERNETICSCORE;
+        return AbilityID::BUILD_CYBERNETICSCORE;
     case UNIT_TYPEID::PROTOSS_DARKSHRINE:
-        return ABILITY_ID::BUILD_DARKSHRINE;
+        return AbilityID::BUILD_DARKSHRINE;
     case UNIT_TYPEID::PROTOSS_DARKTEMPLAR:
-        return ABILITY_ID::TRAIN_DARKTEMPLAR;
+        return AbilityID::TRAIN_DARKTEMPLAR;
     case UNIT_TYPEID::PROTOSS_DISRUPTOR:
-        return ABILITY_ID::TRAIN_DISRUPTOR;
+        return AbilityID::TRAIN_DISRUPTOR;
     //case UNIT_TYPEID::PROTOSS_DISRUPTORPHASED:
-    //    return ABILITY_ID::TRAIN_;
+    //    return AbilityID::TRAIN_;
     case UNIT_TYPEID::PROTOSS_FLEETBEACON:
-        return ABILITY_ID::BUILD_FLEETBEACON;
+        return AbilityID::BUILD_FLEETBEACON;
     case UNIT_TYPEID::PROTOSS_FORGE:
-        return ABILITY_ID::BUILD_FORGE;
+        return AbilityID::BUILD_FORGE;
     case UNIT_TYPEID::PROTOSS_GATEWAY:
-        return ABILITY_ID::BUILD_GATEWAY;
+        return AbilityID::BUILD_GATEWAY;
     case UNIT_TYPEID::PROTOSS_HIGHTEMPLAR:
-        return ABILITY_ID::TRAIN_HIGHTEMPLAR;
+        return AbilityID::TRAIN_HIGHTEMPLAR;
     case UNIT_TYPEID::PROTOSS_IMMORTAL:
-        return ABILITY_ID::TRAIN_IMMORTAL;
+        return AbilityID::TRAIN_IMMORTAL;
     //case UNIT_TYPEID::PROTOSS_INTERCEPTOR:
-    //    return ABILITY_ID::TRAIN_INTE;
+    //    return AbilityID::TRAIN_INTE;
     case UNIT_TYPEID::PROTOSS_MOTHERSHIP:
-        return ABILITY_ID::TRAIN_MOTHERSHIP;
+        return AbilityID::TRAIN_MOTHERSHIP;
     case UNIT_TYPEID::PROTOSS_MOTHERSHIPCORE:
-        return ABILITY_ID::TRAIN_MOTHERSHIPCORE;
+        return AbilityID::TRAIN_MOTHERSHIPCORE;
     case UNIT_TYPEID::PROTOSS_NEXUS:
-        return ABILITY_ID::BUILD_NEXUS;
+        return AbilityID::BUILD_NEXUS;
     case UNIT_TYPEID::PROTOSS_OBSERVER:
-        return ABILITY_ID::TRAIN_OBSERVER;
+        return AbilityID::TRAIN_OBSERVER;
     case UNIT_TYPEID::PROTOSS_ORACLE:
-        return ABILITY_ID::TRAIN_ORACLE;
+        return AbilityID::TRAIN_ORACLE;
     //case UNIT_TYPEID::PROTOSS_ORACLESTASISTRAP:
-    //    return ABILITY_ID::;
+    //    return AbilityID::;
     case UNIT_TYPEID::PROTOSS_PHOENIX:
-        return ABILITY_ID::TRAIN_PHOENIX;
+        return AbilityID::TRAIN_PHOENIX;
     case UNIT_TYPEID::PROTOSS_PHOTONCANNON:
-        return ABILITY_ID::BUILD_PHOTONCANNON;
+        return AbilityID::BUILD_PHOTONCANNON;
     case UNIT_TYPEID::PROTOSS_PROBE:
-        return ABILITY_ID::TRAIN_PROBE;
+        return AbilityID::TRAIN_PROBE;
     case UNIT_TYPEID::PROTOSS_PYLON:
     case UNIT_TYPEID::PROTOSS_PYLONOVERCHARGED: //TODO: check
-        return ABILITY_ID::BUILD_PYLON;
+        return AbilityID::BUILD_PYLON;
     case UNIT_TYPEID::PROTOSS_ROBOTICSBAY:
-        return ABILITY_ID::BUILD_ROBOTICSBAY;
+        return AbilityID::BUILD_ROBOTICSBAY;
     case UNIT_TYPEID::PROTOSS_ROBOTICSFACILITY:
-        return ABILITY_ID::BUILD_ROBOTICSFACILITY;
+        return AbilityID::BUILD_ROBOTICSFACILITY;
     case UNIT_TYPEID::PROTOSS_SENTRY:
-        return ABILITY_ID::TRAIN_SENTRY;
+        return AbilityID::TRAIN_SENTRY;
     case UNIT_TYPEID::PROTOSS_SHIELDBATTERY:
-        return ABILITY_ID::BUILD_SHIELDBATTERY;
+        return AbilityID::BUILD_SHIELDBATTERY;
     case UNIT_TYPEID::PROTOSS_STALKER:
-        return ABILITY_ID::TRAINWARP_STALKER;
+        return AbilityID::TRAINWARP_STALKER;
     case UNIT_TYPEID::PROTOSS_STARGATE:
-        return ABILITY_ID::BUILD_STARGATE;
+        return AbilityID::BUILD_STARGATE;
     case UNIT_TYPEID::PROTOSS_TEMPEST:
-        return ABILITY_ID::TRAIN_TEMPEST;
+        return AbilityID::TRAIN_TEMPEST;
     case UNIT_TYPEID::PROTOSS_TEMPLARARCHIVE:
-        return ABILITY_ID::BUILD_TEMPLARARCHIVE;
+        return AbilityID::BUILD_TEMPLARARCHIVE;
     case UNIT_TYPEID::PROTOSS_TWILIGHTCOUNCIL:
-        return ABILITY_ID::BUILD_TWILIGHTCOUNCIL;
+        return AbilityID::BUILD_TWILIGHTCOUNCIL;
     case UNIT_TYPEID::PROTOSS_VOIDRAY:
-        return ABILITY_ID::TRAIN_VOIDRAY;
+        return AbilityID::TRAIN_VOIDRAY;
     case UNIT_TYPEID::PROTOSS_WARPGATE:
-        return ABILITY_ID::MORPH_WARPGATE;
+        return AbilityID::MORPH_WARPGATE;
     }
 
     throw std::runtime_error("TechTree::command undefined for UNIT_ID: " + std::to_string((int)unit));
 }
 
-ABILITY_ID command(UPGRADE_ID unit)
+AbilityID command(UPGRADE_ID unit)
 {
     switch (unit)
     {
-    case sc2::UPGRADE_ID::INVALID:
-        return ABILITY_ID::INVALID;
-    case sc2::UPGRADE_ID::CARRIERLAUNCHSPEEDUPGRADE:
+    case UPGRADE_ID::INVALID:
+        return AbilityID::INVALID;
+    case UPGRADE_ID::CARRIERLAUNCHSPEEDUPGRADE:
         break;
-    case sc2::UPGRADE_ID::GLIALRECONSTITUTION:
+    case UPGRADE_ID::GLIALRECONSTITUTION:
         break;
-    case sc2::UPGRADE_ID::TUNNELINGCLAWS:
+    case UPGRADE_ID::TUNNELINGCLAWS:
         break;
-    case sc2::UPGRADE_ID::CHITINOUSPLATING:
+    case UPGRADE_ID::CHITINOUSPLATING:
         break;
-    case sc2::UPGRADE_ID::HISECAUTOTRACKING:
+    case UPGRADE_ID::HISECAUTOTRACKING:
         break;
-    case sc2::UPGRADE_ID::TERRANBUILDINGARMOR:
+    case UPGRADE_ID::TERRANBUILDINGARMOR:
         break;
-    case sc2::UPGRADE_ID::TERRANINFANTRYWEAPONSLEVEL1:
+    case UPGRADE_ID::TERRANINFANTRYWEAPONSLEVEL1:
         break;
-    case sc2::UPGRADE_ID::TERRANINFANTRYWEAPONSLEVEL2:
+    case UPGRADE_ID::TERRANINFANTRYWEAPONSLEVEL2:
         break;
-    case sc2::UPGRADE_ID::TERRANINFANTRYWEAPONSLEVEL3:
+    case UPGRADE_ID::TERRANINFANTRYWEAPONSLEVEL3:
         break;
-    case sc2::UPGRADE_ID::NEOSTEELFRAME:
+    case UPGRADE_ID::NEOSTEELFRAME:
         break;
-    case sc2::UPGRADE_ID::TERRANINFANTRYARMORSLEVEL1:
+    case UPGRADE_ID::TERRANINFANTRYARMORSLEVEL1:
         break;
-    case sc2::UPGRADE_ID::TERRANINFANTRYARMORSLEVEL2:
+    case UPGRADE_ID::TERRANINFANTRYARMORSLEVEL2:
         break;
-    case sc2::UPGRADE_ID::TERRANINFANTRYARMORSLEVEL3:
+    case UPGRADE_ID::TERRANINFANTRYARMORSLEVEL3:
         break;
-    case sc2::UPGRADE_ID::STIMPACK:
+    case UPGRADE_ID::STIMPACK:
         break;
-    case sc2::UPGRADE_ID::SHIELDWALL:
+    case UPGRADE_ID::SHIELDWALL:
         break;
-    case sc2::UPGRADE_ID::PUNISHERGRENADES:
+    case UPGRADE_ID::PUNISHERGRENADES:
         break;
-    case sc2::UPGRADE_ID::HIGHCAPACITYBARRELS:
+    case UPGRADE_ID::HIGHCAPACITYBARRELS:
         break;
-    case sc2::UPGRADE_ID::BANSHEECLOAK:
+    case UPGRADE_ID::BANSHEECLOAK:
         break;
-    case sc2::UPGRADE_ID::RAVENCORVIDREACTOR:
+    case UPGRADE_ID::RAVENCORVIDREACTOR:
         break;
-    case sc2::UPGRADE_ID::PERSONALCLOAKING:
+    case UPGRADE_ID::PERSONALCLOAKING:
         break;
-    case sc2::UPGRADE_ID::TERRANVEHICLEWEAPONSLEVEL1:
+    case UPGRADE_ID::TERRANVEHICLEWEAPONSLEVEL1:
         break;
-    case sc2::UPGRADE_ID::TERRANVEHICLEWEAPONSLEVEL2:
+    case UPGRADE_ID::TERRANVEHICLEWEAPONSLEVEL2:
         break;
-    case sc2::UPGRADE_ID::TERRANVEHICLEWEAPONSLEVEL3:
+    case UPGRADE_ID::TERRANVEHICLEWEAPONSLEVEL3:
         break;
-    case sc2::UPGRADE_ID::TERRANSHIPWEAPONSLEVEL1:
+    case UPGRADE_ID::TERRANSHIPWEAPONSLEVEL1:
         break;
-    case sc2::UPGRADE_ID::TERRANSHIPWEAPONSLEVEL2:
+    case UPGRADE_ID::TERRANSHIPWEAPONSLEVEL2:
         break;
-    case sc2::UPGRADE_ID::TERRANSHIPWEAPONSLEVEL3:
+    case UPGRADE_ID::TERRANSHIPWEAPONSLEVEL3:
         break;
-    case sc2::UPGRADE_ID::PROTOSSGROUNDWEAPONSLEVEL1:
+    case UPGRADE_ID::PROTOSSGROUNDWEAPONSLEVEL1:
         break;
-    case sc2::UPGRADE_ID::PROTOSSGROUNDWEAPONSLEVEL2:
+    case UPGRADE_ID::PROTOSSGROUNDWEAPONSLEVEL2:
         break;
-    case sc2::UPGRADE_ID::PROTOSSGROUNDWEAPONSLEVEL3:
+    case UPGRADE_ID::PROTOSSGROUNDWEAPONSLEVEL3:
         break;
-    case sc2::UPGRADE_ID::PROTOSSGROUNDARMORSLEVEL1:
+    case UPGRADE_ID::PROTOSSGROUNDARMORSLEVEL1:
         break;
-    case sc2::UPGRADE_ID::PROTOSSGROUNDARMORSLEVEL2:
+    case UPGRADE_ID::PROTOSSGROUNDARMORSLEVEL2:
         break;
-    case sc2::UPGRADE_ID::PROTOSSGROUNDARMORSLEVEL3:
+    case UPGRADE_ID::PROTOSSGROUNDARMORSLEVEL3:
         break;
-    case sc2::UPGRADE_ID::PROTOSSSHIELDSLEVEL1:
+    case UPGRADE_ID::PROTOSSSHIELDSLEVEL1:
         break;
-    case sc2::UPGRADE_ID::PROTOSSSHIELDSLEVEL2:
+    case UPGRADE_ID::PROTOSSSHIELDSLEVEL2:
         break;
-    case sc2::UPGRADE_ID::PROTOSSSHIELDSLEVEL3:
+    case UPGRADE_ID::PROTOSSSHIELDSLEVEL3:
         break;
-    case sc2::UPGRADE_ID::OBSERVERGRAVITICBOOSTER:
+    case UPGRADE_ID::OBSERVERGRAVITICBOOSTER:
         break;
-    case sc2::UPGRADE_ID::GRAVITICDRIVE:
+    case UPGRADE_ID::GRAVITICDRIVE:
         break;
-    case sc2::UPGRADE_ID::EXTENDEDTHERMALLANCE:
+    case UPGRADE_ID::EXTENDEDTHERMALLANCE:
         break;
-    case sc2::UPGRADE_ID::PSISTORMTECH:
+    case UPGRADE_ID::PSISTORMTECH:
         break;
-    case sc2::UPGRADE_ID::ZERGMELEEWEAPONSLEVEL1:
+    case UPGRADE_ID::ZERGMELEEWEAPONSLEVEL1:
         break;
-    case sc2::UPGRADE_ID::ZERGMELEEWEAPONSLEVEL2:
+    case UPGRADE_ID::ZERGMELEEWEAPONSLEVEL2:
         break;
-    case sc2::UPGRADE_ID::ZERGMELEEWEAPONSLEVEL3:
+    case UPGRADE_ID::ZERGMELEEWEAPONSLEVEL3:
         break;
-    case sc2::UPGRADE_ID::ZERGGROUNDARMORSLEVEL1:
+    case UPGRADE_ID::ZERGGROUNDARMORSLEVEL1:
         break;
-    case sc2::UPGRADE_ID::ZERGGROUNDARMORSLEVEL2:
+    case UPGRADE_ID::ZERGGROUNDARMORSLEVEL2:
         break;
-    case sc2::UPGRADE_ID::ZERGGROUNDARMORSLEVEL3:
+    case UPGRADE_ID::ZERGGROUNDARMORSLEVEL3:
         break;
-    case sc2::UPGRADE_ID::ZERGMISSILEWEAPONSLEVEL1:
+    case UPGRADE_ID::ZERGMISSILEWEAPONSLEVEL1:
         break;
-    case sc2::UPGRADE_ID::ZERGMISSILEWEAPONSLEVEL2:
+    case UPGRADE_ID::ZERGMISSILEWEAPONSLEVEL2:
         break;
-    case sc2::UPGRADE_ID::ZERGMISSILEWEAPONSLEVEL3:
+    case UPGRADE_ID::ZERGMISSILEWEAPONSLEVEL3:
         break;
-    case sc2::UPGRADE_ID::OVERLORDSPEED:
+    case UPGRADE_ID::OVERLORDSPEED:
         break;
-    case sc2::UPGRADE_ID::BURROW:
+    case UPGRADE_ID::BURROW:
         break;
-    case sc2::UPGRADE_ID::ZERGLINGATTACKSPEED:
+    case UPGRADE_ID::ZERGLINGATTACKSPEED:
         break;
-    case sc2::UPGRADE_ID::ZERGLINGMOVEMENTSPEED:
+    case UPGRADE_ID::ZERGLINGMOVEMENTSPEED:
         break;
-    case sc2::UPGRADE_ID::ZERGFLYERWEAPONSLEVEL1:
+    case UPGRADE_ID::ZERGFLYERWEAPONSLEVEL1:
         break;
-    case sc2::UPGRADE_ID::ZERGFLYERWEAPONSLEVEL2:
+    case UPGRADE_ID::ZERGFLYERWEAPONSLEVEL2:
         break;
-    case sc2::UPGRADE_ID::ZERGFLYERWEAPONSLEVEL3:
+    case UPGRADE_ID::ZERGFLYERWEAPONSLEVEL3:
         break;
-    case sc2::UPGRADE_ID::ZERGFLYERARMORSLEVEL1:
+    case UPGRADE_ID::ZERGFLYERARMORSLEVEL1:
         break;
-    case sc2::UPGRADE_ID::ZERGFLYERARMORSLEVEL2:
+    case UPGRADE_ID::ZERGFLYERARMORSLEVEL2:
         break;
-    case sc2::UPGRADE_ID::ZERGFLYERARMORSLEVEL3:
+    case UPGRADE_ID::ZERGFLYERARMORSLEVEL3:
         break;
-    case sc2::UPGRADE_ID::INFESTORENERGYUPGRADE:
+    case UPGRADE_ID::INFESTORENERGYUPGRADE:
         break;
-    case sc2::UPGRADE_ID::CENTRIFICALHOOKS:
+    case UPGRADE_ID::CENTRIFICALHOOKS:
         break;
-    case sc2::UPGRADE_ID::BATTLECRUISERENABLESPECIALIZATIONS:
+    case UPGRADE_ID::BATTLECRUISERENABLESPECIALIZATIONS:
         break;
-    case sc2::UPGRADE_ID::PROTOSSAIRWEAPONSLEVEL1:
+    case UPGRADE_ID::PROTOSSAIRWEAPONSLEVEL1:
         break;
-    case sc2::UPGRADE_ID::PROTOSSAIRWEAPONSLEVEL2:
+    case UPGRADE_ID::PROTOSSAIRWEAPONSLEVEL2:
         break;
-    case sc2::UPGRADE_ID::PROTOSSAIRWEAPONSLEVEL3:
+    case UPGRADE_ID::PROTOSSAIRWEAPONSLEVEL3:
         break;
-    case sc2::UPGRADE_ID::PROTOSSAIRARMORSLEVEL1:
+    case UPGRADE_ID::PROTOSSAIRARMORSLEVEL1:
         break;
-    case sc2::UPGRADE_ID::PROTOSSAIRARMORSLEVEL2:
+    case UPGRADE_ID::PROTOSSAIRARMORSLEVEL2:
         break;
-    case sc2::UPGRADE_ID::PROTOSSAIRARMORSLEVEL3:
+    case UPGRADE_ID::PROTOSSAIRARMORSLEVEL3:
         break;
-    case sc2::UPGRADE_ID::WARPGATERESEARCH:
-        return sc2::ABILITY_ID::RESEARCH_WARPGATE;
-    case sc2::UPGRADE_ID::CHARGE:
+    case UPGRADE_ID::WARPGATERESEARCH:
+        return AbilityID::RESEARCH_WARPGATE;
+    case UPGRADE_ID::CHARGE:
         break;
-    case sc2::UPGRADE_ID::BLINKTECH:
+    case UPGRADE_ID::BLINKTECH:
         break;
-    case sc2::UPGRADE_ID::PHOENIXRANGEUPGRADE:
+    case UPGRADE_ID::PHOENIXRANGEUPGRADE:
         break;
-    case sc2::UPGRADE_ID::NEURALPARASITE:
+    case UPGRADE_ID::NEURALPARASITE:
         break;
-    case sc2::UPGRADE_ID::TERRANVEHICLEANDSHIPARMORSLEVEL1:
+    case UPGRADE_ID::TERRANVEHICLEANDSHIPARMORSLEVEL1:
         break;
-    case sc2::UPGRADE_ID::TERRANVEHICLEANDSHIPARMORSLEVEL2:
+    case UPGRADE_ID::TERRANVEHICLEANDSHIPARMORSLEVEL2:
         break;
-    case sc2::UPGRADE_ID::TERRANVEHICLEANDSHIPARMORSLEVEL3:
+    case UPGRADE_ID::TERRANVEHICLEANDSHIPARMORSLEVEL3:
         break;
-    case sc2::UPGRADE_ID::DRILLCLAWS:
+    case UPGRADE_ID::DRILLCLAWS:
         break;
-    case sc2::UPGRADE_ID::ADEPTPIERCINGATTACK:
+    case UPGRADE_ID::ADEPTPIERCINGATTACK:
         break;
-    case sc2::UPGRADE_ID::MAGFIELDLAUNCHERS:
+    case UPGRADE_ID::MAGFIELDLAUNCHERS:
         break;
-    case sc2::UPGRADE_ID::EVOLVEGROOVEDSPINES:
+    case UPGRADE_ID::EVOLVEGROOVEDSPINES:
         break;
-    case sc2::UPGRADE_ID::EVOLVEMUSCULARAUGMENTS:
+    case UPGRADE_ID::EVOLVEMUSCULARAUGMENTS:
         break;
-    case sc2::UPGRADE_ID::BANSHEESPEED:
+    case UPGRADE_ID::BANSHEESPEED:
         break;
-    case sc2::UPGRADE_ID::RAVENRECALIBRATEDEXPLOSIVES:
+    case UPGRADE_ID::RAVENRECALIBRATEDEXPLOSIVES:
         break;
-    case sc2::UPGRADE_ID::MEDIVACINCREASESPEEDBOOST:
+    case UPGRADE_ID::MEDIVACINCREASESPEEDBOOST:
         break;
-    case sc2::UPGRADE_ID::LIBERATORAGRANGEUPGRADE:
+    case UPGRADE_ID::LIBERATORAGRANGEUPGRADE:
         break;
-    case sc2::UPGRADE_ID::DARKTEMPLARBLINKUPGRADE:
+    case UPGRADE_ID::DARKTEMPLARBLINKUPGRADE:
         break;
-    case sc2::UPGRADE_ID::CYCLONELOCKONDAMAGEUPGRADE:
+    case UPGRADE_ID::CYCLONELOCKONDAMAGEUPGRADE:
         break;
-    case sc2::UPGRADE_ID::SMARTSERVOS:
+    case UPGRADE_ID::SMARTSERVOS:
         break;
-    case sc2::UPGRADE_ID::RAPIDFIRELAUNCHERS:
+    case UPGRADE_ID::RAPIDFIRELAUNCHERS:
         break;
-    case sc2::UPGRADE_ID::ENHANCEDMUNITIONS:
+    case UPGRADE_ID::ENHANCEDMUNITIONS:
         break;
     default:
         break;
@@ -325,949 +325,949 @@ ABILITY_ID command(UPGRADE_ID unit)
     throw std::runtime_error("command undefined for UNIT_ID: " + std::to_string((int)unit));
 }
 
-UNIT_TYPEID producer(sc2::ABILITY_ID command)
+UNIT_TYPEID producer(AbilityID command)
 {
     switch (command)
     {
-    case sc2::ABILITY_ID::INVALID:
+    case AbilityID::INVALID:
         break;
-    case sc2::ABILITY_ID::SMART:
+    case AbilityID::SMART:
         break;
-    case sc2::ABILITY_ID::ATTACK:
+    case AbilityID::ATTACK:
         break;
-    case sc2::ABILITY_ID::ATTACK_ATTACK:
+    case AbilityID::ATTACK_ATTACK:
         break;
-    case sc2::ABILITY_ID::ATTACK_ATTACKBUILDING:
+    case AbilityID::ATTACK_ATTACKBUILDING:
         break;
-    case sc2::ABILITY_ID::ATTACK_REDIRECT:
+    case AbilityID::ATTACK_REDIRECT:
         break;
-    case sc2::ABILITY_ID::BEHAVIOR_BUILDINGATTACKOFF:
+    case AbilityID::BEHAVIOR_BUILDINGATTACKOFF:
         break;
-    case sc2::ABILITY_ID::BEHAVIOR_BUILDINGATTACKON:
+    case AbilityID::BEHAVIOR_BUILDINGATTACKON:
         break;
-    case sc2::ABILITY_ID::BEHAVIOR_CLOAKOFF:
+    case AbilityID::BEHAVIOR_CLOAKOFF:
         break;
-    case sc2::ABILITY_ID::BEHAVIOR_CLOAKOFF_BANSHEE:
+    case AbilityID::BEHAVIOR_CLOAKOFF_BANSHEE:
         break;
-    case sc2::ABILITY_ID::BEHAVIOR_CLOAKOFF_GHOST:
+    case AbilityID::BEHAVIOR_CLOAKOFF_GHOST:
         break;
-    case sc2::ABILITY_ID::BEHAVIOR_CLOAKON:
+    case AbilityID::BEHAVIOR_CLOAKON:
         break;
-    case sc2::ABILITY_ID::BEHAVIOR_CLOAKON_BANSHEE:
+    case AbilityID::BEHAVIOR_CLOAKON_BANSHEE:
         break;
-    case sc2::ABILITY_ID::BEHAVIOR_CLOAKON_GHOST:
+    case AbilityID::BEHAVIOR_CLOAKON_GHOST:
         break;
-    case sc2::ABILITY_ID::BEHAVIOR_GENERATECREEPOFF:
+    case AbilityID::BEHAVIOR_GENERATECREEPOFF:
         break;
-    case sc2::ABILITY_ID::BEHAVIOR_GENERATECREEPON:
+    case AbilityID::BEHAVIOR_GENERATECREEPON:
         break;
-    case sc2::ABILITY_ID::BEHAVIOR_HOLDFIREOFF:
+    case AbilityID::BEHAVIOR_HOLDFIREOFF:
         break;
-    case sc2::ABILITY_ID::BEHAVIOR_HOLDFIREOFF_LURKER:
+    case AbilityID::BEHAVIOR_HOLDFIREOFF_LURKER:
         break;
-    case sc2::ABILITY_ID::BEHAVIOR_HOLDFIREON:
+    case AbilityID::BEHAVIOR_HOLDFIREON:
         break;
-    case sc2::ABILITY_ID::BEHAVIOR_HOLDFIREON_GHOST:
+    case AbilityID::BEHAVIOR_HOLDFIREON_GHOST:
         break;
-    case sc2::ABILITY_ID::BEHAVIOR_HOLDFIREON_LURKER:
+    case AbilityID::BEHAVIOR_HOLDFIREON_LURKER:
         break;
-    case sc2::ABILITY_ID::BEHAVIOR_PULSARBEAMOFF:
+    case AbilityID::BEHAVIOR_PULSARBEAMOFF:
         break;
-    case sc2::ABILITY_ID::BEHAVIOR_PULSARBEAMON:
+    case AbilityID::BEHAVIOR_PULSARBEAMON:
         break;
-    case sc2::ABILITY_ID::BUILD_ARMORY:
+    case AbilityID::BUILD_ARMORY:
         break;
-    case sc2::ABILITY_ID::BUILD_ASSIMILATOR:
+    case AbilityID::BUILD_ASSIMILATOR:
         break;
-    case sc2::ABILITY_ID::BUILD_BANELINGNEST:
+    case AbilityID::BUILD_BANELINGNEST:
         break;
-    case sc2::ABILITY_ID::BUILD_BARRACKS:
+    case AbilityID::BUILD_BARRACKS:
         break;
-    case sc2::ABILITY_ID::BUILD_BUNKER:
+    case AbilityID::BUILD_BUNKER:
         break;
-    case sc2::ABILITY_ID::BUILD_COMMANDCENTER:
+    case AbilityID::BUILD_COMMANDCENTER:
         break;
-    case sc2::ABILITY_ID::BUILD_CREEPTUMOR:
+    case AbilityID::BUILD_CREEPTUMOR:
         break;
-    case sc2::ABILITY_ID::BUILD_CREEPTUMOR_QUEEN:
+    case AbilityID::BUILD_CREEPTUMOR_QUEEN:
         break;
-    case sc2::ABILITY_ID::BUILD_CREEPTUMOR_TUMOR:
+    case AbilityID::BUILD_CREEPTUMOR_TUMOR:
         break;
-    case sc2::ABILITY_ID::BUILD_CYBERNETICSCORE:
+    case AbilityID::BUILD_CYBERNETICSCORE:
         break;
-    case sc2::ABILITY_ID::BUILD_DARKSHRINE:
+    case AbilityID::BUILD_DARKSHRINE:
         break;
-    case sc2::ABILITY_ID::BUILD_ENGINEERINGBAY:
+    case AbilityID::BUILD_ENGINEERINGBAY:
         break;
-    case sc2::ABILITY_ID::BUILD_EVOLUTIONCHAMBER:
+    case AbilityID::BUILD_EVOLUTIONCHAMBER:
         break;
-    case sc2::ABILITY_ID::BUILD_EXTRACTOR:
+    case AbilityID::BUILD_EXTRACTOR:
         break;
-    case sc2::ABILITY_ID::BUILD_FACTORY:
+    case AbilityID::BUILD_FACTORY:
         break;
-    case sc2::ABILITY_ID::BUILD_FLEETBEACON:
+    case AbilityID::BUILD_FLEETBEACON:
         break;
-    case sc2::ABILITY_ID::BUILD_FORGE:
+    case AbilityID::BUILD_FORGE:
         break;
-    case sc2::ABILITY_ID::BUILD_FUSIONCORE:
+    case AbilityID::BUILD_FUSIONCORE:
         break;
-    case sc2::ABILITY_ID::BUILD_GATEWAY:
+    case AbilityID::BUILD_GATEWAY:
         break;
-    case sc2::ABILITY_ID::BUILD_GHOSTACADEMY:
+    case AbilityID::BUILD_GHOSTACADEMY:
         break;
-    case sc2::ABILITY_ID::BUILD_HATCHERY:
+    case AbilityID::BUILD_HATCHERY:
         break;
-    case sc2::ABILITY_ID::BUILD_HYDRALISKDEN:
+    case AbilityID::BUILD_HYDRALISKDEN:
         break;
-    case sc2::ABILITY_ID::BUILD_INFESTATIONPIT:
+    case AbilityID::BUILD_INFESTATIONPIT:
         break;
-    case sc2::ABILITY_ID::BUILD_INTERCEPTORS:
+    case AbilityID::BUILD_INTERCEPTORS:
         break;
-    case sc2::ABILITY_ID::BUILD_MISSILETURRET:
+    case AbilityID::BUILD_MISSILETURRET:
         break;
-    case sc2::ABILITY_ID::BUILD_NEXUS:
+    case AbilityID::BUILD_NEXUS:
         break;
-    case sc2::ABILITY_ID::BUILD_NUKE:
+    case AbilityID::BUILD_NUKE:
         break;
-    case sc2::ABILITY_ID::BUILD_NYDUSNETWORK:
+    case AbilityID::BUILD_NYDUSNETWORK:
         break;
-    case sc2::ABILITY_ID::BUILD_NYDUSWORM:
+    case AbilityID::BUILD_NYDUSWORM:
         break;
-    case sc2::ABILITY_ID::BUILD_PHOTONCANNON:
+    case AbilityID::BUILD_PHOTONCANNON:
         break;
-    case sc2::ABILITY_ID::BUILD_PYLON:
+    case AbilityID::BUILD_PYLON:
         break;
-    case sc2::ABILITY_ID::BUILD_REACTOR:
+    case AbilityID::BUILD_REACTOR:
         break;
-    case sc2::ABILITY_ID::BUILD_REACTOR_BARRACKS:
+    case AbilityID::BUILD_REACTOR_BARRACKS:
         break;
-    case sc2::ABILITY_ID::BUILD_REACTOR_FACTORY:
+    case AbilityID::BUILD_REACTOR_FACTORY:
         break;
-    case sc2::ABILITY_ID::BUILD_REACTOR_STARPORT:
+    case AbilityID::BUILD_REACTOR_STARPORT:
         break;
-    case sc2::ABILITY_ID::BUILD_REFINERY:
+    case AbilityID::BUILD_REFINERY:
         break;
-    case sc2::ABILITY_ID::BUILD_ROACHWARREN:
+    case AbilityID::BUILD_ROACHWARREN:
         break;
-    case sc2::ABILITY_ID::BUILD_ROBOTICSBAY:
+    case AbilityID::BUILD_ROBOTICSBAY:
         break;
-    case sc2::ABILITY_ID::BUILD_ROBOTICSFACILITY:
+    case AbilityID::BUILD_ROBOTICSFACILITY:
         break;
-    case sc2::ABILITY_ID::BUILD_SENSORTOWER:
+    case AbilityID::BUILD_SENSORTOWER:
         break;
-    case sc2::ABILITY_ID::BUILD_SHIELDBATTERY:
+    case AbilityID::BUILD_SHIELDBATTERY:
         break;
-    case sc2::ABILITY_ID::BUILD_SPAWNINGPOOL:
+    case AbilityID::BUILD_SPAWNINGPOOL:
         break;
-    case sc2::ABILITY_ID::BUILD_SPINECRAWLER:
+    case AbilityID::BUILD_SPINECRAWLER:
         break;
-    case sc2::ABILITY_ID::BUILD_SPIRE:
+    case AbilityID::BUILD_SPIRE:
         break;
-    case sc2::ABILITY_ID::BUILD_SPORECRAWLER:
+    case AbilityID::BUILD_SPORECRAWLER:
         break;
-    case sc2::ABILITY_ID::BUILD_STARGATE:
+    case AbilityID::BUILD_STARGATE:
         break;
-    case sc2::ABILITY_ID::BUILD_STARPORT:
+    case AbilityID::BUILD_STARPORT:
         break;
-    case sc2::ABILITY_ID::BUILD_STASISTRAP:
+    case AbilityID::BUILD_STASISTRAP:
         break;
-    case sc2::ABILITY_ID::BUILD_SUPPLYDEPOT:
+    case AbilityID::BUILD_SUPPLYDEPOT:
         break;
-    case sc2::ABILITY_ID::BUILD_TECHLAB:
+    case AbilityID::BUILD_TECHLAB:
         break;
-    case sc2::ABILITY_ID::BUILD_TECHLAB_BARRACKS:
+    case AbilityID::BUILD_TECHLAB_BARRACKS:
         break;
-    case sc2::ABILITY_ID::BUILD_TECHLAB_FACTORY:
+    case AbilityID::BUILD_TECHLAB_FACTORY:
         break;
-    case sc2::ABILITY_ID::BUILD_TECHLAB_STARPORT:
+    case AbilityID::BUILD_TECHLAB_STARPORT:
         break;
-    case sc2::ABILITY_ID::BUILD_TEMPLARARCHIVE:
+    case AbilityID::BUILD_TEMPLARARCHIVE:
         break;
-    case sc2::ABILITY_ID::BUILD_TWILIGHTCOUNCIL:
+    case AbilityID::BUILD_TWILIGHTCOUNCIL:
         break;
-    case sc2::ABILITY_ID::BUILD_ULTRALISKCAVERN:
+    case AbilityID::BUILD_ULTRALISKCAVERN:
         break;
-    case sc2::ABILITY_ID::BURROWDOWN:
+    case AbilityID::BURROWDOWN:
         break;
-    case sc2::ABILITY_ID::BURROWDOWN_BANELING:
+    case AbilityID::BURROWDOWN_BANELING:
         break;
-    case sc2::ABILITY_ID::BURROWDOWN_DRONE:
+    case AbilityID::BURROWDOWN_DRONE:
         break;
-    case sc2::ABILITY_ID::BURROWDOWN_HYDRALISK:
+    case AbilityID::BURROWDOWN_HYDRALISK:
         break;
-    case sc2::ABILITY_ID::BURROWDOWN_INFESTOR:
+    case AbilityID::BURROWDOWN_INFESTOR:
         break;
-    case sc2::ABILITY_ID::BURROWDOWN_LURKER:
+    case AbilityID::BURROWDOWN_LURKER:
         break;
-    case sc2::ABILITY_ID::BURROWDOWN_QUEEN:
+    case AbilityID::BURROWDOWN_QUEEN:
         break;
-    case sc2::ABILITY_ID::BURROWDOWN_RAVAGER:
+    case AbilityID::BURROWDOWN_RAVAGER:
         break;
-    case sc2::ABILITY_ID::BURROWDOWN_ROACH:
+    case AbilityID::BURROWDOWN_ROACH:
         break;
-    case sc2::ABILITY_ID::BURROWDOWN_SWARMHOST:
+    case AbilityID::BURROWDOWN_SWARMHOST:
         break;
-    case sc2::ABILITY_ID::BURROWDOWN_WIDOWMINE:
+    case AbilityID::BURROWDOWN_WIDOWMINE:
         break;
-    case sc2::ABILITY_ID::BURROWDOWN_ZERGLING:
+    case AbilityID::BURROWDOWN_ZERGLING:
         break;
-    case sc2::ABILITY_ID::BURROWUP:
+    case AbilityID::BURROWUP:
         break;
-    case sc2::ABILITY_ID::BURROWUP_BANELING:
+    case AbilityID::BURROWUP_BANELING:
         break;
-    case sc2::ABILITY_ID::BURROWUP_DRONE:
+    case AbilityID::BURROWUP_DRONE:
         break;
-    case sc2::ABILITY_ID::BURROWUP_HYDRALISK:
+    case AbilityID::BURROWUP_HYDRALISK:
         break;
-    case sc2::ABILITY_ID::BURROWUP_INFESTOR:
+    case AbilityID::BURROWUP_INFESTOR:
         break;
-    case sc2::ABILITY_ID::BURROWUP_LURKER:
+    case AbilityID::BURROWUP_LURKER:
         break;
-    case sc2::ABILITY_ID::BURROWUP_QUEEN:
+    case AbilityID::BURROWUP_QUEEN:
         break;
-    case sc2::ABILITY_ID::BURROWUP_RAVAGER:
+    case AbilityID::BURROWUP_RAVAGER:
         break;
-    case sc2::ABILITY_ID::BURROWUP_ROACH:
+    case AbilityID::BURROWUP_ROACH:
         break;
-    case sc2::ABILITY_ID::BURROWUP_SWARMHOST:
+    case AbilityID::BURROWUP_SWARMHOST:
         break;
-    case sc2::ABILITY_ID::BURROWUP_WIDOWMINE:
+    case AbilityID::BURROWUP_WIDOWMINE:
         break;
-    case sc2::ABILITY_ID::BURROWUP_ZERGLING:
+    case AbilityID::BURROWUP_ZERGLING:
         break;
-    case sc2::ABILITY_ID::CANCEL:
+    case AbilityID::CANCEL:
         break;
-    case sc2::ABILITY_ID::CANCELSLOT_ADDON:
+    case AbilityID::CANCELSLOT_ADDON:
         break;
-    case sc2::ABILITY_ID::CANCELSLOT_QUEUE1:
+    case AbilityID::CANCELSLOT_QUEUE1:
         break;
-    case sc2::ABILITY_ID::CANCELSLOT_QUEUE5:
+    case AbilityID::CANCELSLOT_QUEUE5:
         break;
-    case sc2::ABILITY_ID::CANCELSLOT_QUEUECANCELTOSELECTION:
+    case AbilityID::CANCELSLOT_QUEUECANCELTOSELECTION:
         break;
-    case sc2::ABILITY_ID::CANCELSLOT_QUEUEPASSIVE:
+    case AbilityID::CANCELSLOT_QUEUEPASSIVE:
         break;
-    case sc2::ABILITY_ID::CANCEL_ADEPTPHASESHIFT:
+    case AbilityID::CANCEL_ADEPTPHASESHIFT:
         break;
-    case sc2::ABILITY_ID::CANCEL_ADEPTSHADEPHASESHIFT:
+    case AbilityID::CANCEL_ADEPTSHADEPHASESHIFT:
         break;
-    case sc2::ABILITY_ID::CANCEL_BARRACKSADDON:
+    case AbilityID::CANCEL_BARRACKSADDON:
         break;
-    case sc2::ABILITY_ID::CANCEL_BUILDINPROGRESS:
+    case AbilityID::CANCEL_BUILDINPROGRESS:
         break;
-    case sc2::ABILITY_ID::CANCEL_CREEPTUMOR:
+    case AbilityID::CANCEL_CREEPTUMOR:
         break;
-    case sc2::ABILITY_ID::CANCEL_FACTORYADDON:
+    case AbilityID::CANCEL_FACTORYADDON:
         break;
-    case sc2::ABILITY_ID::CANCEL_GRAVITONBEAM:
+    case AbilityID::CANCEL_GRAVITONBEAM:
         break;
-    case sc2::ABILITY_ID::CANCEL_LAST:
+    case AbilityID::CANCEL_LAST:
         break;
-    case sc2::ABILITY_ID::CANCEL_MORPHBROODLORD:
+    case AbilityID::CANCEL_MORPHBROODLORD:
         break;
-    case sc2::ABILITY_ID::CANCEL_MORPHLAIR:
+    case AbilityID::CANCEL_MORPHLAIR:
         break;
-    case sc2::ABILITY_ID::CANCEL_MORPHLURKER:
+    case AbilityID::CANCEL_MORPHLURKER:
         break;
-    case sc2::ABILITY_ID::CANCEL_MORPHLURKERDEN:
+    case AbilityID::CANCEL_MORPHLURKERDEN:
         break;
-    case sc2::ABILITY_ID::CANCEL_MORPHMOTHERSHIP:
+    case AbilityID::CANCEL_MORPHMOTHERSHIP:
         break;
-    case sc2::ABILITY_ID::CANCEL_MORPHORBITAL:
+    case AbilityID::CANCEL_MORPHORBITAL:
         break;
-    case sc2::ABILITY_ID::CANCEL_MORPHOVERLORDTRANSPORT:
+    case AbilityID::CANCEL_MORPHOVERLORDTRANSPORT:
         break;
-    case sc2::ABILITY_ID::CANCEL_MORPHOVERSEER:
+    case AbilityID::CANCEL_MORPHOVERSEER:
         break;
-    case sc2::ABILITY_ID::CANCEL_MORPHPLANETARYFORTRESS:
+    case AbilityID::CANCEL_MORPHPLANETARYFORTRESS:
         break;
-    case sc2::ABILITY_ID::CANCEL_MORPHRAVAGER:
+    case AbilityID::CANCEL_MORPHRAVAGER:
         break;
-    case sc2::ABILITY_ID::CANCEL_QUEUE1:
+    case AbilityID::CANCEL_QUEUE1:
         break;
-    case sc2::ABILITY_ID::CANCEL_QUEUE5:
+    case AbilityID::CANCEL_QUEUE5:
         break;
-    case sc2::ABILITY_ID::CANCEL_QUEUEADDON:
+    case AbilityID::CANCEL_QUEUEADDON:
         break;
-    case sc2::ABILITY_ID::CANCEL_QUEUECANCELTOSELECTION:
+    case AbilityID::CANCEL_QUEUECANCELTOSELECTION:
         break;
-    case sc2::ABILITY_ID::CANCEL_QUEUEPASIVE:
+    case AbilityID::CANCEL_QUEUEPASIVE:
         break;
-    case sc2::ABILITY_ID::CANCEL_QUEUEPASSIVECANCELTOSELECTION:
+    case AbilityID::CANCEL_QUEUEPASSIVECANCELTOSELECTION:
         break;
-    case sc2::ABILITY_ID::CANCEL_SPINECRAWLERROOT:
+    case AbilityID::CANCEL_SPINECRAWLERROOT:
         break;
-    case sc2::ABILITY_ID::CANCEL_STARPORTADDON:
+    case AbilityID::CANCEL_STARPORTADDON:
         break;
-    case sc2::ABILITY_ID::EFFECT_ABDUCT:
+    case AbilityID::EFFECT_ABDUCT:
         break;
-    case sc2::ABILITY_ID::EFFECT_ADEPTPHASESHIFT:
+    case AbilityID::EFFECT_ADEPTPHASESHIFT:
         break;
-    case sc2::ABILITY_ID::EFFECT_AUTOTURRET:
+    case AbilityID::EFFECT_AUTOTURRET:
         break;
-    case sc2::ABILITY_ID::EFFECT_BLINDINGCLOUD:
+    case AbilityID::EFFECT_BLINDINGCLOUD:
         break;
-    case sc2::ABILITY_ID::EFFECT_BLINK:
+    case AbilityID::EFFECT_BLINK:
         break;
-    case sc2::ABILITY_ID::EFFECT_BLINK_STALKER:
+    case AbilityID::EFFECT_BLINK_STALKER:
         break;
-    case sc2::ABILITY_ID::EFFECT_CALLDOWNMULE:
+    case AbilityID::EFFECT_CALLDOWNMULE:
         break;
-    case sc2::ABILITY_ID::EFFECT_CAUSTICSPRAY:
+    case AbilityID::EFFECT_CAUSTICSPRAY:
         break;
-    case sc2::ABILITY_ID::EFFECT_CHARGE:
+    case AbilityID::EFFECT_CHARGE:
         break;
-    case sc2::ABILITY_ID::EFFECT_CHRONOBOOST:
+    case AbilityID::EFFECT_CHRONOBOOST:
         break;
-    case sc2::ABILITY_ID::EFFECT_CONTAMINATE:
+    case AbilityID::EFFECT_CONTAMINATE:
         break;
-    case sc2::ABILITY_ID::EFFECT_CORROSIVEBILE:
+    case AbilityID::EFFECT_CORROSIVEBILE:
         break;
-    case sc2::ABILITY_ID::EFFECT_EMP:
+    case AbilityID::EFFECT_EMP:
         break;
-    case sc2::ABILITY_ID::EFFECT_EXPLODE:
+    case AbilityID::EFFECT_EXPLODE:
         break;
-    case sc2::ABILITY_ID::EFFECT_FEEDBACK:
+    case AbilityID::EFFECT_FEEDBACK:
         break;
-    case sc2::ABILITY_ID::EFFECT_FORCEFIELD:
+    case AbilityID::EFFECT_FORCEFIELD:
         break;
-    case sc2::ABILITY_ID::EFFECT_FUNGALGROWTH:
+    case AbilityID::EFFECT_FUNGALGROWTH:
         break;
-    case sc2::ABILITY_ID::EFFECT_GHOSTSNIPE:
+    case AbilityID::EFFECT_GHOSTSNIPE:
         break;
-    case sc2::ABILITY_ID::EFFECT_GRAVITONBEAM:
+    case AbilityID::EFFECT_GRAVITONBEAM:
         break;
-    case sc2::ABILITY_ID::EFFECT_GUARDIANSHIELD:
+    case AbilityID::EFFECT_GUARDIANSHIELD:
         break;
-    case sc2::ABILITY_ID::EFFECT_HEAL:
+    case AbilityID::EFFECT_HEAL:
         break;
-    case sc2::ABILITY_ID::EFFECT_HUNTERSEEKERMISSILE:
+    case AbilityID::EFFECT_HUNTERSEEKERMISSILE:
         break;
-    case sc2::ABILITY_ID::EFFECT_IMMORTALBARRIER:
+    case AbilityID::EFFECT_IMMORTALBARRIER:
         break;
-    case sc2::ABILITY_ID::EFFECT_INFESTEDTERRANS:
+    case AbilityID::EFFECT_INFESTEDTERRANS:
         break;
-    case sc2::ABILITY_ID::EFFECT_INJECTLARVA:
+    case AbilityID::EFFECT_INJECTLARVA:
         break;
-    case sc2::ABILITY_ID::EFFECT_KD8CHARGE:
+    case AbilityID::EFFECT_KD8CHARGE:
         break;
-    case sc2::ABILITY_ID::EFFECT_LOCKON:
+    case AbilityID::EFFECT_LOCKON:
         break;
-    case sc2::ABILITY_ID::EFFECT_LOCUSTSWOOP:
+    case AbilityID::EFFECT_LOCUSTSWOOP:
         break;
-    case sc2::ABILITY_ID::EFFECT_MASSRECALL:
+    case AbilityID::EFFECT_MASSRECALL:
         break;
-    case sc2::ABILITY_ID::EFFECT_MASSRECALL_MOTHERSHIP:
+    case AbilityID::EFFECT_MASSRECALL_MOTHERSHIP:
         break;
-    case sc2::ABILITY_ID::EFFECT_MASSRECALL_MOTHERSHIPCORE:
+    case AbilityID::EFFECT_MASSRECALL_MOTHERSHIPCORE:
         break;
-    case sc2::ABILITY_ID::EFFECT_MEDIVACIGNITEAFTERBURNERS:
+    case AbilityID::EFFECT_MEDIVACIGNITEAFTERBURNERS:
         break;
-    case sc2::ABILITY_ID::EFFECT_NEURALPARASITE:
+    case AbilityID::EFFECT_NEURALPARASITE:
         break;
-    case sc2::ABILITY_ID::EFFECT_NUKECALLDOWN:
+    case AbilityID::EFFECT_NUKECALLDOWN:
         break;
-    case sc2::ABILITY_ID::EFFECT_ORACLEREVELATION:
+    case AbilityID::EFFECT_ORACLEREVELATION:
         break;
-    case sc2::ABILITY_ID::EFFECT_PARASITICBOMB:
+    case AbilityID::EFFECT_PARASITICBOMB:
         break;
-    case sc2::ABILITY_ID::EFFECT_PHOTONOVERCHARGE:
+    case AbilityID::EFFECT_PHOTONOVERCHARGE:
         break;
-    case sc2::ABILITY_ID::EFFECT_POINTDEFENSEDRONE:
+    case AbilityID::EFFECT_POINTDEFENSEDRONE:
         break;
-    case sc2::ABILITY_ID::EFFECT_PSISTORM:
+    case AbilityID::EFFECT_PSISTORM:
         break;
-    case sc2::ABILITY_ID::EFFECT_PURIFICATIONNOVA:
+    case AbilityID::EFFECT_PURIFICATIONNOVA:
         break;
-    case sc2::ABILITY_ID::EFFECT_REPAIR:
+    case AbilityID::EFFECT_REPAIR:
         break;
-    case sc2::ABILITY_ID::EFFECT_REPAIR_MULE:
+    case AbilityID::EFFECT_REPAIR_MULE:
         break;
-    case sc2::ABILITY_ID::EFFECT_REPAIR_SCV:
+    case AbilityID::EFFECT_REPAIR_SCV:
         break;
-    case sc2::ABILITY_ID::EFFECT_RESTORE:
+    case AbilityID::EFFECT_RESTORE:
         break;
-    case sc2::ABILITY_ID::EFFECT_SALVAGE:
+    case AbilityID::EFFECT_SALVAGE:
         break;
-    case sc2::ABILITY_ID::EFFECT_SCAN:
+    case AbilityID::EFFECT_SCAN:
         break;
-    case sc2::ABILITY_ID::EFFECT_SHADOWSTRIDE:
+    case AbilityID::EFFECT_SHADOWSTRIDE:
         break;
-    case sc2::ABILITY_ID::EFFECT_SPAWNCHANGELING:
+    case AbilityID::EFFECT_SPAWNCHANGELING:
         break;
-    case sc2::ABILITY_ID::EFFECT_SPAWNLOCUSTS:
+    case AbilityID::EFFECT_SPAWNLOCUSTS:
         break;
-    case sc2::ABILITY_ID::EFFECT_SPRAY:
+    case AbilityID::EFFECT_SPRAY:
         break;
-    case sc2::ABILITY_ID::EFFECT_SPRAY_PROTOSS:
+    case AbilityID::EFFECT_SPRAY_PROTOSS:
         break;
-    case sc2::ABILITY_ID::EFFECT_SPRAY_TERRAN:
+    case AbilityID::EFFECT_SPRAY_TERRAN:
         break;
-    case sc2::ABILITY_ID::EFFECT_SPRAY_ZERG:
+    case AbilityID::EFFECT_SPRAY_ZERG:
         break;
-    case sc2::ABILITY_ID::EFFECT_STIM:
+    case AbilityID::EFFECT_STIM:
         break;
-    case sc2::ABILITY_ID::EFFECT_STIM_MARAUDER:
+    case AbilityID::EFFECT_STIM_MARAUDER:
         break;
-    case sc2::ABILITY_ID::EFFECT_STIM_MARINE:
+    case AbilityID::EFFECT_STIM_MARINE:
         break;
-    case sc2::ABILITY_ID::EFFECT_STIM_MARINE_REDIRECT:
+    case AbilityID::EFFECT_STIM_MARINE_REDIRECT:
         break;
-    case sc2::ABILITY_ID::EFFECT_SUPPLYDROP:
+    case AbilityID::EFFECT_SUPPLYDROP:
         break;
-    case sc2::ABILITY_ID::EFFECT_TACTICALJUMP:
+    case AbilityID::EFFECT_TACTICALJUMP:
         break;
-    case sc2::ABILITY_ID::EFFECT_TEMPESTDISRUPTIONBLAST:
+    case AbilityID::EFFECT_TEMPESTDISRUPTIONBLAST:
         break;
-    case sc2::ABILITY_ID::EFFECT_TIMEWARP:
+    case AbilityID::EFFECT_TIMEWARP:
         break;
-    case sc2::ABILITY_ID::EFFECT_TRANSFUSION:
+    case AbilityID::EFFECT_TRANSFUSION:
         break;
-    case sc2::ABILITY_ID::EFFECT_VIPERCONSUME:
+    case AbilityID::EFFECT_VIPERCONSUME:
         break;
-    case sc2::ABILITY_ID::EFFECT_VOIDRAYPRISMATICALIGNMENT:
+    case AbilityID::EFFECT_VOIDRAYPRISMATICALIGNMENT:
         break;
-    case sc2::ABILITY_ID::EFFECT_WIDOWMINEATTACK:
+    case AbilityID::EFFECT_WIDOWMINEATTACK:
         break;
-    case sc2::ABILITY_ID::EFFECT_YAMATOGUN:
+    case AbilityID::EFFECT_YAMATOGUN:
         break;
-    case sc2::ABILITY_ID::HALLUCINATION_ADEPT:
+    case AbilityID::HALLUCINATION_ADEPT:
         break;
-    case sc2::ABILITY_ID::HALLUCINATION_ARCHON:
+    case AbilityID::HALLUCINATION_ARCHON:
         break;
-    case sc2::ABILITY_ID::HALLUCINATION_COLOSSUS:
+    case AbilityID::HALLUCINATION_COLOSSUS:
         break;
-    case sc2::ABILITY_ID::HALLUCINATION_DISRUPTOR:
+    case AbilityID::HALLUCINATION_DISRUPTOR:
         break;
-    case sc2::ABILITY_ID::HALLUCINATION_HIGHTEMPLAR:
+    case AbilityID::HALLUCINATION_HIGHTEMPLAR:
         break;
-    case sc2::ABILITY_ID::HALLUCINATION_IMMORTAL:
+    case AbilityID::HALLUCINATION_IMMORTAL:
         break;
-    case sc2::ABILITY_ID::HALLUCINATION_ORACLE:
+    case AbilityID::HALLUCINATION_ORACLE:
         break;
-    case sc2::ABILITY_ID::HALLUCINATION_PHOENIX:
+    case AbilityID::HALLUCINATION_PHOENIX:
         break;
-    case sc2::ABILITY_ID::HALLUCINATION_PROBE:
+    case AbilityID::HALLUCINATION_PROBE:
         break;
-    case sc2::ABILITY_ID::HALLUCINATION_STALKER:
+    case AbilityID::HALLUCINATION_STALKER:
         break;
-    case sc2::ABILITY_ID::HALLUCINATION_VOIDRAY:
+    case AbilityID::HALLUCINATION_VOIDRAY:
         break;
-    case sc2::ABILITY_ID::HALLUCINATION_WARPPRISM:
+    case AbilityID::HALLUCINATION_WARPPRISM:
         break;
-    case sc2::ABILITY_ID::HALLUCINATION_ZEALOT:
+    case AbilityID::HALLUCINATION_ZEALOT:
         break;
-    case sc2::ABILITY_ID::HALT:
+    case AbilityID::HALT:
         break;
-    case sc2::ABILITY_ID::HALT_BUILDING:
+    case AbilityID::HALT_BUILDING:
         break;
-    case sc2::ABILITY_ID::HALT_TERRANBUILD:
+    case AbilityID::HALT_TERRANBUILD:
         break;
-    case sc2::ABILITY_ID::HARVEST_GATHER:
+    case AbilityID::HARVEST_GATHER:
         break;
-    case sc2::ABILITY_ID::HARVEST_GATHER_DRONE:
+    case AbilityID::HARVEST_GATHER_DRONE:
         break;
-    case sc2::ABILITY_ID::HARVEST_GATHER_PROBE:
+    case AbilityID::HARVEST_GATHER_PROBE:
         break;
-    case sc2::ABILITY_ID::HARVEST_GATHER_SCV:
+    case AbilityID::HARVEST_GATHER_SCV:
         break;
-    case sc2::ABILITY_ID::HARVEST_RETURN:
+    case AbilityID::HARVEST_RETURN:
         break;
-    case sc2::ABILITY_ID::HARVEST_RETURN_DRONE:
+    case AbilityID::HARVEST_RETURN_DRONE:
         break;
-    case sc2::ABILITY_ID::HARVEST_RETURN_MULE:
+    case AbilityID::HARVEST_RETURN_MULE:
         break;
-    case sc2::ABILITY_ID::HARVEST_RETURN_PROBE:
+    case AbilityID::HARVEST_RETURN_PROBE:
         break;
-    case sc2::ABILITY_ID::HARVEST_RETURN_SCV:
+    case AbilityID::HARVEST_RETURN_SCV:
         break;
-    case sc2::ABILITY_ID::HOLDPOSITION:
+    case AbilityID::HOLDPOSITION:
         break;
-    case sc2::ABILITY_ID::LAND:
+    case AbilityID::LAND:
         break;
-    case sc2::ABILITY_ID::LAND_BARRACKS:
+    case AbilityID::LAND_BARRACKS:
         break;
-    case sc2::ABILITY_ID::LAND_COMMANDCENTER:
+    case AbilityID::LAND_COMMANDCENTER:
         break;
-    case sc2::ABILITY_ID::LAND_FACTORY:
+    case AbilityID::LAND_FACTORY:
         break;
-    case sc2::ABILITY_ID::LAND_ORBITALCOMMAND:
+    case AbilityID::LAND_ORBITALCOMMAND:
         break;
-    case sc2::ABILITY_ID::LAND_STARPORT:
+    case AbilityID::LAND_STARPORT:
         break;
-    case sc2::ABILITY_ID::LIFT:
+    case AbilityID::LIFT:
         break;
-    case sc2::ABILITY_ID::LIFT_BARRACKS:
+    case AbilityID::LIFT_BARRACKS:
         break;
-    case sc2::ABILITY_ID::LIFT_COMMANDCENTER:
+    case AbilityID::LIFT_COMMANDCENTER:
         break;
-    case sc2::ABILITY_ID::LIFT_FACTORY:
+    case AbilityID::LIFT_FACTORY:
         break;
-    case sc2::ABILITY_ID::LIFT_ORBITALCOMMAND:
+    case AbilityID::LIFT_ORBITALCOMMAND:
         break;
-    case sc2::ABILITY_ID::LIFT_STARPORT:
+    case AbilityID::LIFT_STARPORT:
         break;
-    case sc2::ABILITY_ID::LOAD:
+    case AbilityID::LOAD:
         break;
-    case sc2::ABILITY_ID::LOADALL:
+    case AbilityID::LOADALL:
         break;
-    case sc2::ABILITY_ID::LOADALL_COMMANDCENTER:
+    case AbilityID::LOADALL_COMMANDCENTER:
         break;
-    case sc2::ABILITY_ID::LOAD_BUNKER:
+    case AbilityID::LOAD_BUNKER:
         break;
-    case sc2::ABILITY_ID::LOAD_MEDIVAC:
+    case AbilityID::LOAD_MEDIVAC:
         break;
-    case sc2::ABILITY_ID::MORPH_ARCHON:
+    case AbilityID::MORPH_ARCHON:
         break;
-    case sc2::ABILITY_ID::MORPH_BROODLORD:
+    case AbilityID::MORPH_BROODLORD:
         break;
-    case sc2::ABILITY_ID::MORPH_GATEWAY:
+    case AbilityID::MORPH_GATEWAY:
         break;
-    case sc2::ABILITY_ID::MORPH_GREATERSPIRE:
+    case AbilityID::MORPH_GREATERSPIRE:
         break;
-    case sc2::ABILITY_ID::MORPH_HELLBAT:
+    case AbilityID::MORPH_HELLBAT:
         break;
-    case sc2::ABILITY_ID::MORPH_HELLION:
+    case AbilityID::MORPH_HELLION:
         break;
-    case sc2::ABILITY_ID::MORPH_HIVE:
+    case AbilityID::MORPH_HIVE:
         break;
-    case sc2::ABILITY_ID::MORPH_LAIR:
+    case AbilityID::MORPH_LAIR:
         break;
-    case sc2::ABILITY_ID::MORPH_LIBERATORAAMODE:
+    case AbilityID::MORPH_LIBERATORAAMODE:
         break;
-    case sc2::ABILITY_ID::MORPH_LIBERATORAGMODE:
+    case AbilityID::MORPH_LIBERATORAGMODE:
         break;
-    case sc2::ABILITY_ID::MORPH_LURKER:
+    case AbilityID::MORPH_LURKER:
         break;
-    case sc2::ABILITY_ID::MORPH_LURKERDEN:
+    case AbilityID::MORPH_LURKERDEN:
         break;
-    case sc2::ABILITY_ID::MORPH_MOTHERSHIP:
+    case AbilityID::MORPH_MOTHERSHIP:
         break;
-    case sc2::ABILITY_ID::MORPH_ORBITALCOMMAND:
+    case AbilityID::MORPH_ORBITALCOMMAND:
         break;
-    case sc2::ABILITY_ID::MORPH_OVERLORDTRANSPORT:
+    case AbilityID::MORPH_OVERLORDTRANSPORT:
         break;
-    case sc2::ABILITY_ID::MORPH_OVERSEER:
+    case AbilityID::MORPH_OVERSEER:
         break;
-    case sc2::ABILITY_ID::MORPH_PLANETARYFORTRESS:
+    case AbilityID::MORPH_PLANETARYFORTRESS:
         break;
-    case sc2::ABILITY_ID::MORPH_RAVAGER:
+    case AbilityID::MORPH_RAVAGER:
         break;
-    case sc2::ABILITY_ID::MORPH_ROOT:
+    case AbilityID::MORPH_ROOT:
         break;
-    case sc2::ABILITY_ID::MORPH_SIEGEMODE:
+    case AbilityID::MORPH_SIEGEMODE:
         break;
-    case sc2::ABILITY_ID::MORPH_SPINECRAWLERROOT:
+    case AbilityID::MORPH_SPINECRAWLERROOT:
         break;
-    case sc2::ABILITY_ID::MORPH_SPINECRAWLERUPROOT:
+    case AbilityID::MORPH_SPINECRAWLERUPROOT:
         break;
-    case sc2::ABILITY_ID::MORPH_SPORECRAWLERROOT:
+    case AbilityID::MORPH_SPORECRAWLERROOT:
         break;
-    case sc2::ABILITY_ID::MORPH_SPORECRAWLERUPROOT:
+    case AbilityID::MORPH_SPORECRAWLERUPROOT:
         break;
-    case sc2::ABILITY_ID::MORPH_SUPPLYDEPOT_LOWER:
+    case AbilityID::MORPH_SUPPLYDEPOT_LOWER:
         break;
-    case sc2::ABILITY_ID::MORPH_SUPPLYDEPOT_RAISE:
+    case AbilityID::MORPH_SUPPLYDEPOT_RAISE:
         break;
-    case sc2::ABILITY_ID::MORPH_THOREXPLOSIVEMODE:
+    case AbilityID::MORPH_THOREXPLOSIVEMODE:
         break;
-    case sc2::ABILITY_ID::MORPH_THORHIGHIMPACTMODE:
+    case AbilityID::MORPH_THORHIGHIMPACTMODE:
         break;
-    case sc2::ABILITY_ID::MORPH_UNSIEGE:
+    case AbilityID::MORPH_UNSIEGE:
         break;
-    case sc2::ABILITY_ID::MORPH_UPROOT:
+    case AbilityID::MORPH_UPROOT:
         break;
-    case sc2::ABILITY_ID::MORPH_VIKINGASSAULTMODE:
+    case AbilityID::MORPH_VIKINGASSAULTMODE:
         break;
-    case sc2::ABILITY_ID::MORPH_VIKINGFIGHTERMODE:
+    case AbilityID::MORPH_VIKINGFIGHTERMODE:
         break;
-    case sc2::ABILITY_ID::MORPH_WARPGATE:
+    case AbilityID::MORPH_WARPGATE:
         break;
-    case sc2::ABILITY_ID::MORPH_WARPPRISMPHASINGMODE:
+    case AbilityID::MORPH_WARPPRISMPHASINGMODE:
         break;
-    case sc2::ABILITY_ID::MORPH_WARPPRISMTRANSPORTMODE:
+    case AbilityID::MORPH_WARPPRISMTRANSPORTMODE:
         break;
-    case sc2::ABILITY_ID::MOVE:
+    case AbilityID::MOVE:
         break;
-    case sc2::ABILITY_ID::PATROL:
+    case AbilityID::PATROL:
         break;
-    case sc2::ABILITY_ID::RALLY_BUILDING:
+    case AbilityID::RALLY_BUILDING:
         break;
-    case sc2::ABILITY_ID::RALLY_COMMANDCENTER:
+    case AbilityID::RALLY_COMMANDCENTER:
         break;
-    case sc2::ABILITY_ID::RALLY_HATCHERY_UNITS:
+    case AbilityID::RALLY_HATCHERY_UNITS:
         break;
-    case sc2::ABILITY_ID::RALLY_HATCHERY_WORKERS:
+    case AbilityID::RALLY_HATCHERY_WORKERS:
         break;
-    case sc2::ABILITY_ID::RALLY_MORPHING_UNIT:
+    case AbilityID::RALLY_MORPHING_UNIT:
         break;
-    case sc2::ABILITY_ID::RALLY_NEXUS:
+    case AbilityID::RALLY_NEXUS:
         break;
-    case sc2::ABILITY_ID::RALLY_UNITS:
+    case AbilityID::RALLY_UNITS:
         break;
-    case sc2::ABILITY_ID::RALLY_WORKERS:
+    case AbilityID::RALLY_WORKERS:
         break;
-    case sc2::ABILITY_ID::RESEARCH_ADEPTRESONATINGGLAIVES:
+    case AbilityID::RESEARCH_ADEPTRESONATINGGLAIVES:
         break;
-    case sc2::ABILITY_ID::RESEARCH_ADVANCEDBALLISTICS:
+    case AbilityID::RESEARCH_ADVANCEDBALLISTICS:
         break;
-    case sc2::ABILITY_ID::RESEARCH_BANSHEECLOAKINGFIELD:
+    case AbilityID::RESEARCH_BANSHEECLOAKINGFIELD:
         break;
-    case sc2::ABILITY_ID::RESEARCH_BANSHEEHYPERFLIGHTROTORS:
+    case AbilityID::RESEARCH_BANSHEEHYPERFLIGHTROTORS:
         break;
-    case sc2::ABILITY_ID::RESEARCH_BATTLECRUISERWEAPONREFIT:
+    case AbilityID::RESEARCH_BATTLECRUISERWEAPONREFIT:
         break;
-    case sc2::ABILITY_ID::RESEARCH_BLINK:
+    case AbilityID::RESEARCH_BLINK:
         break;
-    case sc2::ABILITY_ID::RESEARCH_BURROW:
+    case AbilityID::RESEARCH_BURROW:
         break;
-    case sc2::ABILITY_ID::RESEARCH_CENTRIFUGALHOOKS:
+    case AbilityID::RESEARCH_CENTRIFUGALHOOKS:
         break;
-    case sc2::ABILITY_ID::RESEARCH_CHARGE:
+    case AbilityID::RESEARCH_CHARGE:
         break;
-    case sc2::ABILITY_ID::RESEARCH_CHITINOUSPLATING:
+    case AbilityID::RESEARCH_CHITINOUSPLATING:
         break;
-    case sc2::ABILITY_ID::RESEARCH_COMBATSHIELD:
+    case AbilityID::RESEARCH_COMBATSHIELD:
         break;
-    case sc2::ABILITY_ID::RESEARCH_CONCUSSIVESHELLS:
+    case AbilityID::RESEARCH_CONCUSSIVESHELLS:
         break;
-    case sc2::ABILITY_ID::RESEARCH_CYCLONELOCKONDAMAGE:
+    case AbilityID::RESEARCH_CYCLONELOCKONDAMAGE:
         break;
-    case sc2::ABILITY_ID::RESEARCH_DRILLINGCLAWS:
+    case AbilityID::RESEARCH_DRILLINGCLAWS:
         break;
-    case sc2::ABILITY_ID::RESEARCH_ENHANCEDMUNITIONS:
+    case AbilityID::RESEARCH_ENHANCEDMUNITIONS:
         break;
-    case sc2::ABILITY_ID::RESEARCH_EXTENDEDTHERMALLANCE:
+    case AbilityID::RESEARCH_EXTENDEDTHERMALLANCE:
         break;
-    case sc2::ABILITY_ID::RESEARCH_GLIALREGENERATION:
+    case AbilityID::RESEARCH_GLIALREGENERATION:
         break;
-    case sc2::ABILITY_ID::RESEARCH_GRAVITICBOOSTER:
+    case AbilityID::RESEARCH_GRAVITICBOOSTER:
         break;
-    case sc2::ABILITY_ID::RESEARCH_GRAVITICDRIVE:
+    case AbilityID::RESEARCH_GRAVITICDRIVE:
         break;
-    case sc2::ABILITY_ID::RESEARCH_GROOVEDSPINES:
+    case AbilityID::RESEARCH_GROOVEDSPINES:
         break;
-    case sc2::ABILITY_ID::RESEARCH_HIGHCAPACITYFUELTANKS:
+    case AbilityID::RESEARCH_HIGHCAPACITYFUELTANKS:
         break;
-    case sc2::ABILITY_ID::RESEARCH_HISECAUTOTRACKING:
+    case AbilityID::RESEARCH_HISECAUTOTRACKING:
         break;
-    case sc2::ABILITY_ID::RESEARCH_INFERNALPREIGNITER:
+    case AbilityID::RESEARCH_INFERNALPREIGNITER:
         break;
-    case sc2::ABILITY_ID::RESEARCH_INTERCEPTORGRAVITONCATAPULT:
+    case AbilityID::RESEARCH_INTERCEPTORGRAVITONCATAPULT:
         break;
-    case sc2::ABILITY_ID::RESEARCH_MAGFIELDLAUNCHERS:
+    case AbilityID::RESEARCH_MAGFIELDLAUNCHERS:
         break;
-    case sc2::ABILITY_ID::RESEARCH_MUSCULARAUGMENTS:
+    case AbilityID::RESEARCH_MUSCULARAUGMENTS:
         break;
-    case sc2::ABILITY_ID::RESEARCH_NEOSTEELFRAME:
+    case AbilityID::RESEARCH_NEOSTEELFRAME:
         break;
-    case sc2::ABILITY_ID::RESEARCH_NEURALPARASITE:
+    case AbilityID::RESEARCH_NEURALPARASITE:
         break;
-    case sc2::ABILITY_ID::RESEARCH_PATHOGENGLANDS:
+    case AbilityID::RESEARCH_PATHOGENGLANDS:
         break;
-    case sc2::ABILITY_ID::RESEARCH_PERSONALCLOAKING:
+    case AbilityID::RESEARCH_PERSONALCLOAKING:
         break;
-    case sc2::ABILITY_ID::RESEARCH_PHOENIXANIONPULSECRYSTALS:
+    case AbilityID::RESEARCH_PHOENIXANIONPULSECRYSTALS:
         break;
-    case sc2::ABILITY_ID::RESEARCH_PNEUMATIZEDCARAPACE:
+    case AbilityID::RESEARCH_PNEUMATIZEDCARAPACE:
         break;
-    case sc2::ABILITY_ID::RESEARCH_PROTOSSAIRARMOR:
+    case AbilityID::RESEARCH_PROTOSSAIRARMOR:
         break;
-    case sc2::ABILITY_ID::RESEARCH_PROTOSSAIRARMORLEVEL1:
+    case AbilityID::RESEARCH_PROTOSSAIRARMORLEVEL1:
         break;
-    case sc2::ABILITY_ID::RESEARCH_PROTOSSAIRARMORLEVEL2:
+    case AbilityID::RESEARCH_PROTOSSAIRARMORLEVEL2:
         break;
-    case sc2::ABILITY_ID::RESEARCH_PROTOSSAIRARMORLEVEL3:
+    case AbilityID::RESEARCH_PROTOSSAIRARMORLEVEL3:
         break;
-    case sc2::ABILITY_ID::RESEARCH_PROTOSSAIRWEAPONS:
+    case AbilityID::RESEARCH_PROTOSSAIRWEAPONS:
         break;
-    case sc2::ABILITY_ID::RESEARCH_PROTOSSAIRWEAPONSLEVEL1:
+    case AbilityID::RESEARCH_PROTOSSAIRWEAPONSLEVEL1:
         break;
-    case sc2::ABILITY_ID::RESEARCH_PROTOSSAIRWEAPONSLEVEL2:
+    case AbilityID::RESEARCH_PROTOSSAIRWEAPONSLEVEL2:
         break;
-    case sc2::ABILITY_ID::RESEARCH_PROTOSSAIRWEAPONSLEVEL3:
+    case AbilityID::RESEARCH_PROTOSSAIRWEAPONSLEVEL3:
         break;
-    case sc2::ABILITY_ID::RESEARCH_PROTOSSGROUNDARMOR:
+    case AbilityID::RESEARCH_PROTOSSGROUNDARMOR:
         break;
-    case sc2::ABILITY_ID::RESEARCH_PROTOSSGROUNDARMORLEVEL1:
+    case AbilityID::RESEARCH_PROTOSSGROUNDARMORLEVEL1:
         break;
-    case sc2::ABILITY_ID::RESEARCH_PROTOSSGROUNDARMORLEVEL2:
+    case AbilityID::RESEARCH_PROTOSSGROUNDARMORLEVEL2:
         break;
-    case sc2::ABILITY_ID::RESEARCH_PROTOSSGROUNDARMORLEVEL3:
+    case AbilityID::RESEARCH_PROTOSSGROUNDARMORLEVEL3:
         break;
-    case sc2::ABILITY_ID::RESEARCH_PROTOSSGROUNDWEAPONS:
+    case AbilityID::RESEARCH_PROTOSSGROUNDWEAPONS:
         break;
-    case sc2::ABILITY_ID::RESEARCH_PROTOSSGROUNDWEAPONSLEVEL1:
+    case AbilityID::RESEARCH_PROTOSSGROUNDWEAPONSLEVEL1:
         break;
-    case sc2::ABILITY_ID::RESEARCH_PROTOSSGROUNDWEAPONSLEVEL2:
+    case AbilityID::RESEARCH_PROTOSSGROUNDWEAPONSLEVEL2:
         break;
-    case sc2::ABILITY_ID::RESEARCH_PROTOSSGROUNDWEAPONSLEVEL3:
+    case AbilityID::RESEARCH_PROTOSSGROUNDWEAPONSLEVEL3:
         break;
-    case sc2::ABILITY_ID::RESEARCH_PROTOSSSHIELDS:
+    case AbilityID::RESEARCH_PROTOSSSHIELDS:
         break;
-    case sc2::ABILITY_ID::RESEARCH_PROTOSSSHIELDSLEVEL1:
+    case AbilityID::RESEARCH_PROTOSSSHIELDSLEVEL1:
         break;
-    case sc2::ABILITY_ID::RESEARCH_PROTOSSSHIELDSLEVEL2:
+    case AbilityID::RESEARCH_PROTOSSSHIELDSLEVEL2:
         break;
-    case sc2::ABILITY_ID::RESEARCH_PROTOSSSHIELDSLEVEL3:
+    case AbilityID::RESEARCH_PROTOSSSHIELDSLEVEL3:
         break;
-    case sc2::ABILITY_ID::RESEARCH_PSISTORM:
+    case AbilityID::RESEARCH_PSISTORM:
         break;
-    case sc2::ABILITY_ID::RESEARCH_RAPIDFIRELAUNCHERS:
+    case AbilityID::RESEARCH_RAPIDFIRELAUNCHERS:
         break;
-    case sc2::ABILITY_ID::RESEARCH_RAVENCORVIDREACTOR:
+    case AbilityID::RESEARCH_RAVENCORVIDREACTOR:
         break;
-    case sc2::ABILITY_ID::RESEARCH_RAVENRECALIBRATEDEXPLOSIVES:
+    case AbilityID::RESEARCH_RAVENRECALIBRATEDEXPLOSIVES:
         break;
-    case sc2::ABILITY_ID::RESEARCH_SHADOWSTRIKE:
+    case AbilityID::RESEARCH_SHADOWSTRIKE:
         break;
-    //case sc2::ABILITY_ID::RESEARCH_SMARTSERVOS:
+    //case AbilityID::RESEARCH_SMARTSERVOS:
     //    break;
-    case sc2::ABILITY_ID::RESEARCH_STIMPACK:
+    case AbilityID::RESEARCH_STIMPACK:
         break;
-    case sc2::ABILITY_ID::RESEARCH_TERRANINFANTRYARMOR:
+    case AbilityID::RESEARCH_TERRANINFANTRYARMOR:
         break;
-    case sc2::ABILITY_ID::RESEARCH_TERRANINFANTRYARMORLEVEL1:
+    case AbilityID::RESEARCH_TERRANINFANTRYARMORLEVEL1:
         break;
-    case sc2::ABILITY_ID::RESEARCH_TERRANINFANTRYARMORLEVEL2:
+    case AbilityID::RESEARCH_TERRANINFANTRYARMORLEVEL2:
         break;
-    case sc2::ABILITY_ID::RESEARCH_TERRANINFANTRYARMORLEVEL3:
+    case AbilityID::RESEARCH_TERRANINFANTRYARMORLEVEL3:
         break;
-    case sc2::ABILITY_ID::RESEARCH_TERRANINFANTRYWEAPONS:
+    case AbilityID::RESEARCH_TERRANINFANTRYWEAPONS:
         break;
-    case sc2::ABILITY_ID::RESEARCH_TERRANINFANTRYWEAPONSLEVEL1:
+    case AbilityID::RESEARCH_TERRANINFANTRYWEAPONSLEVEL1:
         break;
-    case sc2::ABILITY_ID::RESEARCH_TERRANINFANTRYWEAPONSLEVEL2:
+    case AbilityID::RESEARCH_TERRANINFANTRYWEAPONSLEVEL2:
         break;
-    case sc2::ABILITY_ID::RESEARCH_TERRANINFANTRYWEAPONSLEVEL3:
+    case AbilityID::RESEARCH_TERRANINFANTRYWEAPONSLEVEL3:
         break;
-    case sc2::ABILITY_ID::RESEARCH_TERRANSHIPWEAPONS:
+    case AbilityID::RESEARCH_TERRANSHIPWEAPONS:
         break;
-    case sc2::ABILITY_ID::RESEARCH_TERRANSHIPWEAPONSLEVEL1:
+    case AbilityID::RESEARCH_TERRANSHIPWEAPONSLEVEL1:
         break;
-    case sc2::ABILITY_ID::RESEARCH_TERRANSHIPWEAPONSLEVEL2:
+    case AbilityID::RESEARCH_TERRANSHIPWEAPONSLEVEL2:
         break;
-    case sc2::ABILITY_ID::RESEARCH_TERRANSHIPWEAPONSLEVEL3:
+    case AbilityID::RESEARCH_TERRANSHIPWEAPONSLEVEL3:
         break;
-    case sc2::ABILITY_ID::RESEARCH_TERRANSTRUCTUREARMORUPGRADE:
+    case AbilityID::RESEARCH_TERRANSTRUCTUREARMORUPGRADE:
         break;
-    case sc2::ABILITY_ID::RESEARCH_TERRANVEHICLEANDSHIPPLATING:
+    case AbilityID::RESEARCH_TERRANVEHICLEANDSHIPPLATING:
         break;
-    case sc2::ABILITY_ID::RESEARCH_TERRANVEHICLEANDSHIPPLATINGLEVEL1:
+    case AbilityID::RESEARCH_TERRANVEHICLEANDSHIPPLATINGLEVEL1:
         break;
-    case sc2::ABILITY_ID::RESEARCH_TERRANVEHICLEANDSHIPPLATINGLEVEL2:
+    case AbilityID::RESEARCH_TERRANVEHICLEANDSHIPPLATINGLEVEL2:
         break;
-    case sc2::ABILITY_ID::RESEARCH_TERRANVEHICLEANDSHIPPLATINGLEVEL3:
+    case AbilityID::RESEARCH_TERRANVEHICLEANDSHIPPLATINGLEVEL3:
         break;
-    case sc2::ABILITY_ID::RESEARCH_TERRANVEHICLEWEAPONS:
+    case AbilityID::RESEARCH_TERRANVEHICLEWEAPONS:
         break;
-    case sc2::ABILITY_ID::RESEARCH_TERRANVEHICLEWEAPONSLEVEL1:
+    case AbilityID::RESEARCH_TERRANVEHICLEWEAPONSLEVEL1:
         break;
-    case sc2::ABILITY_ID::RESEARCH_TERRANVEHICLEWEAPONSLEVEL2:
+    case AbilityID::RESEARCH_TERRANVEHICLEWEAPONSLEVEL2:
         break;
-    case sc2::ABILITY_ID::RESEARCH_TERRANVEHICLEWEAPONSLEVEL3:
+    case AbilityID::RESEARCH_TERRANVEHICLEWEAPONSLEVEL3:
         break;
-    case sc2::ABILITY_ID::RESEARCH_TUNNELINGCLAWS:
+    case AbilityID::RESEARCH_TUNNELINGCLAWS:
         break;
-    case sc2::ABILITY_ID::RESEARCH_WARPGATE:
-        return sc2::UNIT_TYPEID::PROTOSS_CYBERNETICSCORE;
-    case sc2::ABILITY_ID::RESEARCH_ZERGFLYERARMOR:
+    case AbilityID::RESEARCH_WARPGATE:
+        return UNIT_TYPEID::PROTOSS_CYBERNETICSCORE;
+    case AbilityID::RESEARCH_ZERGFLYERARMOR:
         break;
-    case sc2::ABILITY_ID::RESEARCH_ZERGFLYERARMORLEVEL1:
+    case AbilityID::RESEARCH_ZERGFLYERARMORLEVEL1:
         break;
-    case sc2::ABILITY_ID::RESEARCH_ZERGFLYERARMORLEVEL2:
+    case AbilityID::RESEARCH_ZERGFLYERARMORLEVEL2:
         break;
-    case sc2::ABILITY_ID::RESEARCH_ZERGFLYERARMORLEVEL3:
+    case AbilityID::RESEARCH_ZERGFLYERARMORLEVEL3:
         break;
-    case sc2::ABILITY_ID::RESEARCH_ZERGFLYERATTACK:
+    case AbilityID::RESEARCH_ZERGFLYERATTACK:
         break;
-    case sc2::ABILITY_ID::RESEARCH_ZERGFLYERATTACKLEVEL1:
+    case AbilityID::RESEARCH_ZERGFLYERATTACKLEVEL1:
         break;
-    case sc2::ABILITY_ID::RESEARCH_ZERGFLYERATTACKLEVEL2:
+    case AbilityID::RESEARCH_ZERGFLYERATTACKLEVEL2:
         break;
-    case sc2::ABILITY_ID::RESEARCH_ZERGFLYERATTACKLEVEL3:
+    case AbilityID::RESEARCH_ZERGFLYERATTACKLEVEL3:
         break;
-    case sc2::ABILITY_ID::RESEARCH_ZERGGROUNDARMOR:
+    case AbilityID::RESEARCH_ZERGGROUNDARMOR:
         break;
-    case sc2::ABILITY_ID::RESEARCH_ZERGGROUNDARMORLEVEL1:
+    case AbilityID::RESEARCH_ZERGGROUNDARMORLEVEL1:
         break;
-    case sc2::ABILITY_ID::RESEARCH_ZERGGROUNDARMORLEVEL2:
+    case AbilityID::RESEARCH_ZERGGROUNDARMORLEVEL2:
         break;
-    case sc2::ABILITY_ID::RESEARCH_ZERGGROUNDARMORLEVEL3:
+    case AbilityID::RESEARCH_ZERGGROUNDARMORLEVEL3:
         break;
-    case sc2::ABILITY_ID::RESEARCH_ZERGLINGADRENALGLANDS:
+    case AbilityID::RESEARCH_ZERGLINGADRENALGLANDS:
         break;
-    case sc2::ABILITY_ID::RESEARCH_ZERGLINGMETABOLICBOOST:
+    case AbilityID::RESEARCH_ZERGLINGMETABOLICBOOST:
         break;
-    case sc2::ABILITY_ID::RESEARCH_ZERGMELEEWEAPONS:
+    case AbilityID::RESEARCH_ZERGMELEEWEAPONS:
         break;
-    case sc2::ABILITY_ID::RESEARCH_ZERGMELEEWEAPONSLEVEL1:
+    case AbilityID::RESEARCH_ZERGMELEEWEAPONSLEVEL1:
         break;
-    case sc2::ABILITY_ID::RESEARCH_ZERGMELEEWEAPONSLEVEL2:
+    case AbilityID::RESEARCH_ZERGMELEEWEAPONSLEVEL2:
         break;
-    case sc2::ABILITY_ID::RESEARCH_ZERGMELEEWEAPONSLEVEL3:
+    case AbilityID::RESEARCH_ZERGMELEEWEAPONSLEVEL3:
         break;
-    case sc2::ABILITY_ID::RESEARCH_ZERGMISSILEWEAPONS:
+    case AbilityID::RESEARCH_ZERGMISSILEWEAPONS:
         break;
-    case sc2::ABILITY_ID::RESEARCH_ZERGMISSILEWEAPONSLEVEL1:
+    case AbilityID::RESEARCH_ZERGMISSILEWEAPONSLEVEL1:
         break;
-    case sc2::ABILITY_ID::RESEARCH_ZERGMISSILEWEAPONSLEVEL2:
+    case AbilityID::RESEARCH_ZERGMISSILEWEAPONSLEVEL2:
         break;
-    case sc2::ABILITY_ID::RESEARCH_ZERGMISSILEWEAPONSLEVEL3:
+    case AbilityID::RESEARCH_ZERGMISSILEWEAPONSLEVEL3:
         break;
-    case sc2::ABILITY_ID::SCAN_MOVE:
+    case AbilityID::SCAN_MOVE:
         break;
-    case sc2::ABILITY_ID::STOP:
+    case AbilityID::STOP:
         break;
-    case sc2::ABILITY_ID::STOP_BUILDING:
+    case AbilityID::STOP_BUILDING:
         break;
-    case sc2::ABILITY_ID::STOP_CHEER:
+    case AbilityID::STOP_CHEER:
         break;
-    case sc2::ABILITY_ID::STOP_DANCE:
+    case AbilityID::STOP_DANCE:
         break;
-    case sc2::ABILITY_ID::STOP_REDIRECT:
+    case AbilityID::STOP_REDIRECT:
         break;
-    case sc2::ABILITY_ID::STOP_STOP:
+    case AbilityID::STOP_STOP:
         break;
-    case sc2::ABILITY_ID::TRAINWARP_ADEPT:
+    case AbilityID::TRAINWARP_ADEPT:
         break;
-    case sc2::ABILITY_ID::TRAINWARP_DARKTEMPLAR:
+    case AbilityID::TRAINWARP_DARKTEMPLAR:
         break;
-    case sc2::ABILITY_ID::TRAINWARP_HIGHTEMPLAR:
+    case AbilityID::TRAINWARP_HIGHTEMPLAR:
         break;
-    case sc2::ABILITY_ID::TRAINWARP_SENTRY:
+    case AbilityID::TRAINWARP_SENTRY:
         break;
-    case sc2::ABILITY_ID::TRAINWARP_STALKER:
+    case AbilityID::TRAINWARP_STALKER:
         break;
-    case sc2::ABILITY_ID::TRAINWARP_ZEALOT:
+    case AbilityID::TRAINWARP_ZEALOT:
         break;
-    case sc2::ABILITY_ID::TRAIN_ADEPT:
+    case AbilityID::TRAIN_ADEPT:
         break;
-    case sc2::ABILITY_ID::TRAIN_BANELING:
+    case AbilityID::TRAIN_BANELING:
         break;
-    case sc2::ABILITY_ID::TRAIN_BANSHEE:
+    case AbilityID::TRAIN_BANSHEE:
         break;
-    case sc2::ABILITY_ID::TRAIN_BATTLECRUISER:
+    case AbilityID::TRAIN_BATTLECRUISER:
         break;
-    case sc2::ABILITY_ID::TRAIN_CARRIER:
+    case AbilityID::TRAIN_CARRIER:
         break;
-    case sc2::ABILITY_ID::TRAIN_COLOSSUS:
+    case AbilityID::TRAIN_COLOSSUS:
         break;
-    case sc2::ABILITY_ID::TRAIN_CORRUPTOR:
+    case AbilityID::TRAIN_CORRUPTOR:
         break;
-    case sc2::ABILITY_ID::TRAIN_CYCLONE:
+    case AbilityID::TRAIN_CYCLONE:
         break;
-    case sc2::ABILITY_ID::TRAIN_DARKTEMPLAR:
+    case AbilityID::TRAIN_DARKTEMPLAR:
         break;
-    case sc2::ABILITY_ID::TRAIN_DISRUPTOR:
+    case AbilityID::TRAIN_DISRUPTOR:
         break;
-    case sc2::ABILITY_ID::TRAIN_DRONE:
+    case AbilityID::TRAIN_DRONE:
         break;
-    case sc2::ABILITY_ID::TRAIN_GHOST:
+    case AbilityID::TRAIN_GHOST:
         break;
-    case sc2::ABILITY_ID::TRAIN_HELLBAT:
+    case AbilityID::TRAIN_HELLBAT:
         break;
-    case sc2::ABILITY_ID::TRAIN_HELLION:
+    case AbilityID::TRAIN_HELLION:
         break;
-    case sc2::ABILITY_ID::TRAIN_HIGHTEMPLAR:
+    case AbilityID::TRAIN_HIGHTEMPLAR:
         break;
-    case sc2::ABILITY_ID::TRAIN_HYDRALISK:
+    case AbilityID::TRAIN_HYDRALISK:
         break;
-    case sc2::ABILITY_ID::TRAIN_IMMORTAL:
+    case AbilityID::TRAIN_IMMORTAL:
         break;
-    case sc2::ABILITY_ID::TRAIN_INFESTOR:
+    case AbilityID::TRAIN_INFESTOR:
         break;
-    case sc2::ABILITY_ID::TRAIN_LIBERATOR:
+    case AbilityID::TRAIN_LIBERATOR:
         break;
-    case sc2::ABILITY_ID::TRAIN_MARAUDER:
+    case AbilityID::TRAIN_MARAUDER:
         break;
-    case sc2::ABILITY_ID::TRAIN_MARINE:
+    case AbilityID::TRAIN_MARINE:
         break;
-    case sc2::ABILITY_ID::TRAIN_MEDIVAC:
+    case AbilityID::TRAIN_MEDIVAC:
         break;
-    case sc2::ABILITY_ID::TRAIN_MOTHERSHIP:
+    case AbilityID::TRAIN_MOTHERSHIP:
         break;
-    case sc2::ABILITY_ID::TRAIN_MOTHERSHIPCORE:
+    case AbilityID::TRAIN_MOTHERSHIPCORE:
         break;
-    case sc2::ABILITY_ID::TRAIN_MUTALISK:
+    case AbilityID::TRAIN_MUTALISK:
         break;
-    case sc2::ABILITY_ID::TRAIN_OBSERVER:
+    case AbilityID::TRAIN_OBSERVER:
         break;
-    case sc2::ABILITY_ID::TRAIN_ORACLE:
+    case AbilityID::TRAIN_ORACLE:
         break;
-    case sc2::ABILITY_ID::TRAIN_OVERLORD:
+    case AbilityID::TRAIN_OVERLORD:
         break;
-    case sc2::ABILITY_ID::TRAIN_PHOENIX:
+    case AbilityID::TRAIN_PHOENIX:
         break;
-    case sc2::ABILITY_ID::TRAIN_PROBE:
+    case AbilityID::TRAIN_PROBE:
         break;
-    case sc2::ABILITY_ID::TRAIN_QUEEN:
+    case AbilityID::TRAIN_QUEEN:
         break;
-    case sc2::ABILITY_ID::TRAIN_RAVEN:
+    case AbilityID::TRAIN_RAVEN:
         break;
-    case sc2::ABILITY_ID::TRAIN_REAPER:
+    case AbilityID::TRAIN_REAPER:
         break;
-    case sc2::ABILITY_ID::TRAIN_ROACH:
+    case AbilityID::TRAIN_ROACH:
         break;
-    case sc2::ABILITY_ID::TRAIN_SCV:
+    case AbilityID::TRAIN_SCV:
         break;
-    case sc2::ABILITY_ID::TRAIN_SENTRY:
+    case AbilityID::TRAIN_SENTRY:
         break;
-    case sc2::ABILITY_ID::TRAIN_SIEGETANK:
+    case AbilityID::TRAIN_SIEGETANK:
         break;
-    case sc2::ABILITY_ID::TRAIN_STALKER:
-        return sc2::UNIT_TYPEID::PROTOSS_GATEWAY;
-    case sc2::ABILITY_ID::TRAIN_SWARMHOST:
+    case AbilityID::TRAIN_STALKER:
+        return UNIT_TYPEID::PROTOSS_GATEWAY;
+    case AbilityID::TRAIN_SWARMHOST:
         break;
-    case sc2::ABILITY_ID::TRAIN_TEMPEST:
+    case AbilityID::TRAIN_TEMPEST:
         break;
-    case sc2::ABILITY_ID::TRAIN_THOR:
+    case AbilityID::TRAIN_THOR:
         break;
-    case sc2::ABILITY_ID::TRAIN_ULTRALISK:
+    case AbilityID::TRAIN_ULTRALISK:
         break;
-    case sc2::ABILITY_ID::TRAIN_VIKINGFIGHTER:
+    case AbilityID::TRAIN_VIKINGFIGHTER:
         break;
-    case sc2::ABILITY_ID::TRAIN_VIPER:
+    case AbilityID::TRAIN_VIPER:
         break;
-    case sc2::ABILITY_ID::TRAIN_VOIDRAY:
+    case AbilityID::TRAIN_VOIDRAY:
         break;
-    case sc2::ABILITY_ID::TRAIN_WARPPRISM:
+    case AbilityID::TRAIN_WARPPRISM:
         break;
-    case sc2::ABILITY_ID::TRAIN_WIDOWMINE:
+    case AbilityID::TRAIN_WIDOWMINE:
         break;
-    case sc2::ABILITY_ID::TRAIN_ZEALOT:
+    case AbilityID::TRAIN_ZEALOT:
         break;
-    case sc2::ABILITY_ID::TRAIN_ZERGLING:
+    case AbilityID::TRAIN_ZERGLING:
         break;
-    case sc2::ABILITY_ID::UNLOADALL:
+    case AbilityID::UNLOADALL:
         break;
-    case sc2::ABILITY_ID::UNLOADALLAT:
+    case AbilityID::UNLOADALLAT:
         break;
-    case sc2::ABILITY_ID::UNLOADALLAT_MEDIVAC:
+    case AbilityID::UNLOADALLAT_MEDIVAC:
         break;
-    case sc2::ABILITY_ID::UNLOADALLAT_OVERLORD:
+    case AbilityID::UNLOADALLAT_OVERLORD:
         break;
-    case sc2::ABILITY_ID::UNLOADALLAT_WARPPRISM:
+    case AbilityID::UNLOADALLAT_WARPPRISM:
         break;
-    case sc2::ABILITY_ID::UNLOADALL_BUNKER:
+    case AbilityID::UNLOADALL_BUNKER:
         break;
-    case sc2::ABILITY_ID::UNLOADALL_COMMANDCENTER:
+    case AbilityID::UNLOADALL_COMMANDCENTER:
         break;
-    case sc2::ABILITY_ID::UNLOADALL_NYDASNETWORK:
+    case AbilityID::UNLOADALL_NYDASNETWORK:
         break;
-    case sc2::ABILITY_ID::UNLOADALL_NYDUSWORM:
+    case AbilityID::UNLOADALL_NYDUSWORM:
         break;
-    case sc2::ABILITY_ID::UNLOADUNIT_BUNKER:
+    case AbilityID::UNLOADUNIT_BUNKER:
         break;
-    case sc2::ABILITY_ID::UNLOADUNIT_COMMANDCENTER:
+    case AbilityID::UNLOADUNIT_COMMANDCENTER:
         break;
-    case sc2::ABILITY_ID::UNLOADUNIT_MEDIVAC:
+    case AbilityID::UNLOADUNIT_MEDIVAC:
         break;
-    case sc2::ABILITY_ID::UNLOADUNIT_NYDASNETWORK:
+    case AbilityID::UNLOADUNIT_NYDASNETWORK:
         break;
-    case sc2::ABILITY_ID::UNLOADUNIT_OVERLORD:
+    case AbilityID::UNLOADUNIT_OVERLORD:
         break;
-    case sc2::ABILITY_ID::UNLOADUNIT_WARPPRISM:
+    case AbilityID::UNLOADUNIT_WARPPRISM:
         break;
     default:
         break;
@@ -1275,436 +1275,436 @@ UNIT_TYPEID producer(sc2::ABILITY_ID command)
     throw std::runtime_error("produce undefined for UNIT_ID: " + std::to_string((int)command));
 }
 
-UNIT_TYPEID producer(sc2::UNIT_TYPEID unit)
+UNIT_TYPEID producer(UNIT_TYPEID unit)
 {
     switch (unit)
     {
-    case sc2::UNIT_TYPEID::INVALID:
-        sc2::UNIT_TYPEID::INVALID;
-    case sc2::UNIT_TYPEID::TERRAN_ARMORY:
+    case UNIT_TYPEID::INVALID:
+        UNIT_TYPEID::INVALID;
+    case UNIT_TYPEID::TERRAN_ARMORY:
         break;
-    case sc2::UNIT_TYPEID::TERRAN_AUTOTURRET:
+    case UNIT_TYPEID::TERRAN_AUTOTURRET:
         break;
-    case sc2::UNIT_TYPEID::TERRAN_BANSHEE:
+    case UNIT_TYPEID::TERRAN_BANSHEE:
         break;
-    case sc2::UNIT_TYPEID::TERRAN_BARRACKS:
+    case UNIT_TYPEID::TERRAN_BARRACKS:
         break;
-    case sc2::UNIT_TYPEID::TERRAN_BARRACKSFLYING:
+    case UNIT_TYPEID::TERRAN_BARRACKSFLYING:
         break;
-    case sc2::UNIT_TYPEID::TERRAN_BARRACKSREACTOR:
+    case UNIT_TYPEID::TERRAN_BARRACKSREACTOR:
         break;
-    case sc2::UNIT_TYPEID::TERRAN_BARRACKSTECHLAB:
+    case UNIT_TYPEID::TERRAN_BARRACKSTECHLAB:
         break;
-    case sc2::UNIT_TYPEID::TERRAN_BATTLECRUISER:
+    case UNIT_TYPEID::TERRAN_BATTLECRUISER:
         break;
-    case sc2::UNIT_TYPEID::TERRAN_BUNKER:
+    case UNIT_TYPEID::TERRAN_BUNKER:
         break;
-    case sc2::UNIT_TYPEID::TERRAN_COMMANDCENTER:
+    case UNIT_TYPEID::TERRAN_COMMANDCENTER:
         break;
-    case sc2::UNIT_TYPEID::TERRAN_COMMANDCENTERFLYING:
+    case UNIT_TYPEID::TERRAN_COMMANDCENTERFLYING:
         break;
-    case sc2::UNIT_TYPEID::TERRAN_CYCLONE:
+    case UNIT_TYPEID::TERRAN_CYCLONE:
         break;
-    case sc2::UNIT_TYPEID::TERRAN_ENGINEERINGBAY:
+    case UNIT_TYPEID::TERRAN_ENGINEERINGBAY:
         break;
-    case sc2::UNIT_TYPEID::TERRAN_FACTORY:
+    case UNIT_TYPEID::TERRAN_FACTORY:
         break;
-    case sc2::UNIT_TYPEID::TERRAN_FACTORYFLYING:
+    case UNIT_TYPEID::TERRAN_FACTORYFLYING:
         break;
-    case sc2::UNIT_TYPEID::TERRAN_FACTORYREACTOR:
+    case UNIT_TYPEID::TERRAN_FACTORYREACTOR:
         break;
-    case sc2::UNIT_TYPEID::TERRAN_FACTORYTECHLAB:
+    case UNIT_TYPEID::TERRAN_FACTORYTECHLAB:
         break;
-    case sc2::UNIT_TYPEID::TERRAN_FUSIONCORE:
+    case UNIT_TYPEID::TERRAN_FUSIONCORE:
         break;
-    case sc2::UNIT_TYPEID::TERRAN_GHOST:
+    case UNIT_TYPEID::TERRAN_GHOST:
         break;
-    case sc2::UNIT_TYPEID::TERRAN_GHOSTACADEMY:
+    case UNIT_TYPEID::TERRAN_GHOSTACADEMY:
         break;
-    case sc2::UNIT_TYPEID::TERRAN_HELLION:
+    case UNIT_TYPEID::TERRAN_HELLION:
         break;
-    case sc2::UNIT_TYPEID::TERRAN_HELLIONTANK:
+    case UNIT_TYPEID::TERRAN_HELLIONTANK:
         break;
-    case sc2::UNIT_TYPEID::TERRAN_LIBERATOR:
+    case UNIT_TYPEID::TERRAN_LIBERATOR:
         break;
-    case sc2::UNIT_TYPEID::TERRAN_LIBERATORAG:
+    case UNIT_TYPEID::TERRAN_LIBERATORAG:
         break;
-    case sc2::UNIT_TYPEID::TERRAN_MARAUDER:
+    case UNIT_TYPEID::TERRAN_MARAUDER:
         break;
-    case sc2::UNIT_TYPEID::TERRAN_MARINE:
+    case UNIT_TYPEID::TERRAN_MARINE:
         break;
-    case sc2::UNIT_TYPEID::TERRAN_MEDIVAC:
+    case UNIT_TYPEID::TERRAN_MEDIVAC:
         break;
-    case sc2::UNIT_TYPEID::TERRAN_MISSILETURRET:
+    case UNIT_TYPEID::TERRAN_MISSILETURRET:
         break;
-    case sc2::UNIT_TYPEID::TERRAN_MULE:
+    case UNIT_TYPEID::TERRAN_MULE:
         break;
-    case sc2::UNIT_TYPEID::TERRAN_ORBITALCOMMAND:
+    case UNIT_TYPEID::TERRAN_ORBITALCOMMAND:
         break;
-    case sc2::UNIT_TYPEID::TERRAN_ORBITALCOMMANDFLYING:
+    case UNIT_TYPEID::TERRAN_ORBITALCOMMANDFLYING:
         break;
-    case sc2::UNIT_TYPEID::TERRAN_PLANETARYFORTRESS:
+    case UNIT_TYPEID::TERRAN_PLANETARYFORTRESS:
         break;
-    case sc2::UNIT_TYPEID::TERRAN_RAVEN:
+    case UNIT_TYPEID::TERRAN_RAVEN:
         break;
-    case sc2::UNIT_TYPEID::TERRAN_REAPER:
+    case UNIT_TYPEID::TERRAN_REAPER:
         break;
-    case sc2::UNIT_TYPEID::TERRAN_REFINERY:
+    case UNIT_TYPEID::TERRAN_REFINERY:
         break;
-    case sc2::UNIT_TYPEID::TERRAN_REFINERYRICH:
+    case UNIT_TYPEID::TERRAN_REFINERYRICH:
         break;
-    case sc2::UNIT_TYPEID::TERRAN_SCV:
+    case UNIT_TYPEID::TERRAN_SCV:
         break;
-    case sc2::UNIT_TYPEID::TERRAN_SENSORTOWER:
+    case UNIT_TYPEID::TERRAN_SENSORTOWER:
         break;
-    case sc2::UNIT_TYPEID::TERRAN_SIEGETANK:
+    case UNIT_TYPEID::TERRAN_SIEGETANK:
         break;
-    case sc2::UNIT_TYPEID::TERRAN_SIEGETANKSIEGED:
+    case UNIT_TYPEID::TERRAN_SIEGETANKSIEGED:
         break;
-    case sc2::UNIT_TYPEID::TERRAN_STARPORT:
+    case UNIT_TYPEID::TERRAN_STARPORT:
         break;
-    case sc2::UNIT_TYPEID::TERRAN_STARPORTFLYING:
+    case UNIT_TYPEID::TERRAN_STARPORTFLYING:
         break;
-    case sc2::UNIT_TYPEID::TERRAN_STARPORTREACTOR:
+    case UNIT_TYPEID::TERRAN_STARPORTREACTOR:
         break;
-    case sc2::UNIT_TYPEID::TERRAN_STARPORTTECHLAB:
+    case UNIT_TYPEID::TERRAN_STARPORTTECHLAB:
         break;
-    case sc2::UNIT_TYPEID::TERRAN_SUPPLYDEPOT:
+    case UNIT_TYPEID::TERRAN_SUPPLYDEPOT:
         break;
-    case sc2::UNIT_TYPEID::TERRAN_SUPPLYDEPOTLOWERED:
+    case UNIT_TYPEID::TERRAN_SUPPLYDEPOTLOWERED:
         break;
-    case sc2::UNIT_TYPEID::TERRAN_THOR:
+    case UNIT_TYPEID::TERRAN_THOR:
         break;
-    case sc2::UNIT_TYPEID::TERRAN_THORAP:
+    case UNIT_TYPEID::TERRAN_THORAP:
         break;
-    case sc2::UNIT_TYPEID::TERRAN_VIKINGASSAULT:
+    case UNIT_TYPEID::TERRAN_VIKINGASSAULT:
         break;
-    case sc2::UNIT_TYPEID::TERRAN_VIKINGFIGHTER:
+    case UNIT_TYPEID::TERRAN_VIKINGFIGHTER:
         break;
-    case sc2::UNIT_TYPEID::TERRAN_WIDOWMINE:
+    case UNIT_TYPEID::TERRAN_WIDOWMINE:
         break;
-    case sc2::UNIT_TYPEID::TERRAN_WIDOWMINEBURROWED:
+    case UNIT_TYPEID::TERRAN_WIDOWMINEBURROWED:
         break;
-    case sc2::UNIT_TYPEID::TERRAN_KD8CHARGE:
+    case UNIT_TYPEID::TERRAN_KD8CHARGE:
         break;
-    case sc2::UNIT_TYPEID::TERRAN_NUKE:
+    case UNIT_TYPEID::TERRAN_NUKE:
         break;
-    case sc2::UNIT_TYPEID::TERRAN_POINTDEFENSEDRONE:
+    case UNIT_TYPEID::TERRAN_POINTDEFENSEDRONE:
         break;
-    case sc2::UNIT_TYPEID::TERRAN_REACTOR:
+    case UNIT_TYPEID::TERRAN_REACTOR:
         break;
-    case sc2::UNIT_TYPEID::TERRAN_TECHLAB:
+    case UNIT_TYPEID::TERRAN_TECHLAB:
         break;
-    case sc2::UNIT_TYPEID::ZERG_BANELING:
+    case UNIT_TYPEID::ZERG_BANELING:
         break;
-    case sc2::UNIT_TYPEID::ZERG_BANELINGBURROWED:
+    case UNIT_TYPEID::ZERG_BANELINGBURROWED:
         break;
-    case sc2::UNIT_TYPEID::ZERG_BANELINGCOCOON:
+    case UNIT_TYPEID::ZERG_BANELINGCOCOON:
         break;
-    case sc2::UNIT_TYPEID::ZERG_BANELINGNEST:
+    case UNIT_TYPEID::ZERG_BANELINGNEST:
         break;
-    case sc2::UNIT_TYPEID::ZERG_BROODLING:
+    case UNIT_TYPEID::ZERG_BROODLING:
         break;
-    case sc2::UNIT_TYPEID::ZERG_BROODLORD:
+    case UNIT_TYPEID::ZERG_BROODLORD:
         break;
-    case sc2::UNIT_TYPEID::ZERG_BROODLORDCOCOON:
+    case UNIT_TYPEID::ZERG_BROODLORDCOCOON:
         break;
-    case sc2::UNIT_TYPEID::ZERG_CHANGELING:
+    case UNIT_TYPEID::ZERG_CHANGELING:
         break;
-    case sc2::UNIT_TYPEID::ZERG_CHANGELINGMARINE:
+    case UNIT_TYPEID::ZERG_CHANGELINGMARINE:
         break;
-    case sc2::UNIT_TYPEID::ZERG_CHANGELINGMARINESHIELD:
+    case UNIT_TYPEID::ZERG_CHANGELINGMARINESHIELD:
         break;
-    case sc2::UNIT_TYPEID::ZERG_CHANGELINGZEALOT:
+    case UNIT_TYPEID::ZERG_CHANGELINGZEALOT:
         break;
-    case sc2::UNIT_TYPEID::ZERG_CHANGELINGZERGLING:
+    case UNIT_TYPEID::ZERG_CHANGELINGZERGLING:
         break;
-    case sc2::UNIT_TYPEID::ZERG_CHANGELINGZERGLINGWINGS:
+    case UNIT_TYPEID::ZERG_CHANGELINGZERGLINGWINGS:
         break;
-    case sc2::UNIT_TYPEID::ZERG_CORRUPTOR:
+    case UNIT_TYPEID::ZERG_CORRUPTOR:
         break;
-    case sc2::UNIT_TYPEID::ZERG_CREEPTUMOR:
+    case UNIT_TYPEID::ZERG_CREEPTUMOR:
         break;
-    case sc2::UNIT_TYPEID::ZERG_CREEPTUMORBURROWED:
+    case UNIT_TYPEID::ZERG_CREEPTUMORBURROWED:
         break;
-    case sc2::UNIT_TYPEID::ZERG_CREEPTUMORQUEEN:
+    case UNIT_TYPEID::ZERG_CREEPTUMORQUEEN:
         break;
-    case sc2::UNIT_TYPEID::ZERG_DRONE:
+    case UNIT_TYPEID::ZERG_DRONE:
         break;
-    case sc2::UNIT_TYPEID::ZERG_DRONEBURROWED:
+    case UNIT_TYPEID::ZERG_DRONEBURROWED:
         break;
-    case sc2::UNIT_TYPEID::ZERG_EGG:
+    case UNIT_TYPEID::ZERG_EGG:
         break;
-    case sc2::UNIT_TYPEID::ZERG_EVOLUTIONCHAMBER:
+    case UNIT_TYPEID::ZERG_EVOLUTIONCHAMBER:
         break;
-    case sc2::UNIT_TYPEID::ZERG_EXTRACTOR:
+    case UNIT_TYPEID::ZERG_EXTRACTOR:
         break;
-    case sc2::UNIT_TYPEID::ZERG_EXTRACTORRICH:
+    case UNIT_TYPEID::ZERG_EXTRACTORRICH:
         break;
-    case sc2::UNIT_TYPEID::ZERG_GREATERSPIRE:
+    case UNIT_TYPEID::ZERG_GREATERSPIRE:
         break;
-    case sc2::UNIT_TYPEID::ZERG_HATCHERY:
+    case UNIT_TYPEID::ZERG_HATCHERY:
         break;
-    case sc2::UNIT_TYPEID::ZERG_HIVE:
+    case UNIT_TYPEID::ZERG_HIVE:
         break;
-    case sc2::UNIT_TYPEID::ZERG_HYDRALISK:
+    case UNIT_TYPEID::ZERG_HYDRALISK:
         break;
-    case sc2::UNIT_TYPEID::ZERG_HYDRALISKBURROWED:
+    case UNIT_TYPEID::ZERG_HYDRALISKBURROWED:
         break;
-    case sc2::UNIT_TYPEID::ZERG_HYDRALISKDEN:
+    case UNIT_TYPEID::ZERG_HYDRALISKDEN:
         break;
-    case sc2::UNIT_TYPEID::ZERG_INFESTATIONPIT:
+    case UNIT_TYPEID::ZERG_INFESTATIONPIT:
         break;
-    case sc2::UNIT_TYPEID::ZERG_INFESTEDTERRANSEGG:
+    case UNIT_TYPEID::ZERG_INFESTEDTERRANSEGG:
         break;
-    case sc2::UNIT_TYPEID::ZERG_INFESTOR:
+    case UNIT_TYPEID::ZERG_INFESTOR:
         break;
-    case sc2::UNIT_TYPEID::ZERG_INFESTORBURROWED:
+    case UNIT_TYPEID::ZERG_INFESTORBURROWED:
         break;
-    case sc2::UNIT_TYPEID::ZERG_INFESTORTERRAN:
+    case UNIT_TYPEID::ZERG_INFESTORTERRAN:
         break;
-    case sc2::UNIT_TYPEID::ZERG_LAIR:
+    case UNIT_TYPEID::ZERG_LAIR:
         break;
-    case sc2::UNIT_TYPEID::ZERG_LARVA:
+    case UNIT_TYPEID::ZERG_LARVA:
         break;
-    case sc2::UNIT_TYPEID::ZERG_LOCUSTMP:
+    case UNIT_TYPEID::ZERG_LOCUSTMP:
         break;
-    case sc2::UNIT_TYPEID::ZERG_LOCUSTMPFLYING:
+    case UNIT_TYPEID::ZERG_LOCUSTMPFLYING:
         break;
-    case sc2::UNIT_TYPEID::ZERG_LURKERDENMP:
+    case UNIT_TYPEID::ZERG_LURKERDENMP:
         break;
-    case sc2::UNIT_TYPEID::ZERG_LURKERMP:
+    case UNIT_TYPEID::ZERG_LURKERMP:
         break;
-    case sc2::UNIT_TYPEID::ZERG_LURKERMPBURROWED:
+    case UNIT_TYPEID::ZERG_LURKERMPBURROWED:
         break;
-    case sc2::UNIT_TYPEID::ZERG_LURKERMPEGG:
+    case UNIT_TYPEID::ZERG_LURKERMPEGG:
         break;
-    case sc2::UNIT_TYPEID::ZERG_MUTALISK:
+    case UNIT_TYPEID::ZERG_MUTALISK:
         break;
-    case sc2::UNIT_TYPEID::ZERG_NYDUSCANAL:
+    case UNIT_TYPEID::ZERG_NYDUSCANAL:
         break;
-    case sc2::UNIT_TYPEID::ZERG_NYDUSNETWORK:
+    case UNIT_TYPEID::ZERG_NYDUSNETWORK:
         break;
-    case sc2::UNIT_TYPEID::ZERG_OVERLORD:
+    case UNIT_TYPEID::ZERG_OVERLORD:
         break;
-    case sc2::UNIT_TYPEID::ZERG_OVERLORDCOCOON:
+    case UNIT_TYPEID::ZERG_OVERLORDCOCOON:
         break;
-    case sc2::UNIT_TYPEID::ZERG_OVERLORDTRANSPORT:
+    case UNIT_TYPEID::ZERG_OVERLORDTRANSPORT:
         break;
-    case sc2::UNIT_TYPEID::ZERG_OVERSEER:
+    case UNIT_TYPEID::ZERG_OVERSEER:
         break;
-    case sc2::UNIT_TYPEID::ZERG_QUEEN:
+    case UNIT_TYPEID::ZERG_QUEEN:
         break;
-    case sc2::UNIT_TYPEID::ZERG_QUEENBURROWED:
+    case UNIT_TYPEID::ZERG_QUEENBURROWED:
         break;
-    case sc2::UNIT_TYPEID::ZERG_RAVAGER:
+    case UNIT_TYPEID::ZERG_RAVAGER:
         break;
-    case sc2::UNIT_TYPEID::ZERG_RAVAGERCOCOON:
+    case UNIT_TYPEID::ZERG_RAVAGERCOCOON:
         break;
-    case sc2::UNIT_TYPEID::ZERG_ROACH:
+    case UNIT_TYPEID::ZERG_ROACH:
         break;
-    case sc2::UNIT_TYPEID::ZERG_ROACHBURROWED:
+    case UNIT_TYPEID::ZERG_ROACHBURROWED:
         break;
-    case sc2::UNIT_TYPEID::ZERG_ROACHWARREN:
+    case UNIT_TYPEID::ZERG_ROACHWARREN:
         break;
-    case sc2::UNIT_TYPEID::ZERG_SPAWNINGPOOL:
+    case UNIT_TYPEID::ZERG_SPAWNINGPOOL:
         break;
-    case sc2::UNIT_TYPEID::ZERG_SPINECRAWLER:
+    case UNIT_TYPEID::ZERG_SPINECRAWLER:
         break;
-    case sc2::UNIT_TYPEID::ZERG_SPINECRAWLERUPROOTED:
+    case UNIT_TYPEID::ZERG_SPINECRAWLERUPROOTED:
         break;
-    case sc2::UNIT_TYPEID::ZERG_SPIRE:
+    case UNIT_TYPEID::ZERG_SPIRE:
         break;
-    case sc2::UNIT_TYPEID::ZERG_SPORECRAWLER:
+    case UNIT_TYPEID::ZERG_SPORECRAWLER:
         break;
-    case sc2::UNIT_TYPEID::ZERG_SPORECRAWLERUPROOTED:
+    case UNIT_TYPEID::ZERG_SPORECRAWLERUPROOTED:
         break;
-    case sc2::UNIT_TYPEID::ZERG_SWARMHOSTBURROWEDMP:
+    case UNIT_TYPEID::ZERG_SWARMHOSTBURROWEDMP:
         break;
-    case sc2::UNIT_TYPEID::ZERG_SWARMHOSTMP:
+    case UNIT_TYPEID::ZERG_SWARMHOSTMP:
         break;
-    case sc2::UNIT_TYPEID::ZERG_TRANSPORTOVERLORDCOCOON:
+    case UNIT_TYPEID::ZERG_TRANSPORTOVERLORDCOCOON:
         break;
-    case sc2::UNIT_TYPEID::ZERG_ULTRALISK:
+    case UNIT_TYPEID::ZERG_ULTRALISK:
         break;
-    case sc2::UNIT_TYPEID::ZERG_ULTRALISKCAVERN:
+    case UNIT_TYPEID::ZERG_ULTRALISKCAVERN:
         break;
-    case sc2::UNIT_TYPEID::ZERG_VIPER:
+    case UNIT_TYPEID::ZERG_VIPER:
         break;
-    case sc2::UNIT_TYPEID::ZERG_ZERGLING:
+    case UNIT_TYPEID::ZERG_ZERGLING:
         break;
-    case sc2::UNIT_TYPEID::ZERG_ZERGLINGBURROWED:
+    case UNIT_TYPEID::ZERG_ZERGLINGBURROWED:
         break;
-    case sc2::UNIT_TYPEID::ZERG_PARASITICBOMBDUMMY:
+    case UNIT_TYPEID::ZERG_PARASITICBOMBDUMMY:
         break;
-    case sc2::UNIT_TYPEID::PROTOSS_ADEPT:
+    case UNIT_TYPEID::PROTOSS_ADEPT:
         break;
-    case sc2::UNIT_TYPEID::PROTOSS_ADEPTPHASESHIFT:
+    case UNIT_TYPEID::PROTOSS_ADEPTPHASESHIFT:
         break;
-    case sc2::UNIT_TYPEID::PROTOSS_ARCHON:
+    case UNIT_TYPEID::PROTOSS_ARCHON:
         break;
-    case sc2::UNIT_TYPEID::PROTOSS_ASSIMILATOR:
+    case UNIT_TYPEID::PROTOSS_ASSIMILATOR:
         break;
-    case sc2::UNIT_TYPEID::PROTOSS_ASSIMILATORRICH:
+    case UNIT_TYPEID::PROTOSS_ASSIMILATORRICH:
         break;
-    case sc2::UNIT_TYPEID::PROTOSS_CARRIER:
+    case UNIT_TYPEID::PROTOSS_CARRIER:
         break;
-    case sc2::UNIT_TYPEID::PROTOSS_COLOSSUS:
+    case UNIT_TYPEID::PROTOSS_COLOSSUS:
         break;
-    case sc2::UNIT_TYPEID::PROTOSS_CYBERNETICSCORE:
+    case UNIT_TYPEID::PROTOSS_CYBERNETICSCORE:
         break;
-    case sc2::UNIT_TYPEID::PROTOSS_DARKSHRINE:
+    case UNIT_TYPEID::PROTOSS_DARKSHRINE:
         break;
-    case sc2::UNIT_TYPEID::PROTOSS_DARKTEMPLAR:
+    case UNIT_TYPEID::PROTOSS_DARKTEMPLAR:
         break;
-    case sc2::UNIT_TYPEID::PROTOSS_DISRUPTOR:
+    case UNIT_TYPEID::PROTOSS_DISRUPTOR:
         break;
-    case sc2::UNIT_TYPEID::PROTOSS_DISRUPTORPHASED:
+    case UNIT_TYPEID::PROTOSS_DISRUPTORPHASED:
         break;
-    case sc2::UNIT_TYPEID::PROTOSS_FLEETBEACON:
+    case UNIT_TYPEID::PROTOSS_FLEETBEACON:
         break;
-    case sc2::UNIT_TYPEID::PROTOSS_FORGE:
+    case UNIT_TYPEID::PROTOSS_FORGE:
         break;
-    case sc2::UNIT_TYPEID::PROTOSS_GATEWAY:
+    case UNIT_TYPEID::PROTOSS_GATEWAY:
         break;
-    case sc2::UNIT_TYPEID::PROTOSS_HIGHTEMPLAR:
+    case UNIT_TYPEID::PROTOSS_HIGHTEMPLAR:
         break;
-    case sc2::UNIT_TYPEID::PROTOSS_IMMORTAL:
+    case UNIT_TYPEID::PROTOSS_IMMORTAL:
         break;
-    case sc2::UNIT_TYPEID::PROTOSS_INTERCEPTOR:
+    case UNIT_TYPEID::PROTOSS_INTERCEPTOR:
         break;
-    case sc2::UNIT_TYPEID::PROTOSS_MOTHERSHIP:
+    case UNIT_TYPEID::PROTOSS_MOTHERSHIP:
         break;
-    case sc2::UNIT_TYPEID::PROTOSS_MOTHERSHIPCORE:
+    case UNIT_TYPEID::PROTOSS_MOTHERSHIPCORE:
         break;
-    case sc2::UNIT_TYPEID::PROTOSS_NEXUS:
-        return sc2::UNIT_TYPEID::PROTOSS_PROBE;
-    case sc2::UNIT_TYPEID::PROTOSS_OBSERVER:
+    case UNIT_TYPEID::PROTOSS_NEXUS:
+        return UNIT_TYPEID::PROTOSS_PROBE;
+    case UNIT_TYPEID::PROTOSS_OBSERVER:
         break;
-    case sc2::UNIT_TYPEID::PROTOSS_ORACLE:
+    case UNIT_TYPEID::PROTOSS_ORACLE:
         break;
-    case sc2::UNIT_TYPEID::PROTOSS_ORACLESTASISTRAP:
+    case UNIT_TYPEID::PROTOSS_ORACLESTASISTRAP:
         break;
-    case sc2::UNIT_TYPEID::PROTOSS_PHOENIX:
+    case UNIT_TYPEID::PROTOSS_PHOENIX:
         break;
-    case sc2::UNIT_TYPEID::PROTOSS_PHOTONCANNON:
+    case UNIT_TYPEID::PROTOSS_PHOTONCANNON:
         break;
-    case sc2::UNIT_TYPEID::PROTOSS_PROBE:
-        return sc2::UNIT_TYPEID::PROTOSS_NEXUS;
-    case sc2::UNIT_TYPEID::PROTOSS_PYLON:
-        return sc2::UNIT_TYPEID::PROTOSS_PROBE;
-    case sc2::UNIT_TYPEID::PROTOSS_PYLONOVERCHARGED:
+    case UNIT_TYPEID::PROTOSS_PROBE:
+        return UNIT_TYPEID::PROTOSS_NEXUS;
+    case UNIT_TYPEID::PROTOSS_PYLON:
+        return UNIT_TYPEID::PROTOSS_PROBE;
+    case UNIT_TYPEID::PROTOSS_PYLONOVERCHARGED:
         break;
-    case sc2::UNIT_TYPEID::PROTOSS_ROBOTICSBAY:
+    case UNIT_TYPEID::PROTOSS_ROBOTICSBAY:
         break;
-    case sc2::UNIT_TYPEID::PROTOSS_ROBOTICSFACILITY:
+    case UNIT_TYPEID::PROTOSS_ROBOTICSFACILITY:
         break;
-    case sc2::UNIT_TYPEID::PROTOSS_SENTRY:
+    case UNIT_TYPEID::PROTOSS_SENTRY:
         break;
-    case sc2::UNIT_TYPEID::PROTOSS_SHIELDBATTERY:
+    case UNIT_TYPEID::PROTOSS_SHIELDBATTERY:
         break;
-    case sc2::UNIT_TYPEID::PROTOSS_STALKER:
-        return sc2::UNIT_TYPEID::PROTOSS_WARPGATE;
-    case sc2::UNIT_TYPEID::PROTOSS_STARGATE:
-        return sc2::UNIT_TYPEID::PROTOSS_PROBE;
-    case sc2::UNIT_TYPEID::PROTOSS_TEMPEST:
+    case UNIT_TYPEID::PROTOSS_STALKER:
+        return UNIT_TYPEID::PROTOSS_WARPGATE;
+    case UNIT_TYPEID::PROTOSS_STARGATE:
+        return UNIT_TYPEID::PROTOSS_PROBE;
+    case UNIT_TYPEID::PROTOSS_TEMPEST:
         break;
-    case sc2::UNIT_TYPEID::PROTOSS_TEMPLARARCHIVE:
+    case UNIT_TYPEID::PROTOSS_TEMPLARARCHIVE:
         break;
-    case sc2::UNIT_TYPEID::PROTOSS_TWILIGHTCOUNCIL:
+    case UNIT_TYPEID::PROTOSS_TWILIGHTCOUNCIL:
         break;
-    case sc2::UNIT_TYPEID::PROTOSS_VOIDRAY:
+    case UNIT_TYPEID::PROTOSS_VOIDRAY:
         break;
-    case sc2::UNIT_TYPEID::PROTOSS_WARPGATE:
-        return sc2::UNIT_TYPEID::PROTOSS_GATEWAY;
-    case sc2::UNIT_TYPEID::PROTOSS_WARPPRISM:
+    case UNIT_TYPEID::PROTOSS_WARPGATE:
+        return UNIT_TYPEID::PROTOSS_GATEWAY;
+    case UNIT_TYPEID::PROTOSS_WARPPRISM:
         break;
-    case sc2::UNIT_TYPEID::PROTOSS_WARPPRISMPHASING:
+    case UNIT_TYPEID::PROTOSS_WARPPRISMPHASING:
         break;
-    case sc2::UNIT_TYPEID::PROTOSS_ZEALOT:
-    case sc2::UNIT_TYPEID::NEUTRAL_BATTLESTATIONMINERALFIELD:
+    case UNIT_TYPEID::PROTOSS_ZEALOT:
+    case UNIT_TYPEID::NEUTRAL_BATTLESTATIONMINERALFIELD:
         break;
-    case sc2::UNIT_TYPEID::NEUTRAL_BATTLESTATIONMINERALFIELD750:
+    case UNIT_TYPEID::NEUTRAL_BATTLESTATIONMINERALFIELD750:
         break;
-    case sc2::UNIT_TYPEID::NEUTRAL_COLLAPSIBLEROCKTOWERDEBRIS:
+    case UNIT_TYPEID::NEUTRAL_COLLAPSIBLEROCKTOWERDEBRIS:
         break;
-    case sc2::UNIT_TYPEID::NEUTRAL_COLLAPSIBLEROCKTOWERDIAGONAL:
+    case UNIT_TYPEID::NEUTRAL_COLLAPSIBLEROCKTOWERDIAGONAL:
         break;
-    case sc2::UNIT_TYPEID::NEUTRAL_COLLAPSIBLEROCKTOWERPUSHUNIT:
+    case UNIT_TYPEID::NEUTRAL_COLLAPSIBLEROCKTOWERPUSHUNIT:
         break;
-    case sc2::UNIT_TYPEID::NEUTRAL_COLLAPSIBLETERRANTOWERDEBRIS:
+    case UNIT_TYPEID::NEUTRAL_COLLAPSIBLETERRANTOWERDEBRIS:
         break;
-    case sc2::UNIT_TYPEID::NEUTRAL_COLLAPSIBLETERRANTOWERDIAGONAL:
+    case UNIT_TYPEID::NEUTRAL_COLLAPSIBLETERRANTOWERDIAGONAL:
         break;
-    case sc2::UNIT_TYPEID::NEUTRAL_COLLAPSIBLETERRANTOWERPUSHUNIT:
+    case UNIT_TYPEID::NEUTRAL_COLLAPSIBLETERRANTOWERPUSHUNIT:
         break;
-    case sc2::UNIT_TYPEID::NEUTRAL_COLLAPSIBLETERRANTOWERPUSHUNITRAMPLEFT:
+    case UNIT_TYPEID::NEUTRAL_COLLAPSIBLETERRANTOWERPUSHUNITRAMPLEFT:
         break;
-    case sc2::UNIT_TYPEID::NEUTRAL_COLLAPSIBLETERRANTOWERPUSHUNITRAMPRIGHT:
+    case UNIT_TYPEID::NEUTRAL_COLLAPSIBLETERRANTOWERPUSHUNITRAMPRIGHT:
         break;
-    case sc2::UNIT_TYPEID::NEUTRAL_COLLAPSIBLETERRANTOWERRAMPLEFT:
+    case UNIT_TYPEID::NEUTRAL_COLLAPSIBLETERRANTOWERRAMPLEFT:
         break;
-    case sc2::UNIT_TYPEID::NEUTRAL_COLLAPSIBLETERRANTOWERRAMPRIGHT:
+    case UNIT_TYPEID::NEUTRAL_COLLAPSIBLETERRANTOWERRAMPRIGHT:
         break;
-    case sc2::UNIT_TYPEID::NEUTRAL_DEBRISRAMPLEFT:
+    case UNIT_TYPEID::NEUTRAL_DEBRISRAMPLEFT:
         break;
-    case sc2::UNIT_TYPEID::NEUTRAL_DEBRISRAMPRIGHT:
+    case UNIT_TYPEID::NEUTRAL_DEBRISRAMPRIGHT:
         break;
-    case sc2::UNIT_TYPEID::NEUTRAL_DESTRUCTIBLEDEBRIS6X6:
+    case UNIT_TYPEID::NEUTRAL_DESTRUCTIBLEDEBRIS6X6:
         break;
-    case sc2::UNIT_TYPEID::NEUTRAL_DESTRUCTIBLEDEBRISRAMPDIAGONALHUGEBLUR:
+    case UNIT_TYPEID::NEUTRAL_DESTRUCTIBLEDEBRISRAMPDIAGONALHUGEBLUR:
         break;
-    case sc2::UNIT_TYPEID::NEUTRAL_DESTRUCTIBLEDEBRISRAMPDIAGONALHUGEULBR:
+    case UNIT_TYPEID::NEUTRAL_DESTRUCTIBLEDEBRISRAMPDIAGONALHUGEULBR:
         break;
-    case sc2::UNIT_TYPEID::NEUTRAL_DESTRUCTIBLEROCK6X6:
+    case UNIT_TYPEID::NEUTRAL_DESTRUCTIBLEROCK6X6:
         break;
-    case sc2::UNIT_TYPEID::NEUTRAL_DESTRUCTIBLEROCKEX1DIAGONALHUGEBLUR:
+    case UNIT_TYPEID::NEUTRAL_DESTRUCTIBLEROCKEX1DIAGONALHUGEBLUR:
         break;
-    case sc2::UNIT_TYPEID::NEUTRAL_FORCEFIELD:
+    case UNIT_TYPEID::NEUTRAL_FORCEFIELD:
         break;
-    case sc2::UNIT_TYPEID::NEUTRAL_KARAKFEMALE:
+    case UNIT_TYPEID::NEUTRAL_KARAKFEMALE:
         break;
-    case sc2::UNIT_TYPEID::NEUTRAL_LABMINERALFIELD:
+    case UNIT_TYPEID::NEUTRAL_LABMINERALFIELD:
         break;
-    case sc2::UNIT_TYPEID::NEUTRAL_LABMINERALFIELD750:
+    case UNIT_TYPEID::NEUTRAL_LABMINERALFIELD750:
         break;
-    case sc2::UNIT_TYPEID::NEUTRAL_MINERALFIELD:
+    case UNIT_TYPEID::NEUTRAL_MINERALFIELD:
         break;
-    case sc2::UNIT_TYPEID::NEUTRAL_MINERALFIELD750:
+    case UNIT_TYPEID::NEUTRAL_MINERALFIELD750:
         break;
-    case sc2::UNIT_TYPEID::NEUTRAL_PROTOSSVESPENEGEYSER:
+    case UNIT_TYPEID::NEUTRAL_PROTOSSVESPENEGEYSER:
         break;
-    case sc2::UNIT_TYPEID::NEUTRAL_PURIFIERMINERALFIELD:
+    case UNIT_TYPEID::NEUTRAL_PURIFIERMINERALFIELD:
         break;
-    case sc2::UNIT_TYPEID::NEUTRAL_PURIFIERMINERALFIELD750:
+    case UNIT_TYPEID::NEUTRAL_PURIFIERMINERALFIELD750:
         break;
-    case sc2::UNIT_TYPEID::NEUTRAL_PURIFIERRICHMINERALFIELD:
+    case UNIT_TYPEID::NEUTRAL_PURIFIERRICHMINERALFIELD:
         break;
-    case sc2::UNIT_TYPEID::NEUTRAL_PURIFIERRICHMINERALFIELD750:
+    case UNIT_TYPEID::NEUTRAL_PURIFIERRICHMINERALFIELD750:
         break;
-    case sc2::UNIT_TYPEID::NEUTRAL_PURIFIERVESPENEGEYSER:
+    case UNIT_TYPEID::NEUTRAL_PURIFIERVESPENEGEYSER:
         break;
-    case sc2::UNIT_TYPEID::NEUTRAL_RICHMINERALFIELD:
+    case UNIT_TYPEID::NEUTRAL_RICHMINERALFIELD:
         break;
-    case sc2::UNIT_TYPEID::NEUTRAL_RICHMINERALFIELD750:
+    case UNIT_TYPEID::NEUTRAL_RICHMINERALFIELD750:
         break;
-    case sc2::UNIT_TYPEID::NEUTRAL_RICHVESPENEGEYSER:
+    case UNIT_TYPEID::NEUTRAL_RICHVESPENEGEYSER:
         break;
-    case sc2::UNIT_TYPEID::NEUTRAL_SCANTIPEDE:
+    case UNIT_TYPEID::NEUTRAL_SCANTIPEDE:
         break;
-    case sc2::UNIT_TYPEID::NEUTRAL_SHAKURASVESPENEGEYSER:
+    case UNIT_TYPEID::NEUTRAL_SHAKURASVESPENEGEYSER:
         break;
-    case sc2::UNIT_TYPEID::NEUTRAL_SPACEPLATFORMGEYSER:
+    case UNIT_TYPEID::NEUTRAL_SPACEPLATFORMGEYSER:
         break;
-    case sc2::UNIT_TYPEID::NEUTRAL_UNBUILDABLEBRICKSDESTRUCTIBLE:
+    case UNIT_TYPEID::NEUTRAL_UNBUILDABLEBRICKSDESTRUCTIBLE:
         break;
-    case sc2::UNIT_TYPEID::NEUTRAL_UNBUILDABLEPLATESDESTRUCTIBLE:
+    case UNIT_TYPEID::NEUTRAL_UNBUILDABLEPLATESDESTRUCTIBLE:
         break;
-    case sc2::UNIT_TYPEID::NEUTRAL_UTILITYBOT:
+    case UNIT_TYPEID::NEUTRAL_UTILITYBOT:
         break;
-    case sc2::UNIT_TYPEID::NEUTRAL_VESPENEGEYSER:
+    case UNIT_TYPEID::NEUTRAL_VESPENEGEYSER:
         break;
-    case sc2::UNIT_TYPEID::NEUTRAL_XELNAGATOWER:
+    case UNIT_TYPEID::NEUTRAL_XELNAGATOWER:
         break;
     default:
         break;
@@ -1714,190 +1714,190 @@ UNIT_TYPEID producer(sc2::UNIT_TYPEID unit)
     throw std::runtime_error("TechTree::command undefined for UNIT_ID: " + std::to_string((int)unit));
 }
 
-UNIT_TYPEID producer(sc2::UPGRADE_ID upgrade)
+UNIT_TYPEID producer(UPGRADE_ID upgrade)
 {
     switch (upgrade)
     {
-    case sc2::UPGRADE_ID::INVALID:
+    case UPGRADE_ID::INVALID:
         return UNIT_TYPEID::INVALID;
-    case sc2::UPGRADE_ID::CARRIERLAUNCHSPEEDUPGRADE:
+    case UPGRADE_ID::CARRIERLAUNCHSPEEDUPGRADE:
         break;
-    case sc2::UPGRADE_ID::GLIALRECONSTITUTION:
+    case UPGRADE_ID::GLIALRECONSTITUTION:
         break;
-    case sc2::UPGRADE_ID::TUNNELINGCLAWS:
+    case UPGRADE_ID::TUNNELINGCLAWS:
         break;
-    case sc2::UPGRADE_ID::CHITINOUSPLATING:
+    case UPGRADE_ID::CHITINOUSPLATING:
         break;
-    case sc2::UPGRADE_ID::HISECAUTOTRACKING:
+    case UPGRADE_ID::HISECAUTOTRACKING:
         break;
-    case sc2::UPGRADE_ID::TERRANBUILDINGARMOR:
+    case UPGRADE_ID::TERRANBUILDINGARMOR:
         break;
-    case sc2::UPGRADE_ID::TERRANINFANTRYWEAPONSLEVEL1:
+    case UPGRADE_ID::TERRANINFANTRYWEAPONSLEVEL1:
         break;
-    case sc2::UPGRADE_ID::TERRANINFANTRYWEAPONSLEVEL2:
+    case UPGRADE_ID::TERRANINFANTRYWEAPONSLEVEL2:
         break;
-    case sc2::UPGRADE_ID::TERRANINFANTRYWEAPONSLEVEL3:
+    case UPGRADE_ID::TERRANINFANTRYWEAPONSLEVEL3:
         break;
-    case sc2::UPGRADE_ID::NEOSTEELFRAME:
+    case UPGRADE_ID::NEOSTEELFRAME:
         break;
-    case sc2::UPGRADE_ID::TERRANINFANTRYARMORSLEVEL1:
+    case UPGRADE_ID::TERRANINFANTRYARMORSLEVEL1:
         break;
-    case sc2::UPGRADE_ID::TERRANINFANTRYARMORSLEVEL2:
+    case UPGRADE_ID::TERRANINFANTRYARMORSLEVEL2:
         break;
-    case sc2::UPGRADE_ID::TERRANINFANTRYARMORSLEVEL3:
+    case UPGRADE_ID::TERRANINFANTRYARMORSLEVEL3:
         break;
-    case sc2::UPGRADE_ID::STIMPACK:
+    case UPGRADE_ID::STIMPACK:
         break;
-    case sc2::UPGRADE_ID::SHIELDWALL:
+    case UPGRADE_ID::SHIELDWALL:
         break;
-    case sc2::UPGRADE_ID::PUNISHERGRENADES:
+    case UPGRADE_ID::PUNISHERGRENADES:
         break;
-    case sc2::UPGRADE_ID::HIGHCAPACITYBARRELS:
+    case UPGRADE_ID::HIGHCAPACITYBARRELS:
         break;
-    case sc2::UPGRADE_ID::BANSHEECLOAK:
+    case UPGRADE_ID::BANSHEECLOAK:
         break;
-    case sc2::UPGRADE_ID::RAVENCORVIDREACTOR:
+    case UPGRADE_ID::RAVENCORVIDREACTOR:
         break;
-    case sc2::UPGRADE_ID::PERSONALCLOAKING:
+    case UPGRADE_ID::PERSONALCLOAKING:
         break;
-    case sc2::UPGRADE_ID::TERRANVEHICLEWEAPONSLEVEL1:
+    case UPGRADE_ID::TERRANVEHICLEWEAPONSLEVEL1:
         break;
-    case sc2::UPGRADE_ID::TERRANVEHICLEWEAPONSLEVEL2:
+    case UPGRADE_ID::TERRANVEHICLEWEAPONSLEVEL2:
         break;
-    case sc2::UPGRADE_ID::TERRANVEHICLEWEAPONSLEVEL3:
+    case UPGRADE_ID::TERRANVEHICLEWEAPONSLEVEL3:
         break;
-    case sc2::UPGRADE_ID::TERRANSHIPWEAPONSLEVEL1:
+    case UPGRADE_ID::TERRANSHIPWEAPONSLEVEL1:
         break;
-    case sc2::UPGRADE_ID::TERRANSHIPWEAPONSLEVEL2:
+    case UPGRADE_ID::TERRANSHIPWEAPONSLEVEL2:
         break;
-    case sc2::UPGRADE_ID::TERRANSHIPWEAPONSLEVEL3:
+    case UPGRADE_ID::TERRANSHIPWEAPONSLEVEL3:
         break;
-    case sc2::UPGRADE_ID::PROTOSSGROUNDWEAPONSLEVEL1:
+    case UPGRADE_ID::PROTOSSGROUNDWEAPONSLEVEL1:
         break;
-    case sc2::UPGRADE_ID::PROTOSSGROUNDWEAPONSLEVEL2:
+    case UPGRADE_ID::PROTOSSGROUNDWEAPONSLEVEL2:
         break;
-    case sc2::UPGRADE_ID::PROTOSSGROUNDWEAPONSLEVEL3:
+    case UPGRADE_ID::PROTOSSGROUNDWEAPONSLEVEL3:
         break;
-    case sc2::UPGRADE_ID::PROTOSSGROUNDARMORSLEVEL1:
+    case UPGRADE_ID::PROTOSSGROUNDARMORSLEVEL1:
         break;
-    case sc2::UPGRADE_ID::PROTOSSGROUNDARMORSLEVEL2:
+    case UPGRADE_ID::PROTOSSGROUNDARMORSLEVEL2:
         break;
-    case sc2::UPGRADE_ID::PROTOSSGROUNDARMORSLEVEL3:
+    case UPGRADE_ID::PROTOSSGROUNDARMORSLEVEL3:
         break;
-    case sc2::UPGRADE_ID::PROTOSSSHIELDSLEVEL1:
+    case UPGRADE_ID::PROTOSSSHIELDSLEVEL1:
         break;
-    case sc2::UPGRADE_ID::PROTOSSSHIELDSLEVEL2:
+    case UPGRADE_ID::PROTOSSSHIELDSLEVEL2:
         break;
-    case sc2::UPGRADE_ID::PROTOSSSHIELDSLEVEL3:
+    case UPGRADE_ID::PROTOSSSHIELDSLEVEL3:
         break;
-    case sc2::UPGRADE_ID::OBSERVERGRAVITICBOOSTER:
+    case UPGRADE_ID::OBSERVERGRAVITICBOOSTER:
         break;
-    case sc2::UPGRADE_ID::GRAVITICDRIVE:
+    case UPGRADE_ID::GRAVITICDRIVE:
         break;
-    case sc2::UPGRADE_ID::EXTENDEDTHERMALLANCE:
+    case UPGRADE_ID::EXTENDEDTHERMALLANCE:
         break;
-    case sc2::UPGRADE_ID::PSISTORMTECH:
+    case UPGRADE_ID::PSISTORMTECH:
         break;
-    case sc2::UPGRADE_ID::ZERGMELEEWEAPONSLEVEL1:
+    case UPGRADE_ID::ZERGMELEEWEAPONSLEVEL1:
         break;
-    case sc2::UPGRADE_ID::ZERGMELEEWEAPONSLEVEL2:
+    case UPGRADE_ID::ZERGMELEEWEAPONSLEVEL2:
         break;
-    case sc2::UPGRADE_ID::ZERGMELEEWEAPONSLEVEL3:
+    case UPGRADE_ID::ZERGMELEEWEAPONSLEVEL3:
         break;
-    case sc2::UPGRADE_ID::ZERGGROUNDARMORSLEVEL1:
+    case UPGRADE_ID::ZERGGROUNDARMORSLEVEL1:
         break;
-    case sc2::UPGRADE_ID::ZERGGROUNDARMORSLEVEL2:
+    case UPGRADE_ID::ZERGGROUNDARMORSLEVEL2:
         break;
-    case sc2::UPGRADE_ID::ZERGGROUNDARMORSLEVEL3:
+    case UPGRADE_ID::ZERGGROUNDARMORSLEVEL3:
         break;
-    case sc2::UPGRADE_ID::ZERGMISSILEWEAPONSLEVEL1:
+    case UPGRADE_ID::ZERGMISSILEWEAPONSLEVEL1:
         break;
-    case sc2::UPGRADE_ID::ZERGMISSILEWEAPONSLEVEL2:
+    case UPGRADE_ID::ZERGMISSILEWEAPONSLEVEL2:
         break;
-    case sc2::UPGRADE_ID::ZERGMISSILEWEAPONSLEVEL3:
+    case UPGRADE_ID::ZERGMISSILEWEAPONSLEVEL3:
         break;
-    case sc2::UPGRADE_ID::OVERLORDSPEED:
+    case UPGRADE_ID::OVERLORDSPEED:
         break;
-    case sc2::UPGRADE_ID::BURROW:
+    case UPGRADE_ID::BURROW:
         break;
-    case sc2::UPGRADE_ID::ZERGLINGATTACKSPEED:
+    case UPGRADE_ID::ZERGLINGATTACKSPEED:
         break;
-    case sc2::UPGRADE_ID::ZERGLINGMOVEMENTSPEED:
+    case UPGRADE_ID::ZERGLINGMOVEMENTSPEED:
         break;
-    case sc2::UPGRADE_ID::ZERGFLYERWEAPONSLEVEL1:
+    case UPGRADE_ID::ZERGFLYERWEAPONSLEVEL1:
         break;
-    case sc2::UPGRADE_ID::ZERGFLYERWEAPONSLEVEL2:
+    case UPGRADE_ID::ZERGFLYERWEAPONSLEVEL2:
         break;
-    case sc2::UPGRADE_ID::ZERGFLYERWEAPONSLEVEL3:
+    case UPGRADE_ID::ZERGFLYERWEAPONSLEVEL3:
         break;
-    case sc2::UPGRADE_ID::ZERGFLYERARMORSLEVEL1:
+    case UPGRADE_ID::ZERGFLYERARMORSLEVEL1:
         break;
-    case sc2::UPGRADE_ID::ZERGFLYERARMORSLEVEL2:
+    case UPGRADE_ID::ZERGFLYERARMORSLEVEL2:
         break;
-    case sc2::UPGRADE_ID::ZERGFLYERARMORSLEVEL3:
+    case UPGRADE_ID::ZERGFLYERARMORSLEVEL3:
         break;
-    case sc2::UPGRADE_ID::INFESTORENERGYUPGRADE:
+    case UPGRADE_ID::INFESTORENERGYUPGRADE:
         break;
-    case sc2::UPGRADE_ID::CENTRIFICALHOOKS:
+    case UPGRADE_ID::CENTRIFICALHOOKS:
         break;
-    case sc2::UPGRADE_ID::BATTLECRUISERENABLESPECIALIZATIONS:
+    case UPGRADE_ID::BATTLECRUISERENABLESPECIALIZATIONS:
         break;
-    case sc2::UPGRADE_ID::PROTOSSAIRWEAPONSLEVEL1:
+    case UPGRADE_ID::PROTOSSAIRWEAPONSLEVEL1:
         break;
-    case sc2::UPGRADE_ID::PROTOSSAIRWEAPONSLEVEL2:
+    case UPGRADE_ID::PROTOSSAIRWEAPONSLEVEL2:
         break;
-    case sc2::UPGRADE_ID::PROTOSSAIRWEAPONSLEVEL3:
+    case UPGRADE_ID::PROTOSSAIRWEAPONSLEVEL3:
         break;
-    case sc2::UPGRADE_ID::PROTOSSAIRARMORSLEVEL1:
+    case UPGRADE_ID::PROTOSSAIRARMORSLEVEL1:
         break;
-    case sc2::UPGRADE_ID::PROTOSSAIRARMORSLEVEL2:
+    case UPGRADE_ID::PROTOSSAIRARMORSLEVEL2:
         break;
-    case sc2::UPGRADE_ID::PROTOSSAIRARMORSLEVEL3:
+    case UPGRADE_ID::PROTOSSAIRARMORSLEVEL3:
         break;
-    case sc2::UPGRADE_ID::WARPGATERESEARCH:
-        return sc2::UNIT_TYPEID::PROTOSS_CYBERNETICSCORE;
-    case sc2::UPGRADE_ID::CHARGE:
+    case UPGRADE_ID::WARPGATERESEARCH:
+        return UNIT_TYPEID::PROTOSS_CYBERNETICSCORE;
+    case UPGRADE_ID::CHARGE:
         break;
         break;
-    case sc2::UPGRADE_ID::BLINKTECH:
+    case UPGRADE_ID::BLINKTECH:
         break;
-    case sc2::UPGRADE_ID::PHOENIXRANGEUPGRADE:
+    case UPGRADE_ID::PHOENIXRANGEUPGRADE:
         break;
-    case sc2::UPGRADE_ID::NEURALPARASITE:
+    case UPGRADE_ID::NEURALPARASITE:
         break;
-    case sc2::UPGRADE_ID::TERRANVEHICLEANDSHIPARMORSLEVEL1:
+    case UPGRADE_ID::TERRANVEHICLEANDSHIPARMORSLEVEL1:
         break;
-    case sc2::UPGRADE_ID::TERRANVEHICLEANDSHIPARMORSLEVEL2:
+    case UPGRADE_ID::TERRANVEHICLEANDSHIPARMORSLEVEL2:
         break;
-    case sc2::UPGRADE_ID::TERRANVEHICLEANDSHIPARMORSLEVEL3:
+    case UPGRADE_ID::TERRANVEHICLEANDSHIPARMORSLEVEL3:
         break;
-    case sc2::UPGRADE_ID::DRILLCLAWS:
+    case UPGRADE_ID::DRILLCLAWS:
         break;
-    case sc2::UPGRADE_ID::ADEPTPIERCINGATTACK:
+    case UPGRADE_ID::ADEPTPIERCINGATTACK:
         break;
-    case sc2::UPGRADE_ID::MAGFIELDLAUNCHERS:
+    case UPGRADE_ID::MAGFIELDLAUNCHERS:
         break;
-    case sc2::UPGRADE_ID::EVOLVEGROOVEDSPINES:
+    case UPGRADE_ID::EVOLVEGROOVEDSPINES:
         break;
-    case sc2::UPGRADE_ID::EVOLVEMUSCULARAUGMENTS:
+    case UPGRADE_ID::EVOLVEMUSCULARAUGMENTS:
         break;
-    case sc2::UPGRADE_ID::BANSHEESPEED:
+    case UPGRADE_ID::BANSHEESPEED:
         break;
-    case sc2::UPGRADE_ID::RAVENRECALIBRATEDEXPLOSIVES:
+    case UPGRADE_ID::RAVENRECALIBRATEDEXPLOSIVES:
         break;
-    case sc2::UPGRADE_ID::MEDIVACINCREASESPEEDBOOST:
+    case UPGRADE_ID::MEDIVACINCREASESPEEDBOOST:
         break;
-    case sc2::UPGRADE_ID::LIBERATORAGRANGEUPGRADE:
+    case UPGRADE_ID::LIBERATORAGRANGEUPGRADE:
         break;
-    case sc2::UPGRADE_ID::DARKTEMPLARBLINKUPGRADE:
+    case UPGRADE_ID::DARKTEMPLARBLINKUPGRADE:
         break;
-    case sc2::UPGRADE_ID::CYCLONELOCKONDAMAGEUPGRADE:
+    case UPGRADE_ID::CYCLONELOCKONDAMAGEUPGRADE:
         break;
-    case sc2::UPGRADE_ID::SMARTSERVOS:
+    case UPGRADE_ID::SMARTSERVOS:
         break;
-    case sc2::UPGRADE_ID::RAPIDFIRELAUNCHERS:
+    case UPGRADE_ID::RAPIDFIRELAUNCHERS:
         break;
-    case sc2::UPGRADE_ID::ENHANCEDMUNITIONS:
+    case UPGRADE_ID::ENHANCEDMUNITIONS:
         break;
     default:
         break;
