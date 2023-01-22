@@ -9,9 +9,9 @@
 #include <boost/beast/websocket.hpp>
 #include <boost/process.hpp>
 
-#include "Actions.h"
+#include <sc2pp/Actions.h>
 
-#include "SC2Context.h"
+#include <sc2pp/SC2Context.h>
 
 namespace sc2
 {
@@ -36,6 +36,8 @@ GameInfo get_game_info(const std::shared_ptr<SC2Session>& session);
 
 class Agent;
 
+const 
+
 class SC2Client
 {
 public:
@@ -50,7 +52,12 @@ public:
     template<class T>
     bool joinGame()
     {
-        return joinGame(std::make_unique<T>(SC2Context(get_game_info(m_session))));
+        const auto id = joinGame(Race::Protoss);
+        if (id == -1)
+            return false;
+        m_agent = std::make_unique<T>(id, SC2Context(get_game_info(m_session)));
+
+        return m_agent.get();
     }
 
     std::optional<proto::PlayerResult> update();
@@ -58,7 +65,7 @@ public:
     bool ping();
 
 private:
-    bool joinGame(std::unique_ptr<Agent> agent);
+    uint32_t joinGame(Race race);
 
     std::pair<int, proto::ResponseObservation> step();
 
@@ -66,7 +73,6 @@ private:
     boost::asio::io_context& m_ioc;
     std::shared_ptr<SC2Session> m_session;
     std::unique_ptr<Agent> m_agent;
-    int m_agent_id;
     int m_prev_loop;
 };
 

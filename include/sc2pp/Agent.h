@@ -10,9 +10,11 @@ namespace sc2
 class Agent
 {
 public:
-    explicit Agent(SC2Context sc2);
+    explicit Agent(uint32_t id, SC2Context sc2);
 
     virtual proto::Race race() = 0;
+
+    uint32_t id() const;
 
     std::unique_ptr<proto::Request> step(const proto::ResponseObservation& response_obs);
 
@@ -21,6 +23,7 @@ protected:
 
 private:
     virtual void update() = 0;
+    uint32_t m_id;
 };
 
 }

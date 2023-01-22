@@ -1,7 +1,6 @@
 #pragma once 
 
 #include <sc2pp/Common.h>
-#include <sc2pp/SC2Context.h>
 #include <sc2pp/SC2IDs.h>
 
 #include <array>

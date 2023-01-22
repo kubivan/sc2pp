@@ -11,6 +11,8 @@ if (CMAKE_CXX_COMPILER_VERSION VERSION_GREATER_EQUAL 19.12.25835)
 endif()
 
 set(SC2PP_SOURCES 
+    ../include/sc2pp/Map.h 
+    Map.cpp
     ../include/sc2pp/Actions.h
     ../include/sc2pp/Agent.h
     ../include/sc2pp/Common.h

@@ -1,10 +1,10 @@
 #pragma once
 
-#include "Grid.h"
+#include <sc2pp/utils/Grid.h>
+#include <sc2pp/utils/GridView.h>
+#include <sc2pp/utils/UnitTraits.h>
+#include <sc2pp/utils/Footprints.h>
 
-#include "GridView.h"
-#include "UnitTraits.h"
-#include "Footprints.h"
 #include <functional>
 #include <set>
 #include <queue>

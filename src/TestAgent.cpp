@@ -2,8 +2,9 @@
 
 using namespace sc2;
 
-TestAgent::TestAgent(sc2::SC2Context sc2)
-    : Agent(std::move(sc2))
+TestAgent::TestAgent(uint32_t id, sc2::SC2Context sc2)
+    : Agent(id, std::move(sc2))
+    //, m_map(m_sc2.obs())
 {
 }
 

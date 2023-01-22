@@ -4,6 +4,7 @@ using namespace sc2;
 
 SC2Context::SC2Context(GameInfo game_info)
     : m_obs(std::move(game_info))
+    , m_map(m_obs)
 {
 }
 

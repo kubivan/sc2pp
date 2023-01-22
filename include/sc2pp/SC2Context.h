@@ -3,7 +3,7 @@
 #include <sc2pp/Actions.h>
 #include <sc2pp/Observation.h>
 
-#include "Converters.h"
+#include <sc2pp/Map.h>
 
 namespace sc2
 {
@@ -20,6 +20,7 @@ public:
 
 private:
     Observation m_obs;
+    Map m_map;
     Actions m_act;
 };
 

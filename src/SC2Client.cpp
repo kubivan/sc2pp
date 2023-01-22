@@ -111,11 +111,11 @@ bool SC2Client::createGame()
     return true;
 }
 
-bool SC2Client::joinGame(std::unique_ptr<Agent> agent)
+uint32_t SC2Client::joinGame(Race race)
 {
     auto request = std::make_unique<sc2::proto::Request>();
     auto request_join_game = request->mutable_join_game();
-    request_join_game->set_race(agent->race());
+    request_join_game->set_race(race);
 
     auto options = request_join_game->mutable_options();
     options->set_raw(true);
@@ -125,21 +125,18 @@ bool SC2Client::joinGame(std::unique_ptr<Agent> agent)
     auto response = m_session->send(std::move(request));
     if (!response)
     {
-        return false;
+        return -1;
     }
     if (!response->has_join_game())
     {
-        return false;
+        return -1;
     }
     auto response_join_game = response->join_game();
     if (response_join_game.has_error())
     {
-        return false;
+        return -1;
     }
-    m_agent = std::move(agent);
-    m_agent_id = response_join_game.player_id();
-
-    return true;
+    return response_join_game.player_id();
 }
 
 std::pair<int, proto::ResponseObservation> SC2Client::step()
@@ -205,7 +202,7 @@ std::optional<proto::PlayerResult> SC2Client::update()
     for(int i = 0; i < response_observation.player_result_size(); ++i)
     {
         const auto& res = response_observation.player_result(i);
-        if (res.player_id() == m_agent_id)
+        if (res.player_id() == m_agent->id())
         {
             return res;
         }
