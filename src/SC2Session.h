@@ -24,11 +24,12 @@ class SC2Session
 public:
     using ResponseHandler = std::function<bool(std::unique_ptr<sc2::proto::Response>)>;
 
+    ~SC2Session();
+
     explicit SC2Session(net::io_context& ioc);
 
     const std::atomic<bool>& connected();
 
-    ~SC2Session();
 
     std::unique_ptr<proto::Response> send(std::unique_ptr<proto::Request> request);
 

@@ -1,8 +1,8 @@
 #pragma once
 
 #include <sc2pp/Agent.h>
+#include <sc2pp/Planner.h>
 
-#include "Converters.h"
 #include <string>
 
 struct TestAgent : sc2::Agent
@@ -12,5 +12,7 @@ struct TestAgent : sc2::Agent
     void update() override;
 
     sc2::proto::Race race();
+
+    sc2::Planner m_planner;
 };
 

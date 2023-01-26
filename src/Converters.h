@@ -28,6 +28,17 @@ auto to_vector(Range r)
     return std::vector<T>{std::ranges::begin(r), std::ranges::end(r)};
 }
 
+inline auto to_units(auto range)
+{
+    return to_vector<Unit>(range);
+}
+
+template <class T, range_over<T> Range>
+auto to_set(Range r)
+{
+    return std::set<T>{std::ranges::begin(r), std::ranges::end(r)};
+}
+
 Point2D from_proto(const proto::Point2D& input);
 
 struct UnitCommand

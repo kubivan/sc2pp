@@ -17,6 +17,7 @@ set(SC2PP_SOURCES
     ../include/sc2pp/Agent.h
     ../include/sc2pp/Common.h
     ../include/sc2pp/Observation.h
+    ../include/sc2pp/Query.h
     ../include/sc2pp/SC2Client.h
     ../include/sc2pp/SC2Context.h
     ../include/sc2pp/SC2IDs.h
@@ -35,6 +36,7 @@ set(SC2PP_SOURCES
     UnitPool.h
     main.cpp
     Planner.cpp
+    Query.cpp
 
     utils/GridView.cpp
     utils/UnitTraits.cpp

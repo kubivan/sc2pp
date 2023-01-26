@@ -26,6 +26,11 @@ constexpr auto type(UNIT_TYPEID type)
     return [type](const auto& u) constexpr { return u.unit_type == type; };
 }
 
+constexpr auto unit_tag(Tag tag)
+{
+    return [tag](const auto& u) constexpr { return u.tag == tag; };
+}
+
 constexpr auto building = [](const Unit& u) constexpr {return sc2::utils::is_building_type(u.unit_type); };
 
 //buiild_progress Range: [0.0, 1.0]. 1.0 == finished.
@@ -109,4 +114,7 @@ constexpr auto not_a(P p)
 
 const Unit* closest(const sc2::Unit* unit, const std::vector<const sc2::Unit*>& objects);
 const Unit* closest(const sc2::Point2D& pos, const std::vector<const sc2::Unit*>& objects);
-}
+
+float dist_squared(const Point2D& a, const Point2D& b);
+
+} //namespace sc2

@@ -175,7 +175,10 @@ uint32_t SC2Client::joinGame(Race race)
 
 auto sc2::SC2Client::createContext()->SC2Context 
 {
-    return SC2Context(Observation(get_game_info(m_session), get_unit_type_data(m_session), get_ability_data(m_session)));
+    return SC2Context(
+          Observation(get_game_info(m_session), get_unit_type_data(m_session), get_ability_data(m_session))
+        , Query(m_session)
+    );
 }
 
 std::pair<int, proto::ResponseObservation> SC2Client::step()

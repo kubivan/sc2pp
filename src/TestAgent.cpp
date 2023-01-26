@@ -4,6 +4,7 @@ using namespace sc2;
 
 TestAgent::TestAgent(uint32_t id, sc2::SC2Context sc2)
     : Agent(id, std::move(sc2))
+    , m_planner(m_sc2.obs(), m_sc2.query())
     //, m_map(m_sc2.obs())
 {
 }
@@ -27,11 +28,13 @@ void TestAgent::update()
         m_sc2.act().chat(s);
     }
 
-    for (auto& n : nexuses)
-    {
-        m_sc2.act().command(n, sc2::AbilityID::TRAIN_PROBE);
-        //sc2().act().chat("HEY! creating a probe on");
-    }
+    m_planner.possibleActions();
+
+    //for (auto& n : nexuses)
+    //{
+    //    m_sc2.act().command(n, sc2::AbilityID::TRAIN_PROBE);
+    //    //sc2().act().chat("HEY! creating a probe on");
+    //}
 
 }
 
