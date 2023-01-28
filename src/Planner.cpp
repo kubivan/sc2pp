@@ -4,6 +4,7 @@
 #include "UnitTraits.h"
 #include "UnitQuery.h"
 #include "Actions.h"
+#include "GridUtils.h"
 
 #include <ranges>
 
@@ -131,62 +132,85 @@ enemy_base_location(const Observation& obs)
     return res;
 }
 
-Point2D
+std::optional<Point2D>
 find_buildpos_near(Query& query
     , const Point2D& center
     , float radius
-    , AbilityID building)
+    , AbilityID building )
 {
-    const auto max_iterations = 10000;
-    auto pos = rand_point_near(center, radius);
-    int i = 0;
-    while (!query.placement(building, pos))
+    std::queue<Point2DI> fringe;
+    fringe.push(utils::tile_pos(center));
+
+    auto point_comparator = [](const Point2DI& a, const Point2DI& b) {
+        return std::tie(a.x, a.y) < std::tie(b.x, b.y);
+    };
+    std::set<Point2DI, decltype(point_comparator)> marked(point_comparator);
+    while (!fringe.empty())
     {
-        if (i++ > max_iterations)
-            break;
-        pos = rand_point_near(center, radius);
+        auto pixel = fringe.front();
+        fringe.pop();
+       
+        if (query.placement(building, { float(pixel.x), float(pixel.y) }))
+        {
+            return Point2D{ float(pixel.x), float(pixel.y) };
+        }
+
+        const auto variants = std::array<Point2DI, 6>{ Point2DI{pixel.x + 1, pixel.y}
+                                               , Point2DI{pixel.x, pixel.y + 1}
+                                               , Point2DI{pixel.x - 1, pixel.y}
+                                               , Point2DI{pixel.x, pixel.y - 1}
+                                               , Point2DI{pixel.x + 1, pixel.y + 1}
+                                               , Point2DI{pixel.x - 1, pixel.y - 1}
+        };
+
+        for (const auto& v : variants)
+        {
+            if (dist_squared({ (float)v.x, (float)v.y }, center) > radius*radius)
+                continue;
+
+            if (!marked.insert(v).second)
+            {
+                continue;
+            }
+            fringe.push(v);
+        }
     }
-    return pos;
+    return { };
 }
 
-Point2D
-build_near(Query& query
-    , Actions& act
-    , const Unit& probe
-    , const Point2D& center
-    , float radius
-    , AbilityID building
-    , bool queued)
-{
-    const auto max_iterations = 10;
-    auto pos = rand_point_near(center, radius);
-    int i = 0;
-    while (!query.placement(building, pos))
-    {
-        if (i++ > max_iterations)
-            break;
-        pos = rand_point_near(center, radius);
-    }
-
-    act.command(probe, building, pos, queued);
-    return pos;
-}
-
-Point2D
+std::optional<Point2D>
 find_anchor_point(Query& query
     , const Observation& obs
     , AbilityID building)
 {
     if (building == AbilityID::BUILD_PYLON)
     {
-        return find_buildpos_near(query, obs.gameInfo().start_locations.front(), pylon_radius, building);
+        //std::cout << "food_used=" << obs.raw().player_common().food_used() << " food_cap=" << obs.raw().player_common().food_cap() << std::endl;
+        if (obs.raw().player_common().food_used() < obs.raw().player_common().food_cap())
+        {
+            return {};
+        }
+        using namespace std::views;
+        auto nexus = to_units(obs.unitsSelf() | filter(type(UNIT_TYPEID::PROTOSS_NEXUS))).front().pos;
+
+        return find_buildpos_near(query, {nexus.x + 10, nexus.y + 10}, pylon_radius * 100, building);
     }
     using namespace std::views;
 
     auto pylons = to_units(obs.unitsSelf() | filter(type(UNIT_TYPEID::PROTOSS_PYLON)));
-    auto center = pylons[rand() % (pylons.size() - 1)].pos;
+    if (pylons.empty())
+    {
+        return {};
+    }
+    auto center = pylons[rand() % pylons.size()].pos;
 
-    return find_buildpos_near(query, center, pylon_radius, building);
+    for (const auto& center : pylons)
+    {
+        auto found = find_buildpos_near(query, center.pos, pylon_radius, building);
+        if (found)
+            return found;
+    }
+    return {};
 }
 
 
@@ -215,8 +239,6 @@ auto Planner::possibleActions() -> std::vector<Task> const
         auto unit = to_units(nexuses | filter(unit_tag(nexus_ab.unit_tag))).front();
         for (auto ability : nexus_ab.abilities)
         {
-            std::cout << "Nexus ability: " << (int)ability.ability_id << " " << ability.requires_point << std::endl;
-
             res.push_back([this, nexus_ab, unit, ability](Actions& act) {
                 act.command(unit, ability.ability_id, rand);
                 });
@@ -229,22 +251,19 @@ auto Planner::possibleActions() -> std::vector<Task> const
         return res;
     }
 
-    auto probe_abilities = m_query.abilities(probes.front()).abilities | filter([](auto a) { return build_abilities.contains(a.ability_id); });
+    auto probe_build_abilities = m_query.abilities(probes.front()).abilities | filter([](auto a) { return build_abilities.contains(a.ability_id); });
 
-    for (auto x : probe_abilities)
+    for (auto x : probe_build_abilities)
     {
-        std::cout << "Probes ability: " << (int)x.ability_id  << " " << x.requires_point << std::endl;
-        if (x.ability_id == AbilityID::BUILD_PYLON)
-        {
-            auto anchor_point = find_anchor_point(this->m_query, this->m_obs, x.ability_id);
-            res.push_back([this, probe = probes.front(), ability = x.ability_id, anchor_point ](Actions& act) {
-                act.command(probe, ability, anchor_point);
-                });
-        }
-
-
+        std::cout << "Probes ability: " << magic_enum::enum_name(x.ability_id)  << " " << x.requires_point << std::endl;
+        auto anchor_point = find_anchor_point(this->m_query, this->m_obs, x.ability_id);
+        if (!anchor_point)
+            continue;
+        res.push_back([this, probe = probes.front(), ability = x.ability_id, anchor_point](Actions& act) {
+            std::cout << "Command: "<< magic_enum::enum_name(ability) << std::endl;
+            act.command(probe, ability, *anchor_point);
+            });
     }
-
 
     return res;
 }

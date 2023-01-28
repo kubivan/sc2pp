@@ -1,4 +1,5 @@
 #include "TestAgent.h"
+#include "UnitQuery.h"
 
 using namespace sc2;
 
@@ -14,7 +15,15 @@ void TestAgent::update()
     using namespace std::ranges;
     using namespace std::views;
 
-    auto nexuses = m_sc2.obs().unitsSelf() | filter([](auto u) { return u.unit_type == UNIT_TYPEID::PROTOSS_NEXUS; });
+    {
+        auto minerals = to_units(m_sc2.obs().units() | filter(type(UNIT_TYPEID::NEUTRAL_MINERALFIELD) && idle));
+        auto idle_probes = m_sc2.obs().unitsSelf() | filter(type(UNIT_TYPEID::PROTOSS_PROBE) && idle);
+        for (const auto& idle : idle_probes)
+        {
+            m_sc2.act().command(idle, AbilityID::HARVEST_GATHER_PROBE, closest(idle, minerals));
+        }
+
+    }
 
     if (!m_sc2.obs().unitsCreated().empty())
     {
@@ -28,7 +37,10 @@ void TestAgent::update()
         m_sc2.act().chat(s);
     }
 
-    m_planner.possibleActions();
+    for (auto act : m_planner.possibleActions())
+    {
+        act(m_sc2.act());
+    }
 
     //for (auto& n : nexuses)
     //{
