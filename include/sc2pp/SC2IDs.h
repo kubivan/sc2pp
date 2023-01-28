@@ -10,6 +10,13 @@ See stableid.json and stableabilityid.json to see all of them.
 
 #pragma once
 
+#define MAGIC_ENUM_RANGE_MIN 0
+#define MAGIC_ENUM_RANGE_MAX 4096
+#include <magic_enum.hpp>
+#include <magic_enum_fuse.hpp>
+
+static_assert(magic_enum::is_magic_enum_supported, "magic_enum: Unsupported compiler (https://github.com/Neargye/magic_enum#compiler-compatibility).");
+
 namespace sc2 {
 
 enum class UNIT_TYPEID {

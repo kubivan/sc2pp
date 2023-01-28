@@ -53,7 +53,7 @@ set(SC2PP_SOURCES
 
 add_executable(sc2pp ${SC2PP_SOURCES} ${PROTO_SRCS} ${PROTO_HDRS})
 
-target_include_directories(sc2pp PRIVATE "." "../include/sc2pp" "../include/sc2pp/utils" ${Boost_INCLUDE_DIRS} PUBLIC "../include")
+target_include_directories(sc2pp PRIVATE "." "../include/sc2pp" "../include/sc2pp/utils" ${Boost_INCLUDE_DIRS} PUBLIC "../include" "../external/magic_enum/include")
 target_compile_features(sc2pp PRIVATE cxx_std_20)
 #include_directories( ${Boost_INCLUDE_DIRS} )
 target_link_libraries(sc2pp PUBLIC sc2proto PRIVATE Boost::filesystem)

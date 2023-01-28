@@ -7,3 +7,6 @@
 [submodule "external/rxcpp"]
 	path = external/rxcpp
 	url = https://github.com/ReactiveX/RxCpp.git
+[submodule "external/magic_enum"]
+	path = external/magic_enum
+	url = https://github.com/Neargye/magic_enum
