@@ -27,19 +27,19 @@ float dist_squared(const Point2D& a, const Point2D& b)
     return dot(diff, diff);
 }
 
-const Unit* closest(const Point2D& pos, const std::vector<const Unit*>& objects)
+const Unit& closest(const Point2D& pos, const std::vector<Unit>& objects)
 {
     assert(!objects.empty());
     return *std::min_element(objects.cbegin()
         , objects.cend()
         , [&pos](const auto a, const auto b) {
-            return dist_squared(pos, a->pos)
-                < dist_squared(pos, b->pos);
+            return dist_squared(pos, a.pos)
+                < dist_squared(pos, b.pos);
         });
 }
-const Unit* closest(const Unit* unit, const std::vector<const Unit*>& objects)
+const Unit& closest(const Unit& unit, const std::vector<Unit>& objects)
 {
-    return closest(unit->pos, objects);
+    return closest(unit.pos, objects);
 }
 
 }

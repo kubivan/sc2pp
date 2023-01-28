@@ -112,8 +112,8 @@ constexpr auto not_a(P p)
     };
 }
 
-const Unit* closest(const sc2::Unit* unit, const std::vector<const sc2::Unit*>& objects);
-const Unit* closest(const sc2::Point2D& pos, const std::vector<const sc2::Unit*>& objects);
+const Unit& closest(const Unit& unit, const std::vector<Unit>& objects);
+const Unit& closest(const Point2D& pos, const std::vector<Unit>& objects);
 
 float dist_squared(const Point2D& a, const Point2D& b);
 
