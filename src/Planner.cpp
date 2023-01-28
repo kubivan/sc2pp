@@ -71,6 +71,24 @@ static const std::set<AbilityID> build_abilities = {
     AbilityID::BUILD_ULTRALISKCAVERN  // Target: Point.
 };
 
+auto is_training_ability(AbilityID id)
+{
+    struct Lazy
+    {
+        Lazy(AbilityID id)
+            : value(magic_enum::enum_name(id).starts_with("TRAIN_"))
+        {
+        }
+        bool value;
+    };
+    static std::unordered_map<AbilityID, Lazy> res_cache;
+    auto [is_training, is_new] = res_cache.try_emplace(id, id);
+
+    return is_training->second.value;
+}
+
+
+
 namespace
 {
 
@@ -136,7 +154,7 @@ std::optional<Point2D>
 find_buildpos_near(Query& query
     , const Point2D& center
     , float radius
-    , AbilityID building )
+    , AbilityID building)
 {
     std::queue<Point2DI> fringe;
     fringe.push(utils::tile_pos(center));
@@ -149,23 +167,23 @@ find_buildpos_near(Query& query
     {
         auto pixel = fringe.front();
         fringe.pop();
-       
+
         if (query.placement(building, { float(pixel.x), float(pixel.y) }))
         {
             return Point2D{ float(pixel.x), float(pixel.y) };
         }
 
-        const auto variants = std::array<Point2DI, 6>{ Point2DI{pixel.x + 1, pixel.y}
-                                               , Point2DI{pixel.x, pixel.y + 1}
-                                               , Point2DI{pixel.x - 1, pixel.y}
-                                               , Point2DI{pixel.x, pixel.y - 1}
-                                               , Point2DI{pixel.x + 1, pixel.y + 1}
-                                               , Point2DI{pixel.x - 1, pixel.y - 1}
+        const auto variants = std::array<Point2DI, 6>{ Point2DI{ pixel.x + 1, pixel.y }
+            , Point2DI{ pixel.x, pixel.y + 1 }
+            , Point2DI{ pixel.x - 1, pixel.y }
+            , Point2DI{ pixel.x, pixel.y - 1 }
+            , Point2DI{ pixel.x + 1, pixel.y + 1 }
+            , Point2DI{ pixel.x - 1, pixel.y - 1 }
         };
 
         for (const auto& v : variants)
         {
-            if (dist_squared({ (float)v.x, (float)v.y }, center) > radius*radius)
+            if (dist_squared({ (float)v.x, (float)v.y }, center) > radius * radius)
                 continue;
 
             if (!marked.insert(v).second)
@@ -183,26 +201,42 @@ find_anchor_point(Query& query
     , const Observation& obs
     , AbilityID building)
 {
+    using namespace std::views;
+
+    auto pylons = obs.unitsSelf() | filter(type(UNIT_TYPEID::PROTOSS_PYLON));
+    auto pylons_built = pylons | filter(built);
+
+    if (!pylons.empty() && pylons_built.empty())
+    {
+        std::cout << "waiting pylons to complete" << std::endl;
+        return {};
+    }
+
+    if (pylons.empty() && building != AbilityID::BUILD_PYLON)
+    {
+        return {};
+    }
+
     if (building == AbilityID::BUILD_PYLON)
     {
-        //std::cout << "food_used=" << obs.raw().player_common().food_used() << " food_cap=" << obs.raw().player_common().food_cap() << std::endl;
         if (obs.raw().player_common().food_used() < obs.raw().player_common().food_cap())
         {
             return {};
         }
-        using namespace std::views;
-        auto nexus = to_units(obs.unitsSelf() | filter(type(UNIT_TYPEID::PROTOSS_NEXUS))).front().pos;
 
-        return find_buildpos_near(query, {nexus.x + 10, nexus.y + 10}, pylon_radius * 100, building);
-    }
-    using namespace std::views;
+        if (pylons.empty())
+        {
+            auto nexus = to_units(obs.unitsSelf() | filter(type(UNIT_TYPEID::PROTOSS_NEXUS))).front().pos;
 
-    auto pylons = to_units(obs.unitsSelf() | filter(type(UNIT_TYPEID::PROTOSS_PYLON)));
-    if (pylons.empty())
-    {
-        return {};
+            return find_buildpos_near(query, { nexus.x + 10, nexus.y + 10 }, pylon_radius * 100, building);
+        }
+
+        auto pylons_vec = to_units(pylons);
+        auto center = pylons_vec[rand() % pylons_vec.size()].pos;
+
+        return find_buildpos_near(query, center, pylon_radius * 200, building);
+
     }
-    auto center = pylons[rand() % pylons.size()].pos;
 
     for (const auto& center : pylons)
     {
@@ -210,6 +244,7 @@ find_anchor_point(Query& query
         if (found)
             return found;
     }
+
     return {};
 }
 
@@ -230,19 +265,20 @@ auto Planner::possibleActions() -> std::vector<Task> const
 
     auto buildings = units | filter(building && built);
 
-    auto nexuses = buildings | filter(type(UNIT_TYPEID::PROTOSS_NEXUS));
-
-    auto nexus_abilities = m_query.abilities(to_vector<Unit>(nexuses));
-
-    for (auto nexus_ab : nexus_abilities)
+    for (const auto& building_abilities : m_query.abilities(to_units(buildings)))
     {
-        auto unit = to_units(nexuses | filter(unit_tag(nexus_ab.unit_tag))).front();
-        for (auto ability : nexus_ab.abilities)
+        for (const auto& ability : building_abilities.abilities)
         {
-            res.push_back([this, nexus_ab, unit, ability](Actions& act) {
-                act.command(unit, ability.ability_id, rand);
+            if (!is_training_ability(ability.ability_id))
+            {
+                continue;
+            }
+
+            res.push_back([ability, units = to_units(units | filter(unit_tag(building_abilities.unit_tag)))](Actions& act) {
+                act.command(units, ability.ability_id);
                 });
         }
+
     }
 
     const auto probes = to_units(m_obs.unitsSelf() | filter(type(UNIT_TYPEID::PROTOSS_PROBE)));
@@ -255,13 +291,44 @@ auto Planner::possibleActions() -> std::vector<Task> const
 
     for (auto x : probe_build_abilities)
     {
-        std::cout << "Probes ability: " << magic_enum::enum_name(x.ability_id)  << " " << x.requires_point << std::endl;
+        std::cout << "Probes ability: " << magic_enum::enum_name(x.ability_id) << " " << x.requires_point << std::endl;
+
+        if (x.ability_id == AbilityID::BUILD_ASSIMILATOR)
+        {
+            auto nexuses = to_units(m_obs.unitsSelf() | filter(type(UNIT_TYPEID::PROTOSS_NEXUS)));
+            auto assimilators = to_units(m_obs.unitsSelf() | filter(type(UNIT_TYPEID::PROTOSS_ASSIMILATOR)));
+            if (assimilators.size() >= nexuses.size() * 2)
+                continue;
+
+            auto geysers = m_obs.units()
+                | filter(is_geyser)
+                | filter([&assimilators](const auto& g) {
+                    for (auto& a : assimilators)
+                    {
+                        if (dist_squared(g.pos, a.pos) == 0)
+                        {
+                            return false;
+                        }
+                    }
+                    return true;
+                });
+
+            if (geysers.empty())
+                continue;
+
+            res.push_back([probe = probes.front(), target = closest(nexuses.front(), to_units(geysers))](Actions& act) {
+                act.command(probe, AbilityID::BUILD_ASSIMILATOR, target);
+                });
+
+            continue;
+        }
+
         auto anchor_point = find_anchor_point(this->m_query, this->m_obs, x.ability_id);
         if (!anchor_point)
             continue;
         res.push_back([this, probe = probes.front(), ability = x.ability_id, anchor_point](Actions& act) {
-            std::cout << "Command: "<< magic_enum::enum_name(ability) << std::endl;
-            act.command(probe, ability, *anchor_point);
+            std::cout << "Command: " << magic_enum::enum_name(ability) << std::endl;
+        act.command(probe, ability, *anchor_point);
             });
     }
 
