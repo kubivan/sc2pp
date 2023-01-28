@@ -16,7 +16,7 @@ namespace sc2::utils
 {
 
 template<typename TPoint>
-Point2DI get_tile_pos(const TPoint& pos)
+Point2DI tile_pos(const TPoint& pos)
 {
     return Point2DI{(int)std::floor(pos.x), (int)std::floor(pos.y)};
 }
@@ -202,7 +202,7 @@ place_building(Grid<T>& g, const sc2::Unit& u, T value)
     {
         return;
     }
-    const auto center = get_tile_pos(u.pos);
+    const auto center = tile_pos(u.pos);
 
     auto footprint = sc2::utils::get_footprint(u.unit_type);
     apply_footprint(g, center, footprint, value);

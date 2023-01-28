@@ -51,18 +51,18 @@ Map::Map(const Observation& obs)
 
     for (const auto& m : minerals)
     {
-        apply_footprint(m_topology, get_tile_pos(m.pos), get_footprint(m.unit_type), '*');
+        apply_footprint(m_topology, tile_pos(m.pos), get_footprint(m.unit_type), '*');
     }
 
     for (const auto& g : obs.units() | filter(is_geyser))
     {
-        apply_footprint(m_topology, get_tile_pos(g.pos), get_footprint(g.unit_type), '$');
+        apply_footprint(m_topology, tile_pos(g.pos), get_footprint(g.unit_type), '$');
     }
 
     auto nexuses = obs.units() | filter(type(UNIT_TYPEID::PROTOSS_NEXUS));
     for (const auto& n : nexuses)
     {
-        apply_footprint(m_topology, get_tile_pos(n.pos), get_footprint(n.unit_type), 'n');
+        apply_footprint(m_topology, tile_pos(n.pos), get_footprint(n.unit_type), 'n');
     }
 
     dump_grid(m_topology, "topology.txt");
