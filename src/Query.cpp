@@ -10,7 +10,8 @@ Query::Query(std::shared_ptr<SC2Session> session)
 
 auto Query::abilities(const Unit& unit, bool ignore_resource_requirements) const -> AvailableAbilities
 {
-    return abilities({ unit }, ignore_resource_requirements);
+    const Units units = { unit };
+    return abilities(units, ignore_resource_requirements).front();
 }
 
 auto Query::abilities(const Units& units, bool ignore_resource_requirements) const -> std::vector<AvailableAbilities>
