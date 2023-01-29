@@ -8,6 +8,13 @@
 
 namespace sc2 {
 
+struct Task
+{
+    Tag executor;
+    AbilityID action;
+    std::optional<std::variant<Point2D, Tag>> target;
+};
+
 class Actions
 {
 public:
@@ -20,6 +27,8 @@ public:
     Actions& command(const Units& units, AbilityID ability, const Unit& target, bool queued = false);
     Actions& command(const Units& units, AbilityID ability, const Point2D& point, bool queued = false);
     Actions& command(const Units& units, AbilityID ability, bool queued = false);
+
+    Actions& command(const Task& task, bool queued = false);
 
     Actions& toggleAutocast(Tag unit_tag, AbilityID ability);
     Actions& toggleAutocast(const std::vector<Tag>& unit_tags, AbilityID ability);
