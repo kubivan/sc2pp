@@ -87,8 +87,6 @@ auto is_training_ability(AbilityID id)
     return is_training->second.value;
 }
 
-
-
 namespace
 {
 
@@ -203,7 +201,7 @@ find_anchor_point(Query& query
 {
     using namespace std::views;
 
-    auto pylons = obs.unitsSelf() | filter(type(UNIT_TYPEID::PROTOSS_PYLON));
+    auto pylons = to_units(obs.unitsSelf() | filter(type(UNIT_TYPEID::PROTOSS_PYLON)));
     auto pylons_built = pylons | filter(built);
 
     if (!pylons.empty() && pylons_built.empty())
@@ -219,7 +217,7 @@ find_anchor_point(Query& query
 
     if (building == AbilityID::BUILD_PYLON)
     {
-        if (obs.raw().player_common().food_used() < obs.raw().player_common().food_cap())
+        if ( 2*obs.raw().player_common().food_used() < (obs.raw().player_common().food_cap() + pylons.size() * 5))
         {
             return {};
         }
@@ -231,11 +229,9 @@ find_anchor_point(Query& query
             return find_buildpos_near(query, { nexus.x + 10, nexus.y + 10 }, pylon_radius * 100, building);
         }
 
-        auto pylons_vec = to_units(pylons);
-        auto center = pylons_vec[rand() % pylons_vec.size()].pos;
+        auto center = pylons[rand() % pylons.size()].pos;
 
         return find_buildpos_near(query, center, pylon_radius * 200, building);
-
     }
 
     for (const auto& center : pylons)
@@ -257,7 +253,7 @@ Planner::Planner(const Observation& obs, Query& query)
 {
 }
 
-auto Planner::possibleActions() -> std::vector<Task> const
+auto Planner::possibleActions() -> std::vector<Task>
 {
     using namespace std::views;
     std::vector<Task> res;
@@ -265,7 +261,7 @@ auto Planner::possibleActions() -> std::vector<Task> const
 
     auto buildings = units | filter(building && built);
 
-    for (const auto& building_abilities : m_query.abilities(to_units(buildings)))
+    for (const auto& building_abilities : m_query.abilities(to_units(buildings | filter(idle))))
     {
         for (const auto& ability : building_abilities.abilities)
         {
@@ -274,11 +270,14 @@ auto Planner::possibleActions() -> std::vector<Task> const
                 continue;
             }
 
-            res.push_back([ability, units = to_units(units | filter(unit_tag(building_abilities.unit_tag)))](Actions& act) {
-                act.command(units, ability.ability_id);
-                });
-        }
+            //TODO: add target finding
+            if (ability.requires_point)
+            {
+                continue;
+            }
 
+            res.push_back(Task{.executor = building_abilities.unit_tag, .action = ability.ability_id});
+        }
     }
 
     const auto probes = to_units(m_obs.unitsSelf() | filter(type(UNIT_TYPEID::PROTOSS_PROBE)));
@@ -316,9 +315,7 @@ auto Planner::possibleActions() -> std::vector<Task> const
             if (geysers.empty())
                 continue;
 
-            res.push_back([probe = probes.front(), target = closest(nexuses.front(), to_units(geysers))](Actions& act) {
-                act.command(probe, AbilityID::BUILD_ASSIMILATOR, target);
-                });
+            res.push_back(Task{ .executor = probes.front().tag, .action = AbilityID::BUILD_ASSIMILATOR, .target = closest(nexuses.front(), to_units(geysers)).tag });
 
             continue;
         }
@@ -326,10 +323,7 @@ auto Planner::possibleActions() -> std::vector<Task> const
         auto anchor_point = find_anchor_point(this->m_query, this->m_obs, x.ability_id);
         if (!anchor_point)
             continue;
-        res.push_back([this, probe = probes.front(), ability = x.ability_id, anchor_point](Actions& act) {
-            std::cout << "Command: " << magic_enum::enum_name(ability) << std::endl;
-        act.command(probe, ability, *anchor_point);
-            });
+        res.push_back(Task{ .executor = probes.front().tag, .action = x.ability_id, .target = anchor_point});
     }
 
     return res;

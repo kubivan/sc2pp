@@ -1,5 +1,6 @@
 #pragma once
 
+#include <sc2pp/SC2IDs.h>
 #include <sc2pp/Agent.h>
 #include <sc2pp/Planner.h>
 
@@ -18,6 +19,8 @@ struct TestAgent : sc2::Agent
     
     std::random_device rd;
     std::mt19937 g;
+    
+    std::set<sc2::AbilityID> taken_actions;
 
 };
 

@@ -7,7 +7,6 @@ TestAgent::TestAgent(uint32_t id, sc2::SC2Context sc2)
     : Agent(id, std::move(sc2))
     , m_planner(m_sc2.obs(), m_sc2.query())
     , g(rd())
-    //, m_map(m_sc2.obs())
 {
 }
 
@@ -16,6 +15,7 @@ void TestAgent::update()
     using namespace std::ranges;
     using namespace std::views;
 
+    //manage idle unit
     {
         auto nexuses = to_units(m_sc2.obs().unitsSelf() | filter(type(UNIT_TYPEID::PROTOSS_NEXUS)));
         auto minerals = to_units(
@@ -45,18 +45,29 @@ void TestAgent::update()
     }
 
     auto possible_actions = m_planner.possibleActions();
-    std::ranges::shuffle(possible_actions, g);
-    for (auto act : possible_actions)
+    //filter out probes
     {
-        act(m_sc2.act());
+        auto nexuses = to_units(m_sc2.obs().unitsSelf() | filter(type(UNIT_TYPEID::PROTOSS_NEXUS) && built));
+        auto probes = to_units(m_sc2.obs().unitsSelf() | filter(type(UNIT_TYPEID::PROTOSS_PROBE)));
+        std::erase_if(possible_actions, [this, &nexuses, &probes, stop_probes = probes.size() >=nexuses.size() * 24 ](Task& t) {
+            return t.action == AbilityID::TRAIN_PROBE && stop_probes;
+        });
     }
 
-    //for (auto& n : nexuses)
-    //{
-    //    m_sc2.act().command(n, sc2::AbilityID::TRAIN_PROBE);
-    //    //sc2().act().chat("HEY! creating a probe on");
-    //}
+    //bring new_buildings ot 
+    auto partitioned = std::partition(
+        possible_actions.begin()
+        , possible_actions.end()
+        , [&](const Task& t) {
+            return !this->taken_actions.contains(t.action);
+        });
 
+    std::shuffle(partitioned, possible_actions.end(), g);
+    for (auto& task : possible_actions)
+    {
+        m_sc2.act().command(task);
+        taken_actions.insert(task.action);
+    }
 }
 
 sc2::proto::Race TestAgent::race()
