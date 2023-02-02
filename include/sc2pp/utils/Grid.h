@@ -1,7 +1,7 @@
 #pragma once
 
 #include <sc2pp/Common.h>
-#include <utils/GridView.h>
+#include <sc2pp/utils/GridView.h>
 
 #include <functional>
 #include <vector>

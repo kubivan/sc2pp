@@ -21,7 +21,6 @@ set(SC2PP_SOURCES
     ../include/sc2pp/SC2Client.h
     ../include/sc2pp/SC2Context.h
     ../include/sc2pp/SC2IDs.h
-    ../include/sc2pp/Planner.h
     Actions.cpp
     Agent.cpp
     Converters.cpp
@@ -31,16 +30,12 @@ set(SC2PP_SOURCES
     SC2Context.cpp
     SC2Session.cpp
     SC2Session.h
-    TestAgent.cpp
-    TestAgent.h
-    UnitPool.h
-    main.cpp
-    Planner.cpp
     Query.cpp
 
     utils/GridView.cpp
     utils/UnitTraits.cpp
     utils/UnitQuery.cpp
+    utils/UnitPool.cpp
 
     ../include/sc2pp/utils/Footprints.h
     ../include/sc2pp/utils/Grid.h
@@ -49,12 +44,13 @@ set(SC2PP_SOURCES
     ../include/sc2pp/utils/GridView.hpp
     ../include/sc2pp/utils/UnitQuery.h
     ../include/sc2pp/utils/UnitTraits.h
+    ../include/sc2pp/utils/UnitPool.h
 )
 
-add_executable(sc2pp ${SC2PP_SOURCES} ${PROTO_SRCS} ${PROTO_HDRS})
+add_library(sc2pp ${SC2PP_SOURCES} ${PROTO_SRCS} ${PROTO_HDRS})
 
-target_include_directories(sc2pp PRIVATE "." "../include/sc2pp" "../include/sc2pp/utils" ${Boost_INCLUDE_DIRS} PUBLIC "../include" "../external/magic_enum/include")
-target_compile_features(sc2pp PRIVATE cxx_std_20)
+target_include_directories(sc2pp PRIVATE "." "../include/sc2pp" "../include/sc2pp/utils" PUBLIC ${Boost_INCLUDE_DIRS} "../include" "../external/magic_enum/include")
+target_compile_features(sc2pp PUBLIC cxx_std_20)
 #include_directories( ${Boost_INCLUDE_DIRS} )
 target_link_libraries(sc2pp PUBLIC sc2proto PRIVATE Boost::filesystem)
 set_property(TARGET sc2pp PROPERTY

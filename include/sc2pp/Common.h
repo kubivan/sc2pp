@@ -2,15 +2,31 @@
 
 #include <sc2pp/SC2IDs.h>
 
-#include <vector>
-#include <variant>
 #include <optional>
+#include <set>
+#include <variant>
+#include <vector>
 
 #include <s2clientprotocol/sc2api.pb.h>
 
 namespace sc2 {
-
 namespace proto = SC2APIProtocol;
+
+template <class R, class Value>
+concept range_over = std::ranges::range<R> &&
+std::same_as<std::ranges::range_value_t<R>, Value>;
+
+template <class T, range_over<T> Range>
+auto to_vector(Range r)
+{
+    return std::vector<T>{std::ranges::begin(r), std::ranges::end(r)};
+}
+
+template <class T, range_over<T> Range>
+auto to_set(Range r)
+{
+    return std::set<T>{std::ranges::begin(r), std::ranges::end(r)};
+}
 
 struct Point3D
 {
@@ -135,4 +151,9 @@ using Units = std::vector<Unit>;
 using UnitTypeData = proto::UnitTypeData;
 using AbilityData = proto::AbilityData;
 
+inline auto to_units(auto range)
+{
+    return to_vector<Unit>(range);
 }
+
+} //namespace sc2

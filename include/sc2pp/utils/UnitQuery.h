@@ -1,8 +1,8 @@
 #pragma once
 
 #include <sc2pp/Common.h>
+#include <sc2pp/utils/UnitTraits.h>
 
-#include <utils/UnitTraits.h>
 #include <concepts>
 
 namespace sc2

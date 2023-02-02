@@ -1,6 +1,6 @@
 #pragma once 
 
-#include <utils/UnitTraits.h>
+#include <sc2pp/utils/UnitTraits.h>
 
 #include <array>
 #include <optional>

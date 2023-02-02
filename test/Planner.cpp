@@ -1,16 +1,17 @@
 #include "Planner.h"
-#include "Observation.h"
-#include "Query.h"
-#include "UnitTraits.h"
-#include "UnitQuery.h"
-#include "Actions.h"
-#include "GridUtils.h"
+
+#include <sc2pp/Observation.h>
+#include <sc2pp/Query.h>
+#include <sc2pp/Actions.h>
+#include <sc2pp/utils/UnitTraits.h>
+#include <sc2pp/utils/UnitQuery.h>
+#include <sc2pp/utils/GridUtils.h>
 
 #include <ranges>
 
 using namespace sc2;
 
-constexpr auto pylon_radius = 5.f;
+constexpr auto pylon_radius = 6.5f;
 
 static const std::set<AbilityID> build_abilities = {
     AbilityID::BUILD_ARMORY,   // Target: Point.
@@ -181,7 +182,7 @@ find_buildpos_near(Query& query
 
         for (const auto& v : variants)
         {
-            if (dist_squared({ (float)v.x, (float)v.y }, center) > radius * radius)
+            if (dist_squared({ (float)v.x, (float)v.y }, center) > (radius + 3) * (radius + 3))
                 continue;
 
             if (!marked.insert(v).second)
@@ -210,31 +211,12 @@ find_anchor_point(Query& query
         return {};
     }
 
-    if (pylons.empty() && building != AbilityID::BUILD_PYLON)
+    if (pylons.empty())
     {
         return {};
     }
 
-    if (building == AbilityID::BUILD_PYLON)
-    {
-        if ( 2*obs.raw().player_common().food_used() < (obs.raw().player_common().food_cap() + pylons.size() * 5))
-        {
-            return {};
-        }
-
-        if (pylons.empty())
-        {
-            auto nexus = to_units(obs.unitsSelf() | filter(type(UNIT_TYPEID::PROTOSS_NEXUS))).front().pos;
-
-            return find_buildpos_near(query, { nexus.x + 10, nexus.y + 10 }, pylon_radius * 100, building);
-        }
-
-        auto center = pylons[rand() % pylons.size()].pos;
-
-        return find_buildpos_near(query, center, pylon_radius * 200, building);
-    }
-
-    for (const auto& center : pylons)
+    for (const auto& center : pylons_built)
     {
         auto found = find_buildpos_near(query, center.pos, pylon_radius, building);
         if (found)
@@ -276,7 +258,7 @@ auto Planner::possibleActions() -> std::vector<Task>
                 continue;
             }
 
-            res.push_back(Task{.executor = building_abilities.unit_tag, .action = ability.ability_id});
+            res.push_back(Task{ .executor = building_abilities.unit_tag, .action = ability.ability_id });
         }
     }
 
@@ -292,39 +274,96 @@ auto Planner::possibleActions() -> std::vector<Task>
     {
         std::cout << "Probes ability: " << magic_enum::enum_name(x.ability_id) << " " << x.requires_point << std::endl;
 
-        if (x.ability_id == AbilityID::BUILD_ASSIMILATOR)
+        switch (x.ability_id)
         {
-            auto nexuses = to_units(m_obs.unitsSelf() | filter(type(UNIT_TYPEID::PROTOSS_NEXUS)));
-            auto assimilators = to_units(m_obs.unitsSelf() | filter(type(UNIT_TYPEID::PROTOSS_ASSIMILATOR)));
-            if (assimilators.size() >= nexuses.size() * 2)
-                continue;
-
-            auto geysers = m_obs.units()
-                | filter(is_geyser)
-                | filter([&assimilators](const auto& g) {
-                    for (auto& a : assimilators)
-                    {
-                        if (dist_squared(g.pos, a.pos) == 0)
-                        {
-                            return false;
-                        }
-                    }
-                    return true;
-                });
-
-            if (geysers.empty())
-                continue;
-
-            res.push_back(Task{ .executor = probes.front().tag, .action = AbilityID::BUILD_ASSIMILATOR, .target = closest(nexuses.front(), to_units(geysers)).tag });
-
-            continue;
+        case AbilityID::BUILD_ASSIMILATOR:
+        {
+            auto task = buildAssimilator(probes.front().tag);
+            if (task) 
+                res.push_back(*task);
+        }
+        break;
+        case AbilityID::BUILD_PYLON:
+        {
+            auto task = buildPylon(probes.front().tag);
+            if (task)
+                res.push_back(*task);
+            break;
+        }
+        default: 
+            auto anchor_point = find_anchor_point(this->m_query, this->m_obs, x.ability_id);
+            if (anchor_point)
+            {
+                res.push_back(Task{ .executor = probes.front().tag, .action = x.ability_id, .target = anchor_point });
+            }
+            else if (auto pylon_task = buildPylon(probes.front().tag, true))
+            {
+                std::cout << "!!! placement failed: no pylons!!!" << std::endl;
+                res.push_back(*pylon_task);
+            }
+            else
+            {
+                std::cout << "!!! placement failed: " << std::endl;
+            }
+            break;
         }
 
-        auto anchor_point = find_anchor_point(this->m_query, this->m_obs, x.ability_id);
-        if (!anchor_point)
-            continue;
-        res.push_back(Task{ .executor = probes.front().tag, .action = x.ability_id, .target = anchor_point});
     }
 
     return res;
+}
+
+auto Planner::buildAssimilator(Tag builder) -> std::optional<Task>
+{
+    using namespace std::views;
+    auto nexuses = to_units(m_obs.unitsSelf() | filter(type(UNIT_TYPEID::PROTOSS_NEXUS)));
+    auto assimilators = to_units(m_obs.unitsSelf() | filter(type(UNIT_TYPEID::PROTOSS_ASSIMILATOR)));
+    if (assimilators.size() >= nexuses.size() * 2)
+        return {};
+
+    auto geysers = m_obs.units()
+        | filter(is_geyser)
+        | filter([&assimilators](const auto& g)
+        {
+            for (auto& a : assimilators)
+            {
+                if (dist_squared(g.pos, a.pos) == 0)
+                {
+                    return false;
+                }
+            }
+            return true;
+        });
+
+    if (geysers.empty())
+        return {};
+
+    return Task{ .executor = builder,
+                 .action = AbilityID::BUILD_ASSIMILATOR,
+                 .target = closest(nexuses.front(), to_units(geysers)).tag };
+}
+
+auto Planner::buildPylon(Tag builder, bool force) -> std::optional<Task>
+{
+    using namespace std::views;
+    const auto pylons = to_units(m_obs.unitsSelf() | filter(type(UNIT_TYPEID::PROTOSS_PYLON)));
+    if (force && 2 * m_obs.raw().player_common().food_used() < (m_obs.raw().player_common().food_cap() + pylons.size() * 5))
+    {
+        return {};
+    }
+
+    const auto nexus = to_units(m_obs.unitsSelf() | filter(type(UNIT_TYPEID::PROTOSS_NEXUS))).front().pos;
+
+    for (int i = 0; i < 100; ++i)
+    {
+        //auto target = rand_point_around(nexus, pylon_radius*3, 1);
+        auto target = rand_point_near(nexus, pylon_radius*3);
+        if (m_query.placement(AbilityID::BUILD_PYLON, target))
+        {
+            return Task{ .executor = builder, .action = AbilityID::BUILD_PYLON, .target = target };
+        }
+    }
+
+    return {};
+
 }

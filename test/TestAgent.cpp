@@ -1,5 +1,11 @@
 #include "TestAgent.h"
-#include "UnitQuery.h"
+
+#include <sc2pp/utils/UnitTraits.h>
+#include <sc2pp/utils/UnitQuery.h>
+
+#include <sc2pp/SC2Context.h>
+
+#include <ranges>
 
 using namespace sc2;
 
@@ -14,6 +20,8 @@ void TestAgent::update()
 {
     using namespace std::ranges;
     using namespace std::views;
+
+    auto probes = to_units(m_sc2.obs().unitsSelf() | filter(type(UNIT_TYPEID::PROTOSS_PROBE)));
 
     //manage idle unit
     {
@@ -32,6 +40,18 @@ void TestAgent::update()
 
     }
 
+    // assign to assimilators
+    {
+        auto new_assimilators = m_sc2.obs().unitsCreated() | filter(type(UNIT_TYPEID::PROTOSS_ASSIMILATOR));
+        int probe_index = 0;
+        for (auto& x : new_assimilators)
+        {
+            if (probe_index >= probes.size())
+                break;
+            m_sc2.act().command(probes[probe_index++], AbilityID::HARVEST_GATHER, x);
+        }
+    }
+
     if (!m_sc2.obs().unitsCreated().empty())
     {
         std::string s;
@@ -48,9 +68,18 @@ void TestAgent::update()
     //filter out probes
     {
         auto nexuses = to_units(m_sc2.obs().unitsSelf() | filter(type(UNIT_TYPEID::PROTOSS_NEXUS) && built));
-        auto probes = to_units(m_sc2.obs().unitsSelf() | filter(type(UNIT_TYPEID::PROTOSS_PROBE)));
-        std::erase_if(possible_actions, [this, &nexuses, &probes, stop_probes = probes.size() >=nexuses.size() * 24 ](Task& t) {
+        std::erase_if(possible_actions, [this, &nexuses, stop_probes = probes.size() >=nexuses.size() * 24 ](Task& t) {
             return t.action == AbilityID::TRAIN_PROBE && stop_probes;
+        });
+    }
+
+    //filter out "duplcate" actions
+    {
+        std::erase_if(possible_actions, [this](Task& t) {
+            auto contains = this->max_taken_actions.find(t.action);
+            auto max = contains == max_taken_actions.end() ? this->max_taken_actions_default : contains->second;
+            return this->taken_actions[t.action] >= max;
+
         });
     }
 
@@ -59,14 +88,15 @@ void TestAgent::update()
         possible_actions.begin()
         , possible_actions.end()
         , [&](const Task& t) {
-            return !this->taken_actions.contains(t.action);
+            return this->taken_actions.contains(t.action);
         });
 
     std::shuffle(partitioned, possible_actions.end(), g);
+    //for (auto& task : possible_actions | std::views::take(rand() % std::max(size_t(1), possible_actions.size() / 2)))
     for (auto& task : possible_actions)
     {
         m_sc2.act().command(task);
-        taken_actions.insert(task.action);
+        taken_actions[task.action]++;
     }
 }
 

@@ -1,6 +1,6 @@
 #pragma once
 
-#include <utils/GridUtils.h>
+#include <sc2pp/utils/Grid.h>
 
 namespace sc2
 {

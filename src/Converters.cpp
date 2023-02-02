@@ -160,18 +160,4 @@ convert_observation(const proto::ResponseObservation& response_observation)
     );
 }
 
-GameInfo from_proto(const proto::ResponseGameInfo& x)
-{
-    return GameInfo{
-    .map_name = x.map_name(),
-    .local_map_path = x.local_map_path(),
-    .map_size = { x.start_raw().map_size().x(), x.start_raw().map_size().y() },
-
-    .pathing_grid = x.start_raw().pathing_grid(),
-    .terrain_height = x.start_raw().terrain_height(),
-    .placement_grid = x.start_raw().placement_grid(),
-    .start_locations = to_vector<Point2D>(x.start_raw().start_locations() | std::views::transform(BOOST_HOF_LIFT(from_proto)))
-    };
-}
-
 }
