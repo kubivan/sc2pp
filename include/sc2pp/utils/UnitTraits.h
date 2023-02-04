@@ -15,7 +15,7 @@ namespace sc2::utils
 
 constexpr auto pylon_radius = 6.5f;
 
-constexpr bool is_building_type(UNIT_TYPEID type)
+constexpr auto is_building_type(UNIT_TYPEID type) -> bool
 {
     switch (type)
     {
@@ -42,6 +42,9 @@ constexpr bool is_building_type(UNIT_TYPEID type)
     }
     return false;
 }
+
+auto is_training_ability(AbilityID id) -> bool;
+auto is_building_ability(AbilityID id) -> bool;
 
 struct BuildingTraits
 {

@@ -152,39 +152,6 @@ find_anchor_point(Query& query
     return {};
 }
 
-auto is_training_ability(AbilityID id)
-{
-    struct Lazy
-    {
-        Lazy(AbilityID id)
-            : value(magic_enum::enum_name(id).starts_with("TRAIN_"))
-        {
-        }
-        bool value;
-    };
-    static std::unordered_map<AbilityID, Lazy> res_cache;
-    auto [is_training, is_new] = res_cache.try_emplace(id, id);
-
-    return is_training->second.value;
-}
-
-auto is_building_ability(AbilityID id)
-{
-    struct Lazy
-    {
-        Lazy(AbilityID id)
-            : value(magic_enum::enum_name(id).starts_with("BUILD_"))
-        {
-        }
-        bool value;
-    };
-    //TODO: make constexpr
-    static std::unordered_map<AbilityID, Lazy> res_cache;
-    auto [is_training, is_new] = res_cache.try_emplace(id, id);
-
-    return is_training->second.value;
-}
-
 auto buildAssimilator(const Observation& m_obs, Tag builder) -> std::optional<Task>
 {
     using namespace std::views;
@@ -247,21 +214,15 @@ auto find_possible_tasks(const Observation& obs, Query& query, const std::vector
     using namespace std::views;
     const auto& units = obs.unitsSelf();
 
-    //for (const auto& action : actions 
-    //    | filter([](auto& x) { return is_training_ability(x.action); })
-    //{
-    //    tasks.push_back(Task{ .executor = action.tag, .action = action.action });
-    //}
-
     for (auto& x : actions)
     {
-        if (is_training_ability(x.action))
+        if (utils::is_training_ability(x.action))
         {
             tasks.push_back(Task{ .executor = x.executor, .action = x.action });
             continue;
         }
 
-        if (is_building_ability(x.action))
+        if (utils::is_building_ability(x.action))
         switch (x.action)
         {
         case AbilityID::BUILD_ASSIMILATOR:
@@ -324,7 +285,7 @@ auto find_possible_actions(const Observation& obs, Query& query) -> std::vector<
 
     const auto builder = probes.front();
     auto possible_build_actions = query.abilities(builder).abilities 
-        | filter([](auto a) { return is_building_ability(a.ability_id); })
+        | filter([](auto a) { return utils::is_building_ability(a.ability_id); })
         | transform([tag = builder.tag](auto& x) -> PossibleAction { return PossibleAction{ .action = x.ability_id, .executor = tag }; });
 
     //TODO: implement std::views::concat

@@ -5,6 +5,40 @@
 namespace sc2::utils
 {
 
+auto is_training_ability(AbilityID id) -> bool
+{
+    struct Lazy
+    {
+        Lazy(AbilityID id)
+            : value(magic_enum::enum_name(id).starts_with("TRAIN_"))
+        {
+        }
+        bool value;
+    };
+    static std::unordered_map<AbilityID, Lazy> res_cache;
+    auto [is_training, is_new] = res_cache.try_emplace(id, id);
+
+    return is_training->second.value;
+}
+
+auto is_building_ability(AbilityID id) -> bool
+{
+    struct Lazy
+    {
+        Lazy(AbilityID id)
+            : value(magic_enum::enum_name(id).starts_with("BUILD_"))
+        {
+        }
+        bool value;
+    };
+    //TODO: make constexpr
+    static std::unordered_map<AbilityID, Lazy> res_cache;
+    auto [is_training, is_new] = res_cache.try_emplace(id, id);
+
+    return is_training->second.value;
+}
+
+
 TechTree make_tech_tree(const Observation& obs)
 {
     TechTree res;
