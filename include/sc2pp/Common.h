@@ -19,7 +19,7 @@ std::same_as<std::ranges::range_value_t<R>, Value>;
 template <class T, range_over<T> Range>
 auto to_vector(Range r)
 {
-    return std::vector<T>{std::ranges::begin(r), std::ranges::end(r)};
+    return std::vector<T>(std::ranges::begin(r), std::ranges::end(r));
 }
 
 template <class T, range_over<T> Range>

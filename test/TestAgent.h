@@ -3,8 +3,6 @@
 #include <sc2pp/SC2IDs.h>
 #include <sc2pp/Agent.h>
 
-#include "Planner.h"
-
 #include <string>
 #include <random>
 
@@ -16,8 +14,6 @@ struct TestAgent : sc2::Agent
 
     sc2::proto::Race race();
 
-    sc2::Planner m_planner;
-    
     std::random_device rd;
     std::mt19937 g;
     

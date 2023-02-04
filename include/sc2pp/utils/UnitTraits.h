@@ -13,6 +13,8 @@ class Observation;
 namespace sc2::utils
 {
 
+constexpr auto pylon_radius = 6.5f;
+
 constexpr bool is_building_type(UNIT_TYPEID type)
 {
     switch (type)

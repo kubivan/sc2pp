@@ -1,7 +1,5 @@
 
 set(SC2PP_TEST_SOURCES 
-    Planner.h
-    Planner.cpp
     TestAgent.cpp
     TestAgent.h
     main.cpp
