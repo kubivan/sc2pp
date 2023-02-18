@@ -81,24 +81,24 @@ public:
 
     const proto::Observation& raw() const;
 
-    const std::vector<Unit>& unitsSelf() const;
+    auto unitsSelf() const -> const Units&;
 
-    const std::vector<Unit>& unitsCreated() const;
+    auto unitsCreated() const -> const Units&;
 
-    const GameInfo& gameInfo() const;
+    auto gameInfo() const -> const GameInfo&;
 
-    const std::vector<Unit>& units() const;
+    auto units() const;
 
     const std::vector<UnitTypeData>& unitsTypeData() const;
-    const std::vector<AbilityData>& abilityData() const;
+    const std::vector<AbilityData>&  abilityData() const;
 
 private:
     proto::ResponseObservation m_raw;
     UnitPool m_units;
 
-    std::vector<Unit> m_created;
-    std::vector<Unit> m_damaged;
-    std::vector<Unit> m_self;
+    Units m_created;
+    Units m_damaged;
+    Units m_self;
 
     GameInfo m_game_info;
     std::vector<UnitTypeData> m_unit_type_data;

@@ -315,6 +315,24 @@ void TestAgent::update()
     using namespace std::ranges;
     using namespace std::views;
 
+    //created units
+    if (!m_sc2.obs().unitsCreated().empty())
+    {
+        std::string s;
+        for (auto& x : m_sc2.obs().unitsCreated())
+        {
+            s += "Unit created: " + std::to_string(x.tag) + ": " + std::to_string(x.build_progress) + "\n";
+        }
+
+        std::cout << s << std::endl;
+        m_sc2.act().chat(s);
+
+        for (auto& x : m_sc2.obs().unitsCreated() | filter(type(UNIT_TYPEID::PROTOSS_PROBE))
+        {
+            probes.insert(x);
+        }
+    }
+
     auto probes = to_units(m_sc2.obs().unitsSelf() | filter(type(UNIT_TYPEID::PROTOSS_PROBE)));
 
     //manage idle unit
@@ -344,18 +362,6 @@ void TestAgent::update()
                 break;
             m_sc2.act().command(probes[probe_index++], AbilityID::HARVEST_GATHER, x);
         }
-    }
-
-    if (!m_sc2.obs().unitsCreated().empty())
-    {
-        std::string s;
-        for (auto& x : m_sc2.obs().unitsCreated())
-        {
-            s += "Unit created: " + std::to_string(x.tag) + ": " + std::to_string(x.build_progress) + "\n";
-        }
-
-        std::cout << s << std::endl;
-        m_sc2.act().chat(s);
     }
 
     ////////////////////////

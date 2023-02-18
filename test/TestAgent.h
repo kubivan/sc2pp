@@ -5,6 +5,7 @@
 
 #include <string>
 #include <random>
+#include <set>
 
 struct TestAgent : sc2::Agent
 {
@@ -34,5 +35,7 @@ struct TestAgent : sc2::Agent
 
     const int max_taken_actions_default = 5;
 
+    std::set<sc2::Unit> probes;
+    std::set<sc2::Unit> nexuses;
 };
 
