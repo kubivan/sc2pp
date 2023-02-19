@@ -327,7 +327,7 @@ void TestAgent::update()
         std::cout << s << std::endl;
         m_sc2.act().chat(s);
 
-        for (auto& x : m_sc2.obs().unitsCreated() | filter(type(UNIT_TYPEID::PROTOSS_PROBE))
+        for (const auto& x : m_sc2.obs().unitsCreated() | filter(type(UNIT_TYPEID::PROTOSS_PROBE)))
         {
             probes.insert(x);
         }

@@ -7,6 +7,7 @@
 
 #include <fstream>
 #include <functional>
+#include <ranges>
 
 using namespace sc2;
 using namespace sc2::utils;

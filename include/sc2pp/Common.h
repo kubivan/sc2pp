@@ -145,6 +145,12 @@ struct Unit
     std::vector<RallyTarget> rally_targets;
 };
 
+//TODO: fix
+inline bool operator<(const Unit& a, const Unit& b)
+{
+    return std::tie(a.tag, a.alliance) < std::tie(b.tag, b.alliance);
+}
+
 using Tag = decltype(Unit::tag);
 using Units = std::vector<Unit>;
 

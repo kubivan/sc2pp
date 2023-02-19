@@ -36,17 +36,17 @@ void Observation::update(const proto::ResponseObservation& response_obs)
     m_raw = response_obs;
 }
 
-const proto::Observation& Observation::raw() const
+auto Observation::raw() const -> const proto::Observation&
 {
     return m_raw.observation();
 }
 
-const std::vector<Unit>& Observation::unitsSelf() const
+auto Observation::unitsSelf() const -> const Units&
 {
     return m_self;
 }
 
-const std::vector<Unit>& Observation::unitsCreated() const
+auto Observation::unitsCreated() const -> const Units&
 {
     return m_created;
 }
@@ -56,7 +56,7 @@ const GameInfo& Observation::gameInfo() const
     return m_game_info;
 }
 
-const std::vector<Unit>& Observation::units() const
+auto Observation::units() const -> const Units&
 {
     return m_units.units();
 }

@@ -79,7 +79,7 @@ public:
 
     void update(const proto::ResponseObservation& response_obs);
 
-    const proto::Observation& raw() const;
+    auto raw() const -> const proto::Observation&;
 
     auto unitsSelf() const -> const Units&;
 
@@ -87,10 +87,10 @@ public:
 
     auto gameInfo() const -> const GameInfo&;
 
-    auto units() const;
+    auto units() const -> const Units&;
 
-    const std::vector<UnitTypeData>& unitsTypeData() const;
-    const std::vector<AbilityData>&  abilityData() const;
+    auto unitsTypeData() const -> const std::vector<UnitTypeData>&;
+    auto abilityData() const -> const std::vector<AbilityData>&;
 
 private:
     proto::ResponseObservation m_raw;
