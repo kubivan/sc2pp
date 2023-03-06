@@ -12,17 +12,17 @@ class Agent
 public:
     explicit Agent(uint32_t id, SC2Context sc2);
 
-    virtual proto::Race race() = 0;
+    virtual auto race() -> proto::Race = 0;
 
-    uint32_t id() const;
+    auto id() const -> uint32_t;
 
-    std::unique_ptr<proto::Request> step(const proto::ResponseObservation& response_obs);
+    auto step(const proto::ResponseObservation& response_obs) -> std::unique_ptr<proto::Request>;
 
 protected:
     SC2Context m_sc2;
 
 private:
-    virtual void update() = 0;
+    virtual auto update() -> void = 0;
     uint32_t m_id;
 };
 

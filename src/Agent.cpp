@@ -8,12 +8,12 @@ Agent::Agent(uint32_t id, SC2Context sc2)
 {
 }
 
-uint32_t Agent::id() const
+auto Agent::id() const -> uint32_t
 {
     return m_id;
 }
 
-std::unique_ptr<proto::Request> Agent::step(const proto::ResponseObservation& response_obs)
+auto Agent::step(const proto::ResponseObservation& response_obs) -> std::unique_ptr<proto::Request>
 {
     m_sc2.update(response_obs);
     this->update();

@@ -18,7 +18,7 @@
 namespace sc2 {
 namespace proto = SC2APIProtocol;
 
-Point2D from_proto(const proto::Point2D& input);
+auto from_proto(const proto::Point2D& input) -> Point2D;
 
 struct UnitCommand
 {
@@ -26,7 +26,7 @@ struct UnitCommand
     std::variant<Point2D, std::uint64_t> target;
 };
 
-UnitCommand from_proto(const proto::ActionRawUnitCommand& unit_command);
+auto from_proto(const proto::ActionRawUnitCommand& unit_command) -> UnitCommand;
 
 //message ResponseObservation {
 //  repeated Action actions = 1;                  // Actions this player did since the last Observation.
@@ -49,9 +49,9 @@ struct ActionError
     std::string res_str;
 };
 
-ActionError from_proto(const proto::ActionError& x);
+auto from_proto(const proto::ActionError& x) -> ActionError;
 
-Point3D from_proto(const proto::Point& x);
+auto from_proto(const proto::Point& x) -> Point3D;
 
 auto from_proto(const proto::UnitOrder& x);
 
@@ -61,10 +61,6 @@ auto from_proto(const proto::RallyTarget& x);
 
 Unit from_proto(const proto::Unit& x);
 
-std::tuple<
-    std::vector<Unit>
-    , std::vector<UnitCommand>
-    , std::vector<ActionError>
-> convert_observation(const proto::ResponseObservation& response_observation);
+auto convert_observation(const proto::ResponseObservation& response_observation) -> std::tuple< std::vector<Unit>, std::vector<UnitCommand>, std::vector<ActionError> >;
 
 }

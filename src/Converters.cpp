@@ -3,12 +3,12 @@
 namespace sc2
 {
 
-Point2D from_proto(const proto::Point2D& input)
+auto from_proto(const proto::Point2D& input) -> Point2D
 {
     return Point2D{ input.x(), input.y() };
 }
 
-UnitCommand from_proto(const proto::ActionRawUnitCommand& unit_command)
+auto from_proto(const proto::ActionRawUnitCommand& unit_command) -> UnitCommand
 {
     UnitCommand result;
     result.ability_id = unit_command.ability_id();
@@ -25,7 +25,7 @@ UnitCommand from_proto(const proto::ActionRawUnitCommand& unit_command)
     return result;
 }
 
-ActionError from_proto(const proto::ActionError& x)
+auto from_proto(const proto::ActionError& x) -> ActionError
 {
     const google::protobuf::EnumDescriptor* descriptor = proto::ActionResult_descriptor();
 
@@ -37,7 +37,7 @@ ActionError from_proto(const proto::ActionError& x)
     };
 }
 
-Point3D from_proto(const proto::Point& x)
+auto from_proto(const proto::Point& x) -> Point3D
 {
     return Point3D{ .x = x.x(), .y = x.y(), .z = x.z() };
 }
@@ -76,7 +76,7 @@ auto from_proto(const proto::RallyTarget& x)
     };
 }
 
-Unit from_proto(const proto::Unit& x)
+auto from_proto(const proto::Unit& x) -> Unit
 {
     using namespace std::views;
     return Unit{
@@ -131,12 +131,9 @@ Unit from_proto(const proto::Unit& x)
     };
 }
 
-std::tuple<
-    std::vector<Unit>
-    , std::vector<UnitCommand>
-    , std::vector<ActionError>
->
-convert_observation(const proto::ResponseObservation& response_observation)
+
+auto convert_observation(const proto::ResponseObservation& response_observation) -> std::tuple< 
+    std::vector<Unit>, std::vector<UnitCommand>, std::vector<ActionError> >
 {
     using namespace std::views;
     using namespace boost;

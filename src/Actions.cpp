@@ -7,7 +7,7 @@ using namespace sc2;
 template<class... Ts> struct overloaded : Ts... { using Ts::operator()...; };
 template<class... Ts> overloaded(Ts...) -> overloaded<Ts...>;
 
-std::unique_ptr<proto::Request> Actions::reset()
+auto Actions::reset() -> std::unique_ptr<proto::Request>
 {
     if (!m_request)
     {
@@ -16,19 +16,21 @@ std::unique_ptr<proto::Request> Actions::reset()
     return std::move(m_request);
 }
 
-proto::RequestAction* Actions::requestAction() {
-    if (!m_request) {
+auto Actions::requestAction() -> proto::RequestAction*
+{
+    if (!m_request)
+    {
         m_request = std::make_unique<proto::Request>();
     }
     return m_request->mutable_action();
 }
 
-Actions& Actions::toggleAutocast(Tag unit_tag, AbilityID ability)
+auto Actions::toggleAutocast(Tag unit_tag, AbilityID ability) -> Actions&
 {
     return toggleAutocast(std::vector<Tag>({ unit_tag }), ability);
 }
 
-Actions& Actions::toggleAutocast(const std::vector<Tag>& unit_tags, AbilityID ability)
+auto Actions::toggleAutocast(const std::vector<Tag>& unit_tags, AbilityID ability) -> Actions&
 {
     auto request_action = requestAction();
     auto action = request_action->add_actions();
@@ -41,7 +43,7 @@ Actions& Actions::toggleAutocast(const std::vector<Tag>& unit_tags, AbilityID ab
     return *this;
 }
 
-Actions& Actions::chat(const std::string& message, proto::ActionChat::Channel channel)
+auto Actions::chat(const std::string& message, proto::ActionChat::Channel channel) -> Actions&
 {
     auto request_action = requestAction();
     auto action = request_action->add_actions();
@@ -52,22 +54,27 @@ Actions& Actions::chat(const std::string& message, proto::ActionChat::Channel ch
     return *this;
 }
 
-Actions& Actions::command(const Unit& unit, AbilityID ability, bool queued)
+auto Actions::has() -> bool 
+{
+    return m_request.get(); 
+}
+
+auto Actions::command(const Unit& unit, AbilityID ability, bool queued) -> Actions&
 {
     return command(Units{ unit }, ability, queued);
 }
 
-Actions& Actions::command(const Unit& unit, AbilityID ability, const Point2D& point, bool queued)
+auto Actions::command(const Unit& unit, AbilityID ability, const Point2D& point, bool queued) -> Actions&
 {
     return command(Units{ unit }, ability, point, queued);
 }
 
-Actions& Actions::command(const Unit& unit, AbilityID ability, const Unit& target, bool queued)
+auto Actions::command(const Unit& unit, AbilityID ability, const Unit& target, bool queued) -> Actions&
 {
     return command(Units{ unit }, ability, target, queued);
 }
 
-Actions& Actions::command(const Units& units, AbilityID ability, bool queued)
+auto Actions::command(const Units& units, AbilityID ability, bool queued) -> Actions&
 {
     auto request_action = requestAction();
     auto action = request_action->add_actions();
@@ -84,7 +91,7 @@ Actions& Actions::command(const Units& units, AbilityID ability, bool queued)
     return *this;
 }
 
-Actions& Actions::command(const Task& task, bool queued)
+auto Actions::command(const Task& task, bool queued) -> Actions&
 {
     auto request_action = requestAction();
     auto action = request_action->add_actions();
@@ -117,7 +124,7 @@ Actions& Actions::command(const Task& task, bool queued)
     return *this;
 }
 
-Actions& Actions::command(const Units& units, AbilityID ability, const Point2D& point, bool queued)
+auto Actions::command(const Units& units, AbilityID ability, const Point2D& point, bool queued) -> Actions&
 {
     auto request_action = requestAction();
     auto action = request_action->add_actions();
@@ -137,7 +144,8 @@ Actions& Actions::command(const Units& units, AbilityID ability, const Point2D& 
     return *this;
 }
 
-Actions& Actions::command(const Units& units, AbilityID ability, const Unit& target, bool queued) {
+auto Actions::command(const Units& units, AbilityID ability, const Unit& target, bool queued) -> Actions&
+{
     auto request_action = requestAction();
     auto action = request_action->add_actions();
     auto action_raw = action->mutable_action_raw();

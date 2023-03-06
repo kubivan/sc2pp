@@ -72,7 +72,7 @@ SC2Client::SC2Client(net::io_context& ioc)
 {
 }
 
-void SC2Client::start()
+auto SC2Client::start() -> void
 {
     auto process_path = "C:\\Program Files (x86)\\StarCraft II\\Versions\\Base87702\\SC2_x64.exe";
 
@@ -104,7 +104,7 @@ void SC2Client::start()
     }
 }
 
-bool SC2Client::createGame()
+auto SC2Client::createGame() -> bool
 {
     std::cout << "creating game" << std::endl;
     auto request = std::make_unique<proto::Request>();
@@ -145,7 +145,7 @@ bool SC2Client::createGame()
     return true;
 }
 
-uint32_t SC2Client::joinGame(Race race)
+auto SC2Client::joinGame(Race race) -> uint32_t
 {
     auto request = std::make_unique<sc2::proto::Request>();
     auto request_join_game = request->mutable_join_game();
@@ -173,7 +173,7 @@ uint32_t SC2Client::joinGame(Race race)
     return response_join_game.player_id();
 }
 
-auto sc2::SC2Client::createContext()->SC2Context 
+auto sc2::SC2Client::createContext() -> SC2Context 
 {
     return SC2Context(
           Observation(get_game_info(m_session), get_unit_type_data(m_session), get_ability_data(m_session))
@@ -181,7 +181,7 @@ auto sc2::SC2Client::createContext()->SC2Context
     );
 }
 
-std::pair<int, proto::ResponseObservation> SC2Client::step()
+auto SC2Client::step() -> std::pair<int, proto::ResponseObservation>
 {
     //std::cout << "SC2Client::step()" << std::endl;
     static const int step_duration = 1;
@@ -207,7 +207,7 @@ std::pair<int, proto::ResponseObservation> SC2Client::step()
     return { simulation_loop, response->observation() };
 }
 
-std::optional<proto::PlayerResult> SC2Client::update()
+auto SC2Client::update() -> std::optional<proto::PlayerResult>
 {
     const auto [simulation_loop, response_observation] = this->step();
 
@@ -256,7 +256,7 @@ std::optional<proto::PlayerResult> SC2Client::update()
     return {};
 }
 
-bool SC2Client::ping()
+auto SC2Client::ping() -> bool
 {
     auto request = std::make_unique<proto::Request>();
     request->mutable_ping();

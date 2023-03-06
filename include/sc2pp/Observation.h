@@ -68,7 +68,7 @@ struct GameInfo
     //std::vector<PlayerInfo> player_info;
 };
 
-GameInfo from_proto(const proto::ResponseGameInfo& x);
+auto from_proto(const proto::ResponseGameInfo& x) -> GameInfo;
 
 class Observation
 {

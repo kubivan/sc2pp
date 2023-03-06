@@ -146,7 +146,7 @@ struct Unit
 };
 
 //TODO: fix
-inline bool operator<(const Unit& a, const Unit& b)
+inline auto operator<(const Unit& a, const Unit& b) -> bool
 {
     return std::tie(a.tag, a.alliance) < std::tie(b.tag, b.alliance);
 }

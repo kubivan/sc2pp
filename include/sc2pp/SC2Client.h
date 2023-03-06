@@ -43,12 +43,12 @@ public:
 
     explicit SC2Client(boost::asio::io_context& ioc);
 
-    void start();
+    auto start() -> void;
 
-    bool createGame();
+    auto createGame() -> bool;
 
     template<class T>
-    bool joinGame()
+    auto joinGame() -> bool
     {
         const auto id = joinGame(Race::Protoss);
         if (id == -1)
@@ -58,16 +58,16 @@ public:
         return m_agent.get();
     }
 
-    std::optional<proto::PlayerResult> update();
+    auto update() -> std::optional<proto::PlayerResult>;
 
-    bool ping();
+    auto ping() -> bool;
 
 private:
     auto createContext() -> SC2Context;
 
-    uint32_t joinGame(Race race);
+    auto joinGame(Race race) -> uint32_t;
 
-    std::pair<int, proto::ResponseObservation> step();
+    auto step() -> std::pair<int, proto::ResponseObservation>;
 
     boost::process::child m_game_proc;
     boost::asio::io_context& m_ioc;

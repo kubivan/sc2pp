@@ -4,7 +4,7 @@
 
 using namespace sc2;
 
-GameInfo sc2::from_proto(const proto::ResponseGameInfo& x)
+auto sc2::from_proto(const proto::ResponseGameInfo& x) -> GameInfo
 {
     return GameInfo{
     .map_name = x.map_name(),
@@ -51,7 +51,7 @@ auto Observation::unitsCreated() const -> const Units&
     return m_created;
 }
 
-const GameInfo& Observation::gameInfo() const
+auto Observation::gameInfo() const -> const GameInfo&
 {
     return m_game_info;
 }
@@ -61,12 +61,12 @@ auto Observation::units() const -> const Units&
     return m_units.units();
 }
 
-const std::vector<AbilityData>& Observation::abilityData() const
+auto Observation::abilityData() const -> const std::vector<AbilityData>&
 {
     return m_ability_data;
 }
 
-const std::vector<UnitTypeData>& Observation::unitsTypeData() const
+auto Observation::unitsTypeData() const -> const std::vector<UnitTypeData>&
 {
     return m_unit_type_data;
 }

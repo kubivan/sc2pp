@@ -17,12 +17,32 @@ template<typename T, size_t MaxSize>
 struct FixedVector
 {
     static const int MAX_SIZE = MaxSize;
-    constexpr FixedVector(size_t size = 0) : m_size(size) { }
-    constexpr const T* begin() const { return &m_data[0]; }
-    constexpr const T* end() const { return &m_data[m_size]; }
-    constexpr T& operator[](size_t index) { return m_data[index]; }
-    constexpr const T& operator[](size_t index) const { return m_data[index]; }
-    constexpr void push_back(const T& val)
+    constexpr FixedVector(size_t size = 0) 
+        : m_size(size)
+    {
+    }
+
+    constexpr auto begin() const -> const T*
+    {
+        return &m_data[0]; 
+    }
+
+    constexpr auto end() const -> const T*
+    {
+        return &m_data[m_size]; 
+    }
+
+    constexpr auto operator[](size_t index) -> T&
+    {
+        return m_data[index]; 
+    }
+
+    constexpr auto operator[](size_t index) const -> const T&
+    {
+        return m_data[index]; 
+    }
+
+    constexpr auto push_back(const T& val)
     {
         if (m_size >= MaxSize)
         {
@@ -30,9 +50,13 @@ struct FixedVector
         }
         m_data[m_size++] = val;
     }
-    constexpr size_t size() const { return m_size; }
 
-    constexpr bool count(const T& val) const
+    constexpr auto size() const -> size_t
+    {
+        return m_size; 
+    }
+
+    constexpr auto count(const T& val) const -> bool
     {
         for (const auto& el : *this)
             if (val == el)
